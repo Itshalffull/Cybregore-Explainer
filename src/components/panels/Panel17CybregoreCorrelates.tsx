@@ -148,7 +148,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
               Individual
             </p>
             <p style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.3rem)', color: 'var(--line-art-cream)', lineHeight: 1.45 }}>
-              It knows your pauses predict divorce. Shows you the affair that ends your marriage.
+              It knows lonely people scroll more. So it shows you the post that makes you feel alone.
             </p>
           </div>
           <div
