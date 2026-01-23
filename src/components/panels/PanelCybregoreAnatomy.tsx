@@ -104,14 +104,9 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
             textAlign: 'center',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-            <span style={{ fontSize: 'clamp(1.2rem, 3dvh, 1.8rem)', fontWeight: 700, color: 'var(--accent-coral)' }}>
-              5
-            </span>
-            <h3 style={{ fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)', color: 'var(--accent-coral)', fontWeight: 700 }}>
-              The Data
-            </h3>
-          </div>
+          <h3 style={{ fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)', color: 'var(--accent-coral)', fontWeight: 700, marginBottom: '0.3rem' }}>
+            The Data
+          </h3>
           <p style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.4rem)', color: 'var(--line-art-cream)', lineHeight: 1.4 }}>
             Every click, scroll, pause, purchase. Every word, face, emotion.
           </p>
