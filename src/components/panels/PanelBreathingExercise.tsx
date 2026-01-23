@@ -23,12 +23,8 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
   const anythingOpacity = lerp(progress, 0.61, 0.7, 0, 1)
 
   // The connection
-  const dataIsBreathOpacity = lerp(progress, 0.69, 0.78, 0, 1)
-  const dataIsBreathScale = lerp(progress, 0.69, 0.78, 0.9, 1)
-
-  // Hungry ghost
-  const hungryGhostOpacity = lerp(progress, 0.77, 0.88, 0, 1)
-  const neverEnoughOpacity = lerp(progress, 0.87, 0.96, 0, 1)
+  const dataIsBreathOpacity = lerp(progress, 0.75, 0.9, 0, 1)
+  const dataIsBreathScale = lerp(progress, 0.75, 0.9, 0.9, 1)
 
   // Breathing animation - pulses while "hold it" is showing (extended window)
   const breathingPhase = progress > 0.15 && progress < 0.55
@@ -234,7 +230,6 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
             background: 'rgba(219, 84, 97, 0.12)',
             borderRadius: '8px',
             border: '1px solid rgba(219, 84, 97, 0.3)',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
           }}
         >
           <p
@@ -248,30 +243,6 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
             Data is breath to the Cybregore.
           </p>
         </div>
-
-        {/* Hungry ghost */}
-        <p
-          style={{
-            opacity: hungryGhostOpacity,
-            fontSize: 'clamp(1.1rem, 3.2dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.3rem, 0.8dvh, 0.75rem)',
-          }}
-        >
-          In Buddhist terms, it's a <em style={{ color: 'var(--line-art-cream)' }}>hungry ghost</em>.
-        </p>
-
-        {/* Never enough */}
-        <p
-          style={{
-            opacity: neverEnoughOpacity,
-            fontSize: 'clamp(1.2rem, 4dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            fontStyle: 'italic',
-          }}
-        >
-          It can never get enough.
-        </p>
       </div>
     </section>
   )

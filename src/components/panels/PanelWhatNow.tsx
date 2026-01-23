@@ -108,7 +108,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
           }}
         >
           <a
-            href="https://www.monasticacademy.com"
+            href="https://www.monasticacademy.org/train"
             target="_blank"
             rel="noopener noreferrer"
             style={{

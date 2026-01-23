@@ -22,6 +22,7 @@ import PanelCybregoreAnatomy from './components/panels/PanelCybregoreAnatomy'
 import PanelCybregoreInseparable from './components/panels/PanelCybregoreInseparable'
 import PanelCybregoreHunger from './components/panels/PanelCybregoreHunger'
 import PanelBreathingExercise from './components/panels/PanelBreathingExercise'
+import PanelHungryGhost from './components/panels/PanelHungryGhost'
 import Panel15CybregoreReads from './components/panels/Panel15CybregoreReads'
 import Panel16CybregoreWrites from './components/panels/Panel16CybregoreWrites'
 import Panel17CybregoreCorrelates from './components/panels/Panel17CybregoreCorrelates'
@@ -103,8 +104,13 @@ function App() {
       </ScrollSection>
 
       {/* Breathing exercise - feel WHY it craves data */}
-      <ScrollSection scrollLength={6}>
+      <ScrollSection scrollLength={5}>
         {(progress) => <PanelBreathingExercise progress={progress} />}
+      </ScrollSection>
+
+      {/* The Cybregore is a hungry ghost */}
+      <ScrollSection scrollLength={3.5}>
+        {(progress) => <PanelHungryGhost progress={progress} />}
       </ScrollSection>
 
       {/* It reads you */}
