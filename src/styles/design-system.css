@@ -1,0 +1,388 @@
+/* Cybregore Design System */
+
+:root {
+  /* Dark backgrounds */
+  --dark-olive: #474924;
+  --dark-forest: #4A644E;
+  --deep-forest: #3B4540;
+
+  /* Light backgrounds */
+  --pale-mint: #DFEEE2;
+  --sage: #D1E7D2;
+
+  /* Text */
+  --heading-color: #3B4540;
+  --body-color: #405449;
+
+  /* Accents */
+  --accent-coral: #E07850;
+  --line-art-cream: #F5F2E8;
+  --line-art-dark: #3B4540;
+
+  /* Typography scales */
+  --heading-xl: clamp(2rem, 5vw, 4.5rem);
+  --heading-lg: clamp(1.75rem, 4vw, 3rem);
+  --heading-md: clamp(1.5rem, 3vw, 2.25rem);
+  --heading-sm: clamp(1.25rem, 2.5vw, 1.75rem);
+  --body-lg: clamp(1.125rem, 2vw, 1.5rem);
+  --body-md: clamp(1rem, 1.5vw, 1.25rem);
+  --body-sm: clamp(0.875rem, 1.25vw, 1rem);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+
+  /* Transitions */
+  --transition-fast: 200ms ease;
+  --transition-medium: 400ms ease;
+  --transition-slow: 800ms ease;
+  --transition-very-slow: 1500ms ease;
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--body-color);
+  background-color: var(--pale-mint);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Typography */
+.heading {
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.heading-xl { font-size: var(--heading-xl); }
+.heading-lg { font-size: var(--heading-lg); }
+.heading-md { font-size: var(--heading-md); }
+.heading-sm { font-size: var(--heading-sm); }
+
+.body-lg { font-size: var(--body-lg); }
+.body-md { font-size: var(--body-md); }
+.body-sm { font-size: var(--body-sm); }
+
+/* Panel base styles */
+.panel {
+  min-height: 100vh;
+  min-height: 100dvh; /* Use dynamic viewport height for mobile */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Panel content container - ensures content fits in viewport */
+.panel-content {
+  max-width: 700px;
+  width: 90%;
+  max-height: 90vh;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(0.5rem, 2vh, 2rem);
+  overflow: hidden;
+}
+
+/* Responsive text that scales with viewport height AND width
+   Uses min(vh, vw*ratio) to prevent horizontal overflow on narrow screens */
+.panel-text-xs {
+  font-size: clamp(0.7rem, min(1.5dvh, 3vw), 0.9rem);
+  line-height: 1.4;
+}
+
+.panel-text-sm {
+  font-size: clamp(0.8rem, min(1.8dvh, 3.5vw), 1rem);
+  line-height: 1.4;
+}
+
+.panel-text-md {
+  font-size: clamp(0.9rem, min(2.2dvh, 4vw), 1.2rem);
+  line-height: 1.5;
+}
+
+.panel-text-lg {
+  font-size: clamp(1rem, min(2.8dvh, 5vw), 1.5rem);
+  line-height: 1.4;
+}
+
+.panel-text-xl {
+  font-size: clamp(1.2rem, min(3.5dvh, 6vw), 2rem);
+  line-height: 1.3;
+}
+
+.panel-text-2xl {
+  font-size: clamp(1.5rem, min(4.5dvh, 8vw), 2.5rem);
+  line-height: 1.2;
+}
+
+.panel-text-3xl {
+  font-size: clamp(2rem, min(6dvh, 10vw), 4rem);
+  line-height: 1.1;
+}
+
+.panel-text-hero {
+  font-size: clamp(2.5rem, min(8dvh, 12vw), 5rem);
+  line-height: 1.0;
+}
+
+/* Extra large hero text - for big dramatic words like "CYBREGORE" */
+.panel-text-giant {
+  font-size: clamp(3rem, min(10dvh, 14vw), 6rem);
+  line-height: 1.0;
+}
+
+.panel-text-massive {
+  font-size: clamp(4rem, min(12dvh, 18vw), 8rem);
+  line-height: 0.95;
+}
+
+/* Responsive margins using vh */
+.panel-mb-xs { margin-bottom: clamp(0.25rem, 0.5vh, 0.5rem); }
+.panel-mb-sm { margin-bottom: clamp(0.5rem, 1vh, 1rem); }
+.panel-mb-md { margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem); }
+.panel-mb-lg { margin-bottom: clamp(1rem, 2vh, 2rem); }
+.panel-mb-xl { margin-bottom: clamp(1.5rem, 3vh, 3rem); }
+
+.panel--light {
+  background-color: var(--pale-mint);
+  color: var(--body-color);
+}
+
+.panel--light .heading {
+  color: var(--heading-color);
+}
+
+.panel--dark {
+  background-color: var(--deep-forest);
+  color: var(--line-art-cream);
+}
+
+.panel--dark .heading {
+  color: var(--line-art-cream);
+}
+
+.panel--dark-olive {
+  background-color: var(--dark-olive);
+  color: var(--line-art-cream);
+}
+
+.panel--sage {
+  background-color: var(--sage);
+  color: var(--body-color);
+}
+
+/* Button styles */
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--body-md);
+  font-weight: 500;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.btn--primary {
+  background-color: var(--dark-olive);
+  color: var(--line-art-cream);
+}
+
+.btn--primary:hover {
+  background-color: #5a5d30;
+  transform: translateY(-2px);
+}
+
+.btn--primary-inverted {
+  background-color: var(--line-art-cream);
+  color: var(--dark-olive);
+}
+
+.btn--primary-inverted:hover {
+  background-color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn--outlined {
+  background-color: transparent;
+  color: var(--line-art-cream);
+  border: 2px solid var(--line-art-cream);
+}
+
+.btn--outlined:hover {
+  background-color: rgba(245, 242, 232, 0.1);
+  transform: translateY(-2px);
+}
+
+.btn--outlined-dark {
+  background-color: transparent;
+  color: var(--dark-olive);
+  border: 2px solid var(--dark-olive);
+}
+
+.btn--outlined-dark:hover {
+  background-color: rgba(71, 73, 36, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Content container */
+.content {
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+  padding: var(--space-lg);
+}
+
+/* Illustration container */
+.illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.illustration img,
+.illustration svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.text-cream { color: var(--line-art-cream); }
+.text-dark { color: var(--heading-color); }
+.text-coral { color: var(--accent-coral); }
+
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+/* Split layout */
+.split-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .split-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.split-panel__left,
+.split-panel__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-slow) ease forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp var(--transition-slow) ease forwards;
+}
+
+/* SVG Line Art Styles */
+.line-art {
+  stroke: var(--line-art-cream);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-art--dark {
+  stroke: var(--line-art-dark);
+}
+
+/* Pulse animation for line art */
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(245, 242, 232, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(245, 242, 232, 0.6));
+  }
+}
+
+.line-art--pulse {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
