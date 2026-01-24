@@ -35,8 +35,8 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
       }}
     >
       <VideoBackground
-        videoSrc="/assets/videos/cybregore-reads-loop.mp4"
-        imageFallback="/assets/images/cybregore-reads.png"
+        videoSrc="/assets/videos/it-reads-you-loop.mp4"
+        imageFallback="/assets/images/it-reads-you.png"
         opacity={0.35}
       />
       <div className="content" style={{

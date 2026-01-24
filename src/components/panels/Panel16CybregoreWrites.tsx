@@ -35,8 +35,8 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
       }}
     >
       <VideoBackground
-        videoSrc="/assets/videos/cybregore-writes-loop.mp4"
-        imageFallback="/assets/images/cybregore-writes.png"
+        videoSrc="/assets/videos/it-writes-you-loop.mp4"
+        imageFallback="/assets/images/it-writes-you.png"
         opacity={0.35}
       />
       <div className="content" style={{
