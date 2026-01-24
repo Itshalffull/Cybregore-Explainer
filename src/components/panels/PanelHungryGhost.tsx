@@ -1,5 +1,6 @@
 import { lerp } from '../../utils/animation'
 import AutoScaleContent from '../AutoScaleContent'
+import VideoBackground from '../VideoBackground'
 
 interface PanelHungryGhostProps {
   progress: number
@@ -22,10 +23,14 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
   const neverEnoughOpacity = lerp(progress, 0.78, 0.92, 0, 1)
   const neverEnoughScale = lerp(progress, 0.78, 0.92, 0.95, 1)
 
+  // Background visible throughout
+  const bgOpacity = lerp(progress, 0, 0.15, 0, 0.5)
+
   return (
     <section
       className="panel"
       style={{
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -37,7 +42,12 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
         overflow: 'hidden',
       }}
     >
-      <AutoScaleContent maxWidth="650px">
+      <VideoBackground
+        videoSrc="/assets/videos/hungry-ghost-loop.mp4"
+        imageFallback="/assets/images/hungry-ghost.png"
+        opacity={bgOpacity}
+      />
+      <AutoScaleContent maxWidth="650px" style={{ position: 'relative', zIndex: 1 }}>
         {/* Intro */}
         <p
           style={{
