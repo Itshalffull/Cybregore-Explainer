@@ -22,6 +22,11 @@ export interface ExplainerDef {
   content?: ReactNode
   /** Structured metadata for narrative documentation and search/discovery */
   metadata?: ExplainerMetadata
+  /**
+   * Asset URLs to prefetch when this explainer is registered but not active.
+   * Typically the first panel's background image/video so jumps feel instant.
+   */
+  preloadSrcs?: string[]
 }
 
 /** Returns true if the explainer has been implemented (has content) */
@@ -240,10 +245,18 @@ export default function ExplainerRouter({
   const def = explainers[current]
   if (!def || !isImplemented(def)) return null
 
+  // Collect prefetch URLs from non-current explainers
+  const prefetchUrls = Object.entries(explainers)
+    .filter(([id, d]) => id !== current && d.preloadSrcs?.length)
+    .flatMap(([, d]) => d.preloadSrcs!)
+
   return (
     <ExplainerContext.Provider
       value={{ current, jumpTo, jumpBack, stack, transitioning, explainers }}
     >
+      {prefetchUrls.map((url) => (
+        <link key={url} rel="prefetch" href={url} />
+      ))}
       <div
         ref={wrapperRef}
         className={transitionClass}
