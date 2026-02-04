@@ -39,22 +39,19 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
     <section className="panel panel--dark">
       <AutoScaleContent maxWidth="600px">
         <p
-          className="text-body-lg text-sage text-uppercase mb-md"
+          className="text-body-lg text-sage text-uppercase tracking-wider mb-md"
           style={{
             opacity: imperativeOpacity,
-            letterSpacing: '0.15em',
           }}
         >
           The Cybregore has one imperative
         </p>
 
         <h2
-          className="text-display text-coral text-heavy mb-md"
+          className="text-display text-coral text-heavy text-glow-coral tracking-tight mb-md"
           style={{
             opacity: moreDataOpacity,
             transform: `scale(${moreDataScale})`,
-            textShadow: '0 0 30px rgba(219, 84, 97, 0.5)',
-            letterSpacing: '-0.02em',
           }}
         >
           MORE DATA

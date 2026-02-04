@@ -35,12 +35,10 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
         </p>
 
         <h1
-          className="text-display text-cream text-heavy mb-xl"
+          className="text-display text-cream text-heavy text-mono tracking-wide mb-xl"
           style={{
             opacity: nameOpacity,
             transform: `scale(${nameScale}) translateX(${glitchOffset}px)`,
-            fontFamily: 'monospace',
-            letterSpacing: '0.1em',
             textShadow: `
               ${-glitchOffset}px 0 var(--accent-coral),
               ${glitchOffset}px 0 var(--sage)

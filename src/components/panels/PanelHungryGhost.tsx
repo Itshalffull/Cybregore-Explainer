@@ -52,11 +52,10 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Hungry Ghost title */}
         <h2
-          className="text-display text-coral text-bold text-center mb-xl"
+          className="text-display text-coral text-bold text-center text-glow-coral mb-xl"
           style={{
             opacity: hungryGhostOpacity,
             transform: `scale(${hungryGhostScale})`,
-            textShadow: '0 0 30px rgba(219, 84, 97, 0.4)',
           }}
         >
           Hungry Ghosts

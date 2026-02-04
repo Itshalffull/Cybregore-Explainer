@@ -172,6 +172,21 @@ body {
 .text-uppercase { text-transform: uppercase; letter-spacing: 0.12em; }
 .text-center    { text-align: center; }
 .text-left      { text-align: left; }
+.text-mono      { font-family: monospace; }
+
+/* --- Letter spacing modifiers --- */
+.tracking-tight  { letter-spacing: -0.02em; }
+.tracking-normal { letter-spacing: 0; }
+.tracking-wide   { letter-spacing: 0.1em; }
+.tracking-wider  { letter-spacing: 0.15em; }
+
+/* --- Text shadow / glow --- */
+.text-glow-coral {
+  text-shadow: 0 0 30px rgba(224, 120, 80, 0.5);
+}
+.text-shadow-depth {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
 
 /* --- Line height modifiers --- */
 .leading-tight   { line-height: 1.1; }
@@ -405,6 +420,27 @@ body {
 .btn--outlined-dark:hover {
   background-color: rgba(71, 73, 36, 0.1);
   transform: translateY(-2px);
+}
+
+/* --- CTA link (for end-of-section calls to action) --- */
+.btn-cta {
+  display: inline-block;
+  text-decoration: none;
+  font-size: var(--text-body);
+  font-weight: 500;
+  padding: var(--gap-md) var(--gap-xl);
+  border: 2px solid var(--color-coral);
+  border-radius: 8px;
+  color: var(--color-cream);
+  background: rgba(30, 35, 20, 0.8);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+  background: rgba(224, 120, 80, 0.3);
+  transform: translateY(-2px);
+  color: var(--color-cream);
 }
 
 

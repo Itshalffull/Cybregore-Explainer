@@ -49,12 +49,10 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         </p>
 
         <h3
-          className="text-display text-coral text-heavy mb-lg"
+          className="text-display text-coral text-heavy text-glow-coral tracking-tight mb-lg"
           style={{
             opacity: purposeOpacity,
             transform: `scale(${purposeScale})`,
-            textShadow: '0 0 30px rgba(219, 84, 97, 0.5)',
-            letterSpacing: '-0.02em',
           }}
         >
           MORE DATA
