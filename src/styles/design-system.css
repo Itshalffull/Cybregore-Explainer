@@ -555,7 +555,182 @@ body {
 
 
 /* --------------------------------------------------------------------------
-   11. LEGACY PANEL TEXT CLASSES (deprecated - use .text-* instead)
+   11. EXPLAINER ROUTER — transitions, jump links, breadcrumbs
+   -------------------------------------------------------------------------- */
+
+/* --- Explainer slide transitions --- */
+.explainer-wrapper {
+  /* No transition in idle state — avoids jank during scroll */
+}
+
+.explainer-exit-left {
+  animation: slideOutLeft 280ms ease-in forwards;
+}
+.explainer-exit-right {
+  animation: slideOutRight 280ms ease-in forwards;
+}
+.explainer-enter-right {
+  animation: slideInRight 280ms ease-out forwards;
+}
+.explainer-enter-left {
+  animation: slideInLeft 280ms ease-out forwards;
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-8%); }
+}
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(8%); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(8%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Jump link (in-panel cross-explainer link) --- */
+.jump-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-body);
+  color: var(--color-coral);
+  background: rgba(224, 120, 80, 0.08);
+  border: 1px solid rgba(224, 120, 80, 0.3);
+  border-radius: 6px;
+  padding: var(--gap-sm) var(--gap-lg);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  text-align: left;
+}
+
+.jump-link:hover:not(:disabled) {
+  background: rgba(224, 120, 80, 0.18);
+  border-color: rgba(224, 120, 80, 0.6);
+  transform: translateX(3px);
+}
+
+.jump-link:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.jump-link__arrow {
+  font-size: 1.2em;
+  transition: transform 0.2s ease;
+}
+
+.jump-link:hover:not(:disabled) .jump-link__arrow {
+  transform: translateX(3px);
+}
+
+.jump-link__label {
+  font-weight: 500;
+}
+
+/* --- Jump breadcrumbs (sticky trail) --- */
+.jump-breadcrumbs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: var(--gap-sm) var(--gap-lg);
+  background: linear-gradient(
+    to top,
+    rgba(30, 35, 30, 0.95) 60%,
+    rgba(30, 35, 30, 0) 100%
+  );
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.jump-breadcrumbs__trail {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  max-width: 900px;
+  pointer-events: auto;
+}
+
+.jump-breadcrumbs__crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-label);
+  color: var(--color-coral);
+  background: rgba(224, 120, 80, 0.1);
+  border: 1px solid rgba(224, 120, 80, 0.25);
+  border-radius: 4px;
+  padding: 0.2em 0.6em;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.jump-breadcrumbs__crumb:hover:not(:disabled) {
+  background: rgba(224, 120, 80, 0.25);
+  transform: translateX(-2px);
+}
+
+.jump-breadcrumbs__crumb:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.jump-breadcrumbs__arrow {
+  font-size: 1.1em;
+}
+
+.jump-breadcrumbs__title {
+  font-weight: 600;
+  color: var(--color-cream);
+}
+
+.jump-breadcrumbs__from {
+  color: var(--color-sage);
+  opacity: 0.7;
+  margin-left: 0.15em;
+}
+
+.jump-breadcrumbs__from::before {
+  content: '· ';
+}
+
+.jump-breadcrumbs__current {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--text-label);
+  color: var(--color-cream);
+  opacity: 0.5;
+  padding: 0.2em 0.4em;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Separator arrows between crumbs */
+.jump-breadcrumbs__crumb + .jump-breadcrumbs__crumb::before,
+.jump-breadcrumbs__crumb + .jump-breadcrumbs__current::before {
+  content: '›';
+  color: var(--color-sage);
+  opacity: 0.4;
+  margin-right: 0.25rem;
+  font-size: 1.2em;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. LEGACY PANEL TEXT CLASSES (deprecated - use .text-* instead)
    -------------------------------------------------------------------------- */
 
 /* Legacy panel text classes (deprecated) */
