@@ -21,7 +21,26 @@ export default function PanelAutoScaler() {
     const scaleToFit = (content: HTMLElement) => {
       // Use 88% of viewport — leaves room for vertical auto-margins
       const availableHeight = window.innerHeight * 0.88
+
+      // Temporarily neutralize inline transforms on all descendants so
+      // scrollHeight reflects the natural layout height, not the
+      // animation-inflated height (e.g. translateY(30px) adds space).
+      const transformed: { el: HTMLElement; saved: string }[] = []
+      content.querySelectorAll<HTMLElement>('[style*="transform"]').forEach((el) => {
+        transformed.push({ el, saved: el.style.transform })
+        el.style.transform = 'none'
+      })
+
+      // Also temporarily clear our own scale so it doesn't affect measurement
+      const savedScale = content.style.scale
+      content.style.scale = ''
+
       const contentHeight = content.scrollHeight
+
+      // Restore transforms immediately (single synchronous block — no paint)
+      for (const { el, saved } of transformed) {
+        el.style.transform = saved
+      }
 
       let newScale = ''
       if (contentHeight > availableHeight) {
@@ -36,6 +55,9 @@ export default function PanelAutoScaler() {
         if (newScale) {
           content.style.transformOrigin = 'center center'
         }
+      } else {
+        // Restore previous scale
+        content.style.scale = savedScale
       }
     }
 
