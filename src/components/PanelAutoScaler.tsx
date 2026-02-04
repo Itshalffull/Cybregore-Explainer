@@ -52,6 +52,7 @@ export default function PanelAutoScaler() {
 
       // Find the content wrapper - try multiple selectors in priority order
       const content = (
+        panel.querySelector('.panel-body') ||
         panel.querySelector('.panel-content-wrapper') ||
         panel.querySelector('.content') ||
         panel.querySelector('.panel-content') ||

@@ -200,9 +200,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
-  overflow: hidden;
+  /* overflow clipping is handled by ScrollSection's content wrapper */
 }
 
 /* --- Panel theme variants --- */
@@ -241,6 +241,8 @@ body {
   max-width: 700px;
   width: 90%;
   padding: 0 clamp(0.75rem, 2vw, 1.5rem);
+  margin-top: auto;
+  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   align-items: center;

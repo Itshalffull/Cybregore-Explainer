@@ -51,8 +51,11 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
   const endYear = 2024
   const totalYears = endYear - startYear
 
-  // Calculate position on timeline (0-100%)
-  const getYearPosition = (year: number) => ((year - startYear) / totalYears) * 100
+  // Reserve left space for app name labels (percentage of container width)
+  const labelWidth = 22
+
+  // Calculate position on timeline, offset by label area
+  const getYearPosition = (year: number) => labelWidth + ((year - startYear) / totalYears) * (100 - labelWidth)
 
   return (
     <section className="panel panel--dark">
@@ -91,7 +94,7 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
               style={{
                 position: 'absolute',
                 top: '50%',
-                left: 0,
+                left: `${labelWidth}%`,
                 right: 0,
                 height: '2px',
                 background: 'var(--dark-olive)',
@@ -129,7 +132,7 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
               const launchPos = getYearPosition(app.launchYear)
               const reachedPos = getYearPosition(app.reached100MYear)
               const isRecent = app.days <= 60
-              const rowHeight = window.innerHeight < 700 ? 32 : 38
+              const rowHeight = typeof window !== 'undefined' && window.innerHeight < 700 ? 30 : 36
 
               return (
                 <div
@@ -145,14 +148,17 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
                     alignItems: 'center',
                   }}
                 >
-                  {/* App name label */}
+                  {/* App name label - positioned within the reserved left area */}
                   <div
                     style={{
                       position: 'absolute',
-                      left: `${launchPos}%`,
-                      transform: 'translateX(-100%)',
+                      left: 0,
+                      width: `${labelWidth}%`,
+                      textAlign: 'right',
                       paddingRight: '6px',
                       whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
                     }}
                   >
                     <span
