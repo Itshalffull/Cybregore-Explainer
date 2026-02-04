@@ -2,6 +2,8 @@ import ExplainerRouter from './components/ExplainerRouter'
 import JumpBreadcrumbs from './components/JumpBreadcrumbs'
 import CybregoreExplainer from './explainers/CybregoreExplainer'
 import cybregoreMetadata from './explainers/cybregore-metadata'
+import ExampleExplainer from './explainers/ExampleExplainer'
+import exampleMetadata from './explainers/example-metadata'
 
 /**
  * App root — wraps all explainers in the ExplainerRouter.
@@ -25,6 +27,11 @@ function App() {
           title: 'Cybregore',
           content: <CybregoreExplainer />,
           metadata: cybregoreMetadata,
+        },
+        'example-egregore': {
+          title: 'Egregore Deep Dive',
+          content: <ExampleExplainer />,
+          metadata: exampleMetadata,
         },
         // Stub example — metadata only, no content yet:
         // 'meaning-makers': {
