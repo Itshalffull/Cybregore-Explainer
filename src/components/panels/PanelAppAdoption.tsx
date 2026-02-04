@@ -6,6 +6,7 @@ interface PanelAppAdoptionProps {
 
 interface AppData {
   name: string
+  launchYear: number
   days: number
   color: string
   timeLabel: string
@@ -30,13 +31,13 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
   const sourceOpacity = lerp(progress, 0.90, 0.98, 0, 1)
 
   const apps: AppData[] = [
-    { name: 'Facebook', days: 1825, color: '#4267B2', timeLabel: '~5 years' },
-    { name: 'Twitter', days: 1750, color: '#1DA1F2', timeLabel: '~5 years' },
-    { name: 'Instagram', days: 912, color: '#E4405F', timeLabel: '~2.5 years' },
-    { name: 'WeChat', days: 433, color: '#7BB32E', timeLabel: '~14 months' },
-    { name: 'TikTok', days: 270, color: '#FF0050', timeLabel: '~9 months' },
-    { name: 'ChatGPT', days: 60, color: '#10A37F', timeLabel: '~2 months' },
-    { name: 'Threads', days: 5, color: '#000000', timeLabel: '5 days' },
+    { name: 'Facebook', launchYear: 2004, days: 1825, color: '#4267B2', timeLabel: '~5 yr' },
+    { name: 'Twitter', launchYear: 2006, days: 1750, color: '#1DA1F2', timeLabel: '~5 yr' },
+    { name: 'Instagram', launchYear: 2010, days: 912, color: '#E4405F', timeLabel: '~2.5 yr' },
+    { name: 'WeChat', launchYear: 2011, days: 433, color: '#7BB32E', timeLabel: '~14 mo' },
+    { name: 'TikTok', launchYear: 2017, days: 270, color: '#FF0050', timeLabel: '~9 mo' },
+    { name: 'ChatGPT', launchYear: 2022, days: 60, color: '#10A37F', timeLabel: '~2 mo' },
+    { name: 'Threads', launchYear: 2023, days: 5, color: '#000000', timeLabel: '5 days' },
   ]
 
   const appOpacities = [app1Opacity, app2Opacity, app3Opacity, app4Opacity, app5Opacity, app6Opacity, app7Opacity]
@@ -59,74 +60,73 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
           How fast they capture us
         </p>
 
-        {/* Vertical bar chart - each app is a row */}
+        {/* Vertical bar chart - CSS grid for precise column control */}
         <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(6px, 1.2dvh, 10px)',
+          display: 'grid',
+          gridTemplateColumns: 'auto 1fr auto',
+          gap: 'clamp(4px, 1dvh, 8px) clamp(6px, 1.5vw, 10px)',
           width: '100%',
+          alignItems: 'center',
           marginBottom: 'var(--gap-lg)',
         }}>
           {apps.map((app, index) => {
             const isRecent = app.days <= 60
-            // Use log scale so short bars are still visible
-            const barWidth = Math.max(3, (Math.log(app.days + 1) / Math.log(maxDays + 1)) * 100)
+            // Linear scale with a minimum width so tiny bars are visible
+            const barPct = Math.max(4, (app.days / maxDays) * 100)
 
             return (
               <div
                 key={app.name}
-                style={{
-                  opacity: appOpacities[index],
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'clamp(4px, 0.8vw, 8px)',
-                }}
+                style={{ display: 'contents' }}
               >
-                {/* App name - fixed width left column */}
+                {/* App name + launch year */}
                 <span
-                  className="text-body-sm"
+                  className="text-label"
                   style={{
+                    opacity: appOpacities[index],
                     color: isRecent ? 'var(--accent-coral)' : 'var(--line-art-cream)',
                     fontWeight: isRecent ? 600 : 400,
-                    width: 'clamp(65px, 18vw, 90px)',
-                    flexShrink: 0,
                     textAlign: 'right',
+                    whiteSpace: 'nowrap',
+                    lineHeight: 1.2,
                   }}
                 >
                   {app.name}
+                  <br />
+                  <span style={{
+                    color: 'var(--sage)',
+                    fontWeight: 400,
+                  }}>
+                    {app.launchYear}
+                  </span>
                 </span>
 
                 {/* Bar */}
-                <div style={{
-                  flex: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 'clamp(4px, 0.6vw, 8px)',
-                }}>
-                  <div
-                    style={{
-                      width: `${barWidth}%`,
-                      height: 'clamp(16px, 2.5dvh, 22px)',
-                      background: isRecent
-                        ? 'var(--accent-coral)'
-                        : `linear-gradient(90deg, ${app.color}88, ${app.color})`,
-                      borderRadius: '3px',
-                      boxShadow: isRecent ? '0 0 8px var(--accent-coral)' : 'none',
-                      flexShrink: 0,
-                    }}
-                  />
-                  {/* Time label */}
-                  <span
-                    className="text-body-sm"
-                    style={{
-                      color: isRecent ? 'var(--accent-coral)' : 'var(--sage)',
-                      fontWeight: isRecent ? 600 : 400,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {app.timeLabel}
-                  </span>
-                </div>
+                <div
+                  style={{
+                    opacity: appOpacities[index],
+                    width: `${barPct}%`,
+                    height: 'clamp(14px, 2.2dvh, 20px)',
+                    background: isRecent
+                      ? 'var(--accent-coral)'
+                      : `linear-gradient(90deg, ${app.color}88, ${app.color})`,
+                    borderRadius: '3px',
+                    boxShadow: isRecent ? '0 0 8px var(--accent-coral)' : 'none',
+                  }}
+                />
+
+                {/* Time label */}
+                <span
+                  className="text-label"
+                  style={{
+                    opacity: appOpacities[index],
+                    color: isRecent ? 'var(--accent-coral)' : 'var(--sage)',
+                    fontWeight: isRecent ? 600 : 400,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {app.timeLabel}
+                </span>
               </div>
             )
           })}
