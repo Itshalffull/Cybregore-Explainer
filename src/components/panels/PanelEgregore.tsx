@@ -1,5 +1,6 @@
 import { lerp } from '../../utils/animation'
 import VideoBackground from '../VideoBackground'
+import JumpLink, { InlineJumpLink } from '../JumpLink'
 
 interface PanelEgregoreProps {
   progress: number
@@ -14,6 +15,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
   const line4Opacity = lerp(progress, 0.46, 0.58, 0, 1)
   const conclusionOpacity = lerp(progress, 0.65, 0.8, 0, 1)
   const conclusionY = lerp(progress, 0.65, 0.8, 15, 0)
+  const jumpLinkOpacity = lerp(progress, 0.78, 0.88, 0, 1)
   const transitionOpacity = lerp(progress, 0.85, 0.95, 0, 1)
 
   return (
@@ -43,7 +45,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
             className="text-body text-cream mb-md leading-relaxed"
             style={{ opacity: line1Opacity }}
           >
-            An egregore is an old occult concept:
+            An <InlineJumpLink to="example-egregore" fromLabel="Egregore panel">egregore</InlineJumpLink> is an old occult concept:
           </p>
           <p
             className="text-body text-sage text-italic mb-md leading-relaxed"
@@ -71,6 +73,14 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
         >
           Now imagine an egregore fed by billions of cyborgs, 24 hours a day.
         </p>
+
+        <div className="mt-lg" style={{ opacity: jumpLinkOpacity }}>
+          <JumpLink
+            to="example-egregore"
+            label="Deep Dive: What is an Egregore? →"
+            fromLabel="Egregore panel"
+          />
+        </div>
 
         <p
           className="text-body text-coral mt-xl"
