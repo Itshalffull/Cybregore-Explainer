@@ -25,7 +25,7 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
       />
       <div className="panel-body panel-body--over-video">
         <h2
-          className="heading text-title text-cream mb-lg"
+          className="text-body text-cream text-bold mb-lg"
           style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
         >
           It <span className="text-coral">writes</span> you
@@ -51,7 +51,7 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
             It surfaces the outrage that will hook you. The fear that will keep you scrolling. The desire that will make you buy.
           </p>
           <p
-            className="text-body text-cream text-medium leading-normal"
+            className="text-body text-cream leading-normal"
             style={{ opacity: line4Opacity }}
           >
             Your reality is being authored. And you didn't choose the author.
@@ -59,7 +59,7 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
         </div>
 
         <p
-          className="text-title text-coral text-italic leading-normal"
+          className="text-title text-cream leading-normal"
           style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
         >
           It shapes what you think, what you want, what you feel.

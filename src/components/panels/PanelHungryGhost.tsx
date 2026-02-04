@@ -52,7 +52,7 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Hungry Ghost title */}
         <h2
-          className="text-display text-coral text-bold text-center text-glow-coral mb-xl"
+          className="text-display text-coral text-center mb-xl"
           style={{
             opacity: hungryGhostOpacity,
             transform: `scale(${hungryGhostScale})`,
@@ -70,8 +70,8 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
           }}
         >
           <p className="text-body text-cream leading-relaxed" style={{ margin: 0 }}>
-            Beings with <em className="text-coral">huge empty bellies</em> and{' '}
-            <em className="text-coral">tiny throats</em>.
+            Beings with <em>huge empty bellies</em> and{' '}
+            <em>tiny throats</em>.
             <br /><br />
             They consume endlessly but can never be satisfied.
           </p>
@@ -84,14 +84,14 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
             opacity: alwaysCravingOpacity,
           }}
         >
-          The Cybregore craves data <em className="text-coral">all the time</em>.
+          The Cybregore craves data <em>all the time</em>.
           <br />
           Every millisecond. Every interaction. Every breath you take online.
         </p>
 
         {/* Never enough */}
         <p
-          className="text-title text-coral text-bold text-italic text-center"
+          className="text-title text-cream text-center"
           style={{
             opacity: neverEnoughOpacity,
             transform: `scale(${neverEnoughScale})`,

@@ -80,7 +80,7 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
     <section className="panel panel--dark">
       <AutoScaleContent maxWidth="750px">
         <h2
-          className="text-title text-cream text-bold text-center mb-sm"
+          className="text-body text-cream text-bold text-center mb-sm"
           style={{
             opacity: titleOpacity,
           }}
@@ -167,9 +167,9 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
             {activeConnection ? (
               <div className="box-coral text-center">
                 <p className="text-body text-cream leading-snug" style={{ margin: 0 }}>
-                  <span className="text-coral text-bold">{activeConnection.from}</span>
+                  <span className="text-coral">{activeConnection.from}</span>
                   {' ↔ '}
-                  <span className="text-coral text-bold">{activeConnection.to}</span>
+                  <span className="text-coral">{activeConnection.to}</span>
                   <br />
                   <span className="text-small text-sage">
                     {activeConnection.text}
@@ -207,7 +207,7 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
 
         {/* The organism conclusion */}
         <p
-          className="text-title text-cream text-semibold text-center leading-snug"
+          className="text-title text-cream text-center leading-snug"
           style={{
             opacity: organismOpacity,
             transform: `translateY(${organismY}px)`,

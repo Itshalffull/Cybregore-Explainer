@@ -54,7 +54,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
         </p>
 
         <h2
-          className="text-title text-cream text-bold text-center mb-lg"
+          className="text-body text-cream text-bold text-center mb-lg"
           style={{
             opacity: titleOpacity,
           }}
@@ -134,7 +134,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
             <span className="text-small text-sage" style={{ opacity: label2010Opacity }}>2010</span>
             <span className="text-small text-sage" style={{ opacity: label2015Opacity }}>2015</span>
             <span className="text-small text-sage" style={{ opacity: label2020Opacity }}>2020</span>
-            <span className="text-small text-coral text-semibold" style={{ opacity: label2023Opacity }}>2023</span>
+            <span className="text-small text-coral" style={{ opacity: label2023Opacity }}>2023</span>
           </div>
 
           {/* Value callouts */}
@@ -150,7 +150,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
               border: '1px solid var(--accent-coral)',
             }}
           >
-            <span className="text-title text-coral text-bold">120 ZB</span>
+            <span className="text-body text-coral">120 ZB</span>
           </div>
         </div>
 
@@ -163,7 +163,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
           }}
         >
           <p className="text-body text-sage leading-normal mb-xs">
-            <strong className="text-cream">What's a zettabyte?</strong>
+            <span className="text-cream">What's a zettabyte?</span>
           </p>
           <p className="text-small text-sage leading-normal">
             1 ZB = 1 trillion gigabytes = 1,000,000,000,000,000 megabytes
@@ -184,17 +184,16 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
           }}
         >
           <p className="text-body text-cream leading-normal mb-xs">
-            120 zettabytes is roughly <strong className="text-coral">60 trillion photos</strong>.
+            120 zettabytes is roughly <span className="text-coral">60 trillion photos</span>.
           </p>
           <p className="text-body text-sage leading-normal">
-            If you viewed one per second, it would take you{' '}
-            <strong className="text-cream">1.9 million years</strong>.
+            If you viewed one per second, it would take you 1.9 million years.
           </p>
         </div>
 
         {/* Conclusion */}
         <p
-          className="text-title text-cream text-center text-medium mb-md"
+          className="text-title text-cream text-center mb-md"
           style={{
             opacity: conclusionOpacity,
           }}

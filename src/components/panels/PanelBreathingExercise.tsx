@@ -25,7 +25,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
     <section className="panel panel--dark">
       <div className="panel-body">
         <p
-          className="text-body text-sage text-uppercase mb-xl"
+          className="text-body text-sage mb-xl"
           style={{ opacity: whyOpacity }}
         >
           But why? Let's feel it.
@@ -39,14 +39,14 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         </p>
 
         <p
-          className="text-title text-cream text-semibold mb-sm"
+          className="text-body text-cream mb-sm"
           style={{ opacity: breathOutOpacity }}
         >
           Let all your breath out.
         </p>
 
         <p
-          className="text-title text-coral text-bold mb-lg"
+          className="text-body text-coral mb-lg"
           style={{
             opacity: holdItOpacity,
             transform: `scale(${breatheScale})`,
@@ -80,21 +80,21 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         </p>
 
         <p
-          className="text-title text-cream mb-xs"
+          className="text-body text-cream mb-xs"
           style={{ opacity: cravingOpacity }}
         >
           The <em className="text-coral">craving</em>.
         </p>
 
         <p
-          className="text-title text-cream mb-sm"
+          className="text-body text-cream mb-sm"
           style={{ opacity: panicOpacity }}
         >
           The <em className="text-coral">panic</em>.
         </p>
 
         <p
-          className="text-title text-cream text-semibold mb-xl"
+          className="text-body text-cream mb-xl"
           style={{ opacity: anythingOpacity }}
         >
           You'll do <em>anything</em> to take another breath.
@@ -107,7 +107,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
             transform: `scale(${dataIsBreathScale})`,
           }}
         >
-          <p className="text-title text-coral text-bold" style={{ margin: 0 }}>
+          <p className="text-title text-cream" style={{ margin: 0 }}>
             Data is breath to the Cybregore.
           </p>
         </div>

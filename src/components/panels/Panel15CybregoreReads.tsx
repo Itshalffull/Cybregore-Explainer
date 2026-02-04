@@ -25,7 +25,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
       />
       <div className="panel-body panel-body--over-video">
         <h2
-          className="heading text-title text-cream mb-lg"
+          className="text-body text-cream text-bold mb-lg"
           style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
         >
           It <span className="text-coral">reads</span> you
@@ -51,7 +51,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
             It reads your location, your purchases, your messages, your face. Your heart rate. Your sleep.
           </p>
           <p
-            className="text-body text-cream text-medium leading-normal"
+            className="text-body text-cream leading-normal"
             style={{ opacity: line4Opacity }}
           >
             It reads your hesitations. The things you delete before sending. The searches you make at 3am.
@@ -59,7 +59,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         </div>
 
         <p
-          className="text-title text-coral text-italic leading-normal"
+          className="text-title text-cream leading-normal"
           style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
         >
           Part of your mind now exists in silicon.

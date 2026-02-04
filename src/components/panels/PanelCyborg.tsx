@@ -38,7 +38,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         overflow: 'hidden',
       }}>
         <h2
-          className="text-title text-cream text-bold mb-xs"
+          className="text-body text-cream text-bold mb-xs"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
@@ -85,7 +85,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
           </p>
 
           <p
-            className="text-body text-cream text-medium leading-relaxed"
+            className="text-body text-cream leading-relaxed"
             style={{
               opacity: line4Opacity,
             }}
@@ -95,7 +95,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         </div>
 
         <p
-          className="text-title text-coral text-italic leading-relaxed"
+          className="text-title text-cream leading-relaxed"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,

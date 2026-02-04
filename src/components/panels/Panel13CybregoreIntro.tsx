@@ -35,7 +35,7 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
         </p>
 
         <h1
-          className="text-display text-cream text-heavy text-mono tracking-wide mb-xl"
+          className="text-display text-cream text-mono mb-xl"
           style={{
             opacity: nameOpacity,
             transform: `scale(${nameScale}) translateX(${glitchOffset}px)`,

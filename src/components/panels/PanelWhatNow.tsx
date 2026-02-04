@@ -42,7 +42,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
       <AutoScaleContent maxWidth="700px" style={{ padding: '0 2rem', position: 'relative', zIndex: 1 }}>
         {/* The big question */}
         <h2
-          className="text-title text-bold text-cream text-center text-shadow-depth mb-xl"
+          className="text-title text-cream text-center text-shadow-depth mb-xl"
           style={{
             opacity: questionOpacity,
             transform: `translateY(${questionY}px)`,
@@ -87,7 +87,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
             href="https://www.monasticacademy.org/train"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-cta text-title text-bold text-coral text-shadow-depth"
+            className="btn-cta text-body text-coral text-shadow-depth"
           >
             Monastic Academy
           </a>
