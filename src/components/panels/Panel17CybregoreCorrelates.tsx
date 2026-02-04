@@ -28,7 +28,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
       />
       <div className="panel-body panel-body--over-video">
         <h2
-          className="heading text-title text-cream mb-md text-bold"
+          className="text-body text-cream text-bold mb-md"
           style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
         >
           It <span className="text-coral">controls</span>
@@ -49,7 +49,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         </p>
 
         <h3
-          className="text-display text-coral text-heavy text-glow-coral tracking-tight mb-lg"
+          className="text-display text-coral mb-lg"
           style={{
             opacity: purposeOpacity,
             transform: `scale(${purposeScale})`,
@@ -81,7 +81,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         </div>
 
         <p
-          className="text-body text-coral text-italic leading-normal"
+          className="text-body text-coral leading-normal"
           style={{ opacity: modelOpacity, transform: `translateY(${modelY}px)` }}
         >
           It builds a model of you more accurate than your own.
@@ -101,7 +101,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         </p>
 
         <p
-          className="text-body text-cream text-semibold mt-lg"
+          className="text-title text-cream mt-lg"
           style={{ opacity: kickerOpacity }}
         >
           It doesn't predict the future. It writes it.

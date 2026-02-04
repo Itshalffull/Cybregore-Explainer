@@ -47,7 +47,7 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
     <section className="panel panel--dark">
       <div className="panel-body panel-body--wide">
         <h2
-          className="text-title text-cream text-bold text-center mb-xs"
+          className="text-body text-cream text-bold text-center mb-xs"
           style={{ opacity: titleOpacity }}
         >
           Time to Reach 100 Million Users
@@ -138,7 +138,7 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
           style={{ opacity: highlightOpacity }}
         >
           <p className="text-body text-cream mb-xs">
-            From <strong>5 years</strong> to <strong className="text-coral">5 days</strong>.
+            From 5 years to <span className="text-coral">5 days</span>.
           </p>
           <p className="text-body text-sage">
             A 365x acceleration in under 20 years.
@@ -153,10 +153,10 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
             transform: `translateY(${conclusionY}px)`,
           }}
         >
-          <p className="text-title text-cream text-medium mb-xs">
+          <p className="text-title text-cream mb-xs">
             Something is hungry for our attention.
           </p>
-          <p className="text-body text-sage text-italic">
+          <p className="text-body text-sage">
             What is it?
           </p>
         </div>

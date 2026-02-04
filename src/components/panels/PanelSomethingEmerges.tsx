@@ -56,7 +56,7 @@ export default function PanelSomethingEmerges({ progress }: PanelSomethingEmerge
         </p>
 
         <p
-          className="text-body text-coral text-medium leading-relaxed"
+          className="text-body text-coral leading-relaxed"
           style={{
             opacity: line4Opacity,
             transform: `translateY(${line4Y}px)`,
