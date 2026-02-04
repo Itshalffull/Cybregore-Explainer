@@ -6,6 +6,26 @@ interface VideoBackgroundProps {
   opacity?: number
 }
 
+/**
+ * Derives responsive media paths from a base path using naming convention:
+ *   Image: foo.png → foo-480w.webp, foo-768w.webp, foo-1280w.webp
+ *   Video: foo-loop.mp4 → foo-loop-mobile.mp4
+ */
+function getResponsiveImageSrcSet(src: string): string | undefined {
+  if (!src || !src.endsWith('.png')) return undefined
+  const base = src.replace(/\.png$/, '')
+  return [
+    `${base}-480w.webp 480w`,
+    `${base}-768w.webp 768w`,
+    `${base}-1280w.webp 1280w`,
+  ].join(', ')
+}
+
+function getMobileVideoSrc(src: string): string | undefined {
+  if (!src || !src.endsWith('.mp4')) return undefined
+  return src.replace(/\.mp4$/, '-mobile.mp4')
+}
+
 export default function VideoBackground({
   videoSrc,
   imageFallback,
@@ -39,6 +59,9 @@ export default function VideoBackground({
     objectFit: 'cover',
   }
 
+  const srcSet = imageFallback ? getResponsiveImageSrcSet(imageFallback) : undefined
+  const mobileVideo = videoSrc ? getMobileVideoSrc(videoSrc) : undefined
+
   return (
     <div
       style={{
@@ -52,20 +75,30 @@ export default function VideoBackground({
         opacity,
       }}
     >
-      {/* Image placeholder - always visible until video is ready */}
+      {/* Image placeholder - uses <picture> for responsive WebP with PNG fallback */}
       {imageFallback && (
-        <img
-          src={imageFallback}
-          alt=""
-          style={{
-            ...mediaStyles,
-            opacity: videoReady ? 0 : 1,
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        />
+        <picture>
+          {srcSet && (
+            <source
+              srcSet={srcSet}
+              sizes="100vw"
+              type="image/webp"
+            />
+          )}
+          <img
+            src={imageFallback}
+            alt=""
+            loading="lazy"
+            style={{
+              ...mediaStyles,
+              opacity: videoReady ? 0 : 1,
+              transition: 'opacity 0.5s ease-in-out',
+            }}
+          />
+        </picture>
       )}
 
-      {/* Video - fades in once loaded */}
+      {/* Video - uses mobile variant on small screens */}
       {videoSrc && (
         <video
           ref={videoRef}
@@ -80,6 +113,13 @@ export default function VideoBackground({
             transition: 'opacity 0.5s ease-in-out',
           }}
         >
+          {mobileVideo && (
+            <source
+              src={mobileVideo}
+              type="video/mp4"
+              media="(max-width: 768px)"
+            />
+          )}
           <source src={videoSrc} type="video/mp4" />
         </video>
       )}
