@@ -8,12 +8,15 @@ import {
   ReactNode,
 } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import type { ExplainerMetadata } from '../types/metadata'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface ExplainerDef {
   title: string
   content: ReactNode
+  /** Structured metadata for narrative documentation and search/discovery */
+  metadata?: ExplainerMetadata
 }
 
 interface BreadcrumbEntry {
@@ -31,6 +34,8 @@ interface ExplainerContextValue {
   stack: BreadcrumbEntry[]
   /** True during transition — prevents double-clicks */
   transitioning: boolean
+  /** All registered explainers (for search/discovery) */
+  explainers: Record<string, ExplainerDef>
 }
 
 type TransitionPhase = 'idle' | 'exiting' | 'entering'
@@ -42,6 +47,22 @@ export function useExplainer() {
   const ctx = useContext(ExplainerContext)
   if (!ctx) throw new Error('useExplainer must be used within ExplainerRouter')
   return ctx
+}
+
+/** Access metadata for the currently active explainer */
+export function useExplainerMetadata() {
+  const { current, explainers } = useExplainer()
+  return explainers[current]?.metadata ?? null
+}
+
+/** Access all explainer metadata (for search/listing) */
+export function useAllExplainerMetadata() {
+  const { explainers } = useExplainer()
+  return Object.entries(explainers).map(([id, def]) => ({
+    id,
+    title: def.title,
+    metadata: def.metadata,
+  }))
 }
 
 // ─── Provider ────────────────────────────────────────────────────────────────
@@ -57,6 +78,7 @@ const TRANSITION_MS = 280
 export default function ExplainerRouter({
   explainers,
   defaultExplainer,
+  children,
 }: ExplainerRouterProps) {
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
@@ -175,7 +197,7 @@ export default function ExplainerRouter({
 
   return (
     <ExplainerContext.Provider
-      value={{ current, jumpTo, jumpBack, stack, transitioning }}
+      value={{ current, jumpTo, jumpBack, stack, transitioning, explainers }}
     >
       <div
         ref={wrapperRef}
