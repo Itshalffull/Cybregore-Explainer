@@ -2,112 +2,77 @@ import { useEffect, useRef } from 'react'
 
 /**
  * Global component that automatically scales panel content to fit viewport.
- * Uses IntersectionObserver for performance - only scales panels when they enter view.
+ * Uses ResizeObserver for reliable, continuous detection.
+ * Applies CSS `scale` property (not `transform`) so it composes with
+ * React-managed transforms on child elements without conflicts.
  */
 export default function PanelAutoScaler() {
-  const scaledElements = useRef<WeakSet<Element>>(new WeakSet())
-  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const observerRef = useRef<ResizeObserver | null>(null)
+  const panelBodiesRef = useRef<Set<HTMLElement>>(new Set())
 
   useEffect(() => {
-    const scaleContent = (content: HTMLElement) => {
-      const applyScale = () => {
-        // Temporarily remove any existing scale transform to measure true height
-        const originalTransform = content.style.transform
-        content.style.transform = 'none'
+    const scaleToFit = (content: HTMLElement) => {
+      // Use 88% of viewport — leaves room for vertical auto-margins
+      const availableHeight = window.innerHeight * 0.88
+      const contentHeight = content.scrollHeight
 
-        // Force reflow and measure
-        const contentHeight = content.scrollHeight
-
-        // Restore original transform immediately
-        content.style.transform = originalTransform
-
-        // Use 75% of viewport to leave room for top/bottom padding areas
-        const availableHeight = window.innerHeight * 0.75
-
-        console.log(`[AutoScaler] Content height: ${contentHeight}, Available: ${availableHeight}`)
-
-        if (contentHeight > availableHeight) {
-          const scale = Math.max(0.4, availableHeight / contentHeight)
-          console.log(`[AutoScaler] Applying scale: ${scale}`)
-          content.style.transform = `scale(${scale})`
-          content.style.transformOrigin = 'center center'
-        }
-      }
-
-      // Apply scale after delays for content/fonts to render
-      setTimeout(applyScale, 50)
-      setTimeout(applyScale, 200)
-      setTimeout(applyScale, 500)
-    }
-
-    const processPanel = (panel: Element) => {
-      // Skip if explicitly opted out
-      if (panel.classList.contains('no-auto-scale')) return
-
-      // Skip if already processed
-      if (scaledElements.current.has(panel)) return
-      scaledElements.current.add(panel)
-
-      console.log('[AutoScaler] Processing panel:', panel.className)
-
-      // Find the content wrapper - try multiple selectors in priority order
-      const content = (
-        panel.querySelector('.panel-body') ||
-        panel.querySelector('.panel-content-wrapper') ||
-        panel.querySelector('.content') ||
-        panel.querySelector('.panel-content') ||
-        panel.querySelector(':scope > div')
-      ) as HTMLElement
-
-      if (content) {
-        console.log('[AutoScaler] Found content:', content.className || '(no class)')
-        scaleContent(content)
+      if (contentHeight > availableHeight) {
+        const newScale = Math.max(0.45, availableHeight / contentHeight)
+        content.style.scale = `${newScale}`
+        content.style.transformOrigin = 'center center'
       } else {
-        console.log('[AutoScaler] No content found in panel')
+        // Content fits — remove any scale we previously applied
+        content.style.scale = ''
       }
     }
 
-    // IntersectionObserver - only process panels as they come into view
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            processPanel(entry.target)
-          }
-        })
-      },
-      { rootMargin: '300px', threshold: 0 }
-    )
+    // ResizeObserver fires when element size changes (including initial layout)
+    observerRef.current = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const el = entry.target as HTMLElement
+        // Skip panels that handle their own scaling
+        if (el.closest('.no-auto-scale')) continue
+        scaleToFit(el)
+      }
+    })
 
-    // Observe all panels
-    const observePanels = () => {
-      const panels = document.querySelectorAll('section.panel, .panel')
-      console.log(`[AutoScaler] Found ${panels.length} panels`)
-      panels.forEach((panel) => {
-        observer.observe(panel)
+    const observeAllPanelBodies = () => {
+      const bodies = document.querySelectorAll<HTMLElement>('.panel-body, .panel-content-wrapper')
+      bodies.forEach((body) => {
+        if (!panelBodiesRef.current.has(body)) {
+          panelBodiesRef.current.add(body)
+          observerRef.current?.observe(body)
+        }
       })
     }
 
-    // Initial observation after content renders
-    setTimeout(observePanels, 100)
-    setTimeout(observePanels, 500)
-    setTimeout(observePanels, 1000)
+    // Observe after initial render and again after async content loads
+    observeAllPanelBodies()
+    const t1 = setTimeout(observeAllPanelBodies, 300)
+    const t2 = setTimeout(observeAllPanelBodies, 1000)
 
-    // Handle resize - debounced
+    // MutationObserver catches dynamically added panels
+    const mutation = new MutationObserver(() => {
+      observeAllPanelBodies()
+    })
+    mutation.observe(document.body, { childList: true, subtree: true })
+
+    // Re-check on resize (viewport height changes)
     const handleResize = () => {
-      clearTimeout(resizeTimeoutRef.current)
-      resizeTimeoutRef.current = setTimeout(() => {
-        scaledElements.current = new WeakSet()
-        observePanels()
-      }, 150)
+      panelBodiesRef.current.forEach((body) => {
+        if (!body.closest('.no-auto-scale')) {
+          scaleToFit(body)
+        }
+      })
     }
-
     window.addEventListener('resize', handleResize)
 
     return () => {
-      observer.disconnect()
+      observerRef.current?.disconnect()
+      mutation.disconnect()
       window.removeEventListener('resize', handleResize)
-      clearTimeout(resizeTimeoutRef.current)
+      clearTimeout(t1)
+      clearTimeout(t2)
     }
   }, [])
 

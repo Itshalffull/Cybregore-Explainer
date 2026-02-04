@@ -1,4 +1,3 @@
-import { useRef, useEffect, useState } from 'react'
 import { lerp } from '../../utils/animation'
 
 interface PanelBreathingExerciseProps {
@@ -22,50 +21,9 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
     ? 1 + 0.15 * Math.sin(Date.now() / 800)
     : 1
 
-  // Auto-scale to fit viewport
-  const containerRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(1)
-
-  useEffect(() => {
-    const updateScale = () => {
-      if (!contentRef.current || !containerRef.current) return
-      const prevOverflow = containerRef.current.style.overflow
-      containerRef.current.style.overflow = 'visible'
-      contentRef.current.style.transform = 'scale(1)'
-      const contentHeight = contentRef.current.getBoundingClientRect().height
-      const availableHeight = window.innerHeight * 0.75
-      let newScale = 1
-      if (contentHeight > availableHeight) {
-        newScale = Math.max(0.4, availableHeight / contentHeight)
-      }
-      containerRef.current.style.overflow = prevOverflow
-      setScale(newScale)
-    }
-    const timeout = setTimeout(updateScale, 100)
-    updateScale()
-    window.addEventListener('resize', updateScale)
-    return () => {
-      window.removeEventListener('resize', updateScale)
-      clearTimeout(timeout)
-    }
-  }, [])
-
   return (
-    <section
-      ref={containerRef}
-      className="panel panel--dark"
-      style={{ overflow: 'hidden' }}
-    >
-      <div
-        ref={contentRef}
-        className="panel-body"
-        style={{
-          transform: `scale(${scale})`,
-          transformOrigin: 'center center',
-          transition: 'transform 0.2s ease-out',
-        }}
-      >
+    <section className="panel panel--dark">
+      <div className="panel-body">
         <p
           className="text-body-lg text-sage text-uppercase mb-xl"
           style={{ opacity: whyOpacity }}
