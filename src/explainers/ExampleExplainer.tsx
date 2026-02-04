@@ -10,7 +10,7 @@ export default function ExampleExplainer() {
       <PanelAutoScaler />
 
       {/* Panel 1: Definition with an InlineJumpLink */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} initialProgress={0.5}>
         {(progress) => {
           const titleOpacity = lerp(progress, 0.05, 0.2, 0, 1)
           const titleY = lerp(progress, 0.05, 0.2, 30, 0)

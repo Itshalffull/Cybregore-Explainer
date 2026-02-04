@@ -27,6 +27,10 @@ function App() {
           title: 'Cybregore',
           content: <CybregoreExplainer />,
           metadata: cybregoreMetadata,
+          preloadSrcs: [
+            '/assets/images/intro-ominous-768w.webp',
+            '/assets/videos/intro-ominous-loop-mobile.mp4',
+          ],
         },
         'example-egregore': {
           title: 'Egregore Deep Dive',
