@@ -57,18 +57,26 @@ export default function IntroSection({ children }: IntroSectionProps) {
           transition: 'opacity 0.3s ease-out',
         }}
       >
-        {/* Image placeholder - visible until video loads */}
-        <img
-          src="/assets/images/intro-ominous.png"
-          alt=""
-          style={{
-            ...mediaStyles,
-            opacity: videoReady ? 0 : 1,
-            transition: 'opacity 0.5s ease-in-out',
-          }}
-        />
+        {/* Image placeholder - responsive WebP with PNG fallback */}
+        <picture>
+          <source
+            srcSet="/assets/images/intro-ominous-480w.webp 480w, /assets/images/intro-ominous-768w.webp 768w, /assets/images/intro-ominous-1280w.webp 1280w"
+            sizes="100vw"
+            type="image/webp"
+          />
+          <img
+            src="/assets/images/intro-ominous.png"
+            alt=""
+            loading="lazy"
+            style={{
+              ...mediaStyles,
+              opacity: videoReady ? 0 : 1,
+              transition: 'opacity 0.5s ease-in-out',
+            }}
+          />
+        </picture>
 
-        {/* Video - fades in once loaded */}
+        {/* Video - mobile variant on small screens */}
         <video
           autoPlay
           loop
@@ -81,6 +89,7 @@ export default function IntroSection({ children }: IntroSectionProps) {
             transition: 'opacity 0.5s ease-in-out',
           }}
         >
+          <source src="/assets/videos/intro-ominous-loop-mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
           <source src="/assets/videos/intro-ominous-loop.mp4" type="video/mp4" />
         </video>
       </div>

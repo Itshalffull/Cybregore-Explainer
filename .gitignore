@@ -23,5 +23,6 @@ Thumbs.db
 # Temporary files
 nul
 
-# Scripts with API keys
-scripts/
+# Scripts with API keys (but keep the media generation script)
+scripts/*
+!scripts/generate-responsive-media.mjs
