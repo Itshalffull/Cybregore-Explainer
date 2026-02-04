@@ -39,7 +39,7 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
     <section className="panel panel--dark">
       <AutoScaleContent maxWidth="600px">
         <p
-          className="text-body-lg text-sage text-uppercase tracking-wider mb-md"
+          className="text-body text-sage text-uppercase tracking-wider mb-md"
           style={{
             opacity: imperativeOpacity,
           }}
@@ -58,7 +58,7 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
         </h2>
 
         <p
-          className="text-subheading text-cream mb-lg"
+          className="text-body text-cream mb-lg"
           style={{
             opacity: anythingOpacity,
           }}
@@ -76,7 +76,7 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
           {actions.map((action, index) => (
             <span
               key={index}
-              className="box-coral text-body-lg text-cream"
+              className="box-coral text-body text-cream"
               style={{
                 opacity: action.opacity,
                 padding: 'clamp(0.2rem, 0.6dvh, 0.5rem) clamp(0.4rem, 1dvh, 1rem)',
@@ -95,7 +95,7 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
             transform: `translateY(${conclusionY}px)`,
           }}
         >
-          <p className="text-subheading text-cream leading-normal" style={{ margin: 0 }}>
+          <p className="text-title text-cream leading-normal" style={{ margin: 0 }}>
             It will <strong className="text-coral">rob everyone of meaning</strong> and{' '}
             <strong className="text-coral">destroy all beings on the planet</strong>.
           </p>
@@ -103,7 +103,7 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
 
         {/* The kicker - not malice */}
         <p
-          className="text-subheading text-sage text-italic"
+          className="text-title text-sage text-italic"
           style={{
             opacity: notMaliceOpacity,
           }}

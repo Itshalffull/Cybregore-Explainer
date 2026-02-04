@@ -33,25 +33,25 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
 
         <div className="mb-lg">
           <p
-            className="text-body-lg text-cream mb-md leading-normal"
+            className="text-body text-cream mb-md leading-normal"
             style={{ opacity: line1Opacity }}
           >
             It decides what you see when you wake up.
           </p>
           <p
-            className="text-body-lg text-sage mb-md leading-normal"
+            className="text-body text-sage mb-md leading-normal"
             style={{ opacity: line2Opacity }}
           >
             It curates your news, your music, your friends' posts. It chooses which messages feel urgent.
           </p>
           <p
-            className="text-body-lg text-sage mb-md leading-normal"
+            className="text-body text-sage mb-md leading-normal"
             style={{ opacity: line3Opacity }}
           >
             It surfaces the outrage that will hook you. The fear that will keep you scrolling. The desire that will make you buy.
           </p>
           <p
-            className="text-body-lg text-cream text-medium leading-normal"
+            className="text-body text-cream text-medium leading-normal"
             style={{ opacity: line4Opacity }}
           >
             Your reality is being authored. And you didn't choose the author.
@@ -59,7 +59,7 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
         </div>
 
         <p
-          className="text-subheading text-coral text-italic leading-normal"
+          className="text-title text-coral text-italic leading-normal"
           style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
         >
           It shapes what you think, what you want, what you feel.
@@ -68,7 +68,7 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
         </p>
 
         <p
-          className="text-body-lg text-sage mt-lg"
+          className="text-body text-sage mt-lg"
           style={{ opacity: kickerOpacity }}
         >
           But the truly terrifying part is what it does with both...

@@ -53,7 +53,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
 
         {/* The challenge */}
         <p
-          className="text-subheading text-sage text-center text-shadow-depth leading-relaxed mb-2xl"
+          className="text-body text-sage text-center text-shadow-depth leading-relaxed mb-2xl"
           style={{
             opacity: answerOpacity,
             transform: `translateY(${answerY}px)`,
@@ -70,7 +70,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
             transform: `translateY(${maIntroY}px)`,
           }}
         >
-          <p className="text-subheading text-cream text-shadow-depth leading-relaxed">
+          <p className="text-body text-cream text-shadow-depth leading-relaxed">
             That's the question we're trying to answer at
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
             href="https://www.monasticacademy.org/train"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-cta text-heading text-bold text-coral text-shadow-depth"
+            className="btn-cta text-title text-bold text-coral text-shadow-depth"
           >
             Monastic Academy
           </a>

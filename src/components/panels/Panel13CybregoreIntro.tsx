@@ -26,7 +26,7 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
       />
       <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <p
-          className="text-subheading text-sage mb-xs"
+          className="text-body text-sage mb-xs"
           style={{
             opacity: preTextOpacity,
           }}
@@ -49,7 +49,7 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
         </h1>
 
         <p
-          className="text-subheading text-sage leading-normal"
+          className="text-body text-sage leading-normal"
           style={{
             opacity: subtitleOpacity,
             maxWidth: '650px',

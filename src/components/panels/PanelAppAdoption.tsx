@@ -47,14 +47,14 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
     <section className="panel panel--dark">
       <div className="panel-body panel-body--wide">
         <h2
-          className="text-heading text-cream text-bold text-center mb-xs"
+          className="text-title text-cream text-bold text-center mb-xs"
           style={{ opacity: titleOpacity }}
         >
           Time to Reach 100 Million Users
         </h2>
 
         <p
-          className="text-body-lg text-sage text-center mb-lg"
+          className="text-body text-sage text-center mb-lg"
           style={{ opacity: subtitleOpacity }}
         >
           How fast they capture us
@@ -137,10 +137,10 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
           className="box-coral text-center mb-lg"
           style={{ opacity: highlightOpacity }}
         >
-          <p className="text-body-lg text-cream mb-xs">
+          <p className="text-body text-cream mb-xs">
             From <strong>5 years</strong> to <strong className="text-coral">5 days</strong>.
           </p>
-          <p className="text-body-lg text-sage">
+          <p className="text-body text-sage">
             A 365x acceleration in under 20 years.
           </p>
         </div>
@@ -153,10 +153,10 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
             transform: `translateY(${conclusionY}px)`,
           }}
         >
-          <p className="text-subheading text-cream text-medium mb-xs">
+          <p className="text-title text-cream text-medium mb-xs">
             Something is hungry for our attention.
           </p>
-          <p className="text-body-lg text-sage text-italic">
+          <p className="text-body text-sage text-italic">
             What is it?
           </p>
         </div>

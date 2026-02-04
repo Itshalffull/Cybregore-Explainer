@@ -33,25 +33,25 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
 
         <div className="mb-lg">
           <p
-            className="text-body-lg text-cream mb-md leading-normal"
+            className="text-body text-cream mb-md leading-normal"
             style={{ opacity: line1Opacity }}
           >
             Every tap, every pause, every scroll.
           </p>
           <p
-            className="text-body-lg text-sage mb-md leading-normal"
+            className="text-body text-sage mb-md leading-normal"
             style={{ opacity: line2Opacity }}
           >
             It knows what you looked at and for how long. What you almost clicked. What made you stop.
           </p>
           <p
-            className="text-body-lg text-sage mb-md leading-normal"
+            className="text-body text-sage mb-md leading-normal"
             style={{ opacity: line3Opacity }}
           >
             It reads your location, your purchases, your messages, your face. Your heart rate. Your sleep.
           </p>
           <p
-            className="text-body-lg text-cream text-medium leading-normal"
+            className="text-body text-cream text-medium leading-normal"
             style={{ opacity: line4Opacity }}
           >
             It reads your hesitations. The things you delete before sending. The searches you make at 3am.
@@ -59,7 +59,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         </div>
 
         <p
-          className="text-subheading text-coral text-italic leading-normal"
+          className="text-title text-coral text-italic leading-normal"
           style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
         >
           Part of your mind now exists in silicon.
@@ -68,7 +68,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         </p>
 
         <p
-          className="text-body-lg text-sage mt-lg"
+          className="text-body text-sage mt-lg"
           style={{ opacity: kickerOpacity }}
         >
           And it doesn't just read...

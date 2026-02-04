@@ -44,7 +44,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
       <AutoScaleContent maxWidth="700px">
         {/* Intro text */}
         <p
-          className="text-subheading text-sage text-center leading-relaxed mb-lg"
+          className="text-body text-sage text-center leading-relaxed mb-lg"
           style={{
             opacity: introOpacity,
             transform: `translateY(${introY}px)`,
@@ -54,7 +54,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
         </p>
 
         <h2
-          className="text-heading text-cream text-bold text-center mb-lg"
+          className="text-title text-cream text-bold text-center mb-lg"
           style={{
             opacity: titleOpacity,
           }}
@@ -130,11 +130,11 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
 
           {/* Year labels positioned below graph */}
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 2.5rem 0 3rem' }}>
-            <span className="text-body-sm text-sage" style={{ opacity: label2010Opacity }}>2005</span>
-            <span className="text-body-sm text-sage" style={{ opacity: label2010Opacity }}>2010</span>
-            <span className="text-body-sm text-sage" style={{ opacity: label2015Opacity }}>2015</span>
-            <span className="text-body-sm text-sage" style={{ opacity: label2020Opacity }}>2020</span>
-            <span className="text-body-sm text-coral text-semibold" style={{ opacity: label2023Opacity }}>2023</span>
+            <span className="text-small text-sage" style={{ opacity: label2010Opacity }}>2005</span>
+            <span className="text-small text-sage" style={{ opacity: label2010Opacity }}>2010</span>
+            <span className="text-small text-sage" style={{ opacity: label2015Opacity }}>2015</span>
+            <span className="text-small text-sage" style={{ opacity: label2020Opacity }}>2020</span>
+            <span className="text-small text-coral text-semibold" style={{ opacity: label2023Opacity }}>2023</span>
           </div>
 
           {/* Value callouts */}
@@ -150,7 +150,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
               border: '1px solid var(--accent-coral)',
             }}
           >
-            <span className="text-subheading text-coral text-bold">120 ZB</span>
+            <span className="text-title text-coral text-bold">120 ZB</span>
           </div>
         </div>
 
@@ -162,13 +162,13 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
             transform: `translateY(${definitionY}px)`,
           }}
         >
-          <p className="text-body-lg text-sage leading-normal mb-xs">
+          <p className="text-body text-sage leading-normal mb-xs">
             <strong className="text-cream">What's a zettabyte?</strong>
           </p>
-          <p className="text-body text-sage leading-normal">
+          <p className="text-small text-sage leading-normal">
             1 ZB = 1 trillion gigabytes = 1,000,000,000,000,000 megabytes
             <br />
-            <span className="text-dark text-body-sm">
+            <span className="text-dark text-small">
               (That's a 1 followed by 21 zeros in bytes)
             </span>
           </p>
@@ -183,10 +183,10 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
             textAlign: 'center',
           }}
         >
-          <p className="text-body-lg text-cream leading-normal mb-xs">
+          <p className="text-body text-cream leading-normal mb-xs">
             120 zettabytes is roughly <strong className="text-coral">60 trillion photos</strong>.
           </p>
-          <p className="text-subheading text-sage leading-normal">
+          <p className="text-body text-sage leading-normal">
             If you viewed one per second, it would take you{' '}
             <strong className="text-cream">1.9 million years</strong>.
           </p>
@@ -194,7 +194,7 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
 
         {/* Conclusion */}
         <p
-          className="text-subheading text-cream text-center text-medium mb-md"
+          className="text-title text-cream text-center text-medium mb-md"
           style={{
             opacity: conclusionOpacity,
           }}
