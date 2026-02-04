@@ -634,6 +634,27 @@ body {
   font-weight: 500;
 }
 
+/* --- Inline jump link (within flowing text) --- */
+.jump-link-inline {
+  all: unset;
+  color: var(--color-coral);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(224, 120, 80, 0.4);
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.2s ease, color 0.2s ease;
+}
+
+.jump-link-inline:hover:not(:disabled) {
+  text-decoration-color: var(--color-coral);
+}
+
+.jump-link-inline:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 /* --- Jump breadcrumbs (sticky trail) --- */
 .jump-breadcrumbs {
   position: fixed;
