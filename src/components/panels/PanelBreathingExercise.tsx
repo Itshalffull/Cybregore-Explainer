@@ -106,7 +106,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: whyOpacity,
-            fontSize: 'clamp(1rem, 3dvh, 1.5rem)',
+            fontSize: 'clamp(0.85rem, min(2.5dvh, 4vw), 1.4rem)',
             color: 'var(--sage)',
             textTransform: 'uppercase',
             letterSpacing: '0.15em',
@@ -120,7 +120,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: exerciseOpacity,
-            fontSize: 'clamp(1.1rem, 3.5dvh, 1.8rem)',
+            fontSize: 'clamp(0.9rem, min(2.8dvh, 4.5vw), 1.6rem)',
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
           }}
@@ -132,10 +132,10 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: breathOutOpacity,
-            fontSize: 'clamp(1.3rem, 4.5dvh, 2.2rem)',
+            fontSize: 'clamp(1.1rem, min(3.5dvh, 6vw), 2rem)',
             color: 'var(--line-art-cream)',
             fontWeight: 600,
-            marginBottom: 'clamp(0.3rem, 0.8dvh, 0.75rem)',
+            marginBottom: 'clamp(0.2rem, 0.6dvh, 0.5rem)',
           }}
         >
           Let all your breath out.
@@ -145,10 +145,10 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: holdItOpacity,
-            fontSize: 'clamp(1.5rem, 5dvh, 2.5rem)',
+            fontSize: 'clamp(1.2rem, min(4dvh, 7vw), 2.2rem)',
             color: 'var(--accent-coral)',
             fontWeight: 700,
-            marginBottom: 'clamp(0.75rem, 2dvh, 2rem)',
+            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
             transform: `scale(${breatheScale})`,
             transition: 'transform 0.1s ease-out',
           }}
@@ -160,12 +160,12 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <div
           style={{
             opacity: holdItOpacity * 0.6,
-            width: 'clamp(40px, 8dvh, 100px)',
-            height: 'clamp(40px, 8dvh, 100px)',
+            width: 'clamp(30px, 5dvh, 80px)',
+            height: 'clamp(30px, 5dvh, 80px)',
             borderRadius: '50%',
             border: '2px solid var(--accent-coral)',
             margin: '0 auto',
-            marginBottom: 'clamp(0.75rem, 2dvh, 2rem)',
+            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
             transform: `scale(${breatheScale})`,
             transition: 'transform 0.3s ease-out',
             boxShadow: breathingPhase ? '0 0 30px rgba(219, 84, 97, 0.4)' : 'none',
@@ -176,7 +176,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: noticeOpacity,
-            fontSize: 'clamp(1.1rem, 3.5dvh, 1.7rem)',
+            fontSize: 'clamp(0.9rem, min(2.8dvh, 4.5vw), 1.5rem)',
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.3rem, 0.8dvh, 0.75rem)',
           }}
@@ -188,7 +188,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: cravingOpacity,
-            fontSize: 'clamp(1.2rem, 4dvh, 2rem)',
+            fontSize: 'clamp(1rem, min(3dvh, 5vw), 1.7rem)',
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.2rem, 0.5dvh, 0.5rem)',
           }}
@@ -200,7 +200,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: panicOpacity,
-            fontSize: 'clamp(1.2rem, 4dvh, 2rem)',
+            fontSize: 'clamp(1rem, min(3dvh, 5vw), 1.7rem)',
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.3rem, 0.8dvh, 0.75rem)',
           }}
@@ -212,10 +212,10 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         <p
           style={{
             opacity: anythingOpacity,
-            fontSize: 'clamp(1.3rem, 4.5dvh, 2.2rem)',
+            fontSize: 'clamp(1.05rem, min(3.5dvh, 6vw), 2rem)',
             color: 'var(--line-art-cream)',
             fontWeight: 600,
-            marginBottom: 'clamp(0.75rem, 2dvh, 2rem)',
+            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
           }}
         >
           You'll do <em>anything</em> to take another breath.
@@ -234,7 +234,7 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
         >
           <p
             style={{
-              fontSize: 'clamp(1.5rem, 5dvh, 2.5rem)',
+              fontSize: 'clamp(1.2rem, min(4dvh, 7vw), 2.2rem)',
               color: 'var(--accent-coral)',
               fontWeight: 700,
               margin: 0,

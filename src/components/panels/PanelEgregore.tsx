@@ -45,9 +45,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
         position: 'relative',
         zIndex: 1,
         maxWidth: '700px',
-        padding: '0 2rem',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
+        padding: '0 1.5rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -57,7 +55,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
-            fontSize: 'clamp(2rem, min(6dvh, 10vw), 3.5rem)',
+            fontSize: 'clamp(1.5rem, min(5dvh, 9vw), 3.5rem)',
             fontWeight: 700,
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.25rem, 0.5dvh, 0.5rem)',
@@ -83,7 +81,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           <p
             style={{
               opacity: line1Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
+              fontSize: 'clamp(0.9rem, min(2.3dvh, 4.2vw), 1.4rem)',
               color: 'var(--line-art-cream)',
               marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
               lineHeight: 1.6,
@@ -95,7 +93,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           <p
             style={{
               opacity: line2Opacity,
-              fontSize: 'clamp(1.2rem, 3.2dvh, 1.7rem)',
+              fontSize: 'clamp(1rem, min(2.6dvh, 4.8vw), 1.5rem)',
               color: 'var(--sage)',
               marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
               lineHeight: 1.6,
@@ -108,7 +106,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           <p
             style={{
               opacity: line3Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
+              fontSize: 'clamp(0.9rem, min(2.3dvh, 4.2vw), 1.4rem)',
               color: 'var(--sage)',
               marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
               lineHeight: 1.6,
@@ -120,7 +118,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           <p
             style={{
               opacity: line4Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
+              fontSize: 'clamp(0.9rem, min(2.3dvh, 4.2vw), 1.4rem)',
               color: 'var(--line-art-cream)',
               lineHeight: 1.6,
               fontWeight: 500,
@@ -134,7 +132,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            fontSize: 'clamp(1.2rem, 3dvh, 1.7rem)',
+            fontSize: 'clamp(1rem, min(2.5dvh, 4.5vw), 1.5rem)',
             color: 'var(--accent-coral)',
             lineHeight: 1.6,
           }}
@@ -145,7 +143,7 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
         <p
           style={{
             opacity: transitionOpacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 1.8rem)',
+            fontSize: 'clamp(1.05rem, min(2.8dvh, 5vw), 1.6rem)',
             color: 'var(--line-art-cream)',
             marginTop: 'clamp(1rem, 1.5dvh, 2rem)',
             textAlign: 'center',

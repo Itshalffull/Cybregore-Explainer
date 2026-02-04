@@ -72,7 +72,7 @@ export default function ContinueScrollIndicator({
     <div
       style={{
         position: 'fixed',
-        bottom: '2rem',
+        bottom: 'clamp(0.5rem, 2dvh, 2rem)',
         left: '50%',
         transform: 'translateX(-50%)',
         display: 'flex',
@@ -87,7 +87,7 @@ export default function ContinueScrollIndicator({
     >
       <span
         style={{
-          fontSize: '0.9rem',
+          fontSize: 'clamp(0.7rem, 1.5dvh, 0.9rem)',
           fontFamily: 'var(--font-body)',
           color: 'var(--line-art-cream)',
           textTransform: 'uppercase',

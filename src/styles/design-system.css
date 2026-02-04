@@ -100,7 +100,6 @@ body {
 .panel-content {
   max-width: 700px;
   width: 90%;
-  max-height: 90vh;
   max-height: 90dvh;
   display: flex;
   flex-direction: column;
@@ -108,7 +107,7 @@ body {
   justify-content: center;
   text-align: center;
   padding: clamp(0.5rem, 2vh, 2rem);
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Responsive text that scales with viewport height AND width
@@ -275,6 +274,68 @@ body {
 .illustration svg {
   max-width: 100%;
   height: auto;
+}
+
+/* Mobile responsiveness - scale down content on small screens */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .panel .content,
+  .panel .panel-content-wrapper,
+  .panel .panel-content {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-height: 700px) {
+  .panel .content,
+  .panel .panel-content-wrapper,
+  .panel .panel-content {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* For mobile: reduce panel text sizes further */
+@media (max-width: 480px) {
+  .panel-text-hero {
+    font-size: clamp(1.8rem, min(6dvh, 10vw), 4rem);
+  }
+
+  .panel-text-giant {
+    font-size: clamp(2rem, min(8dvh, 12vw), 5rem);
+  }
+
+  .panel-text-massive {
+    font-size: clamp(2.5rem, min(10dvh, 16vw), 6rem);
+  }
+
+  .panel-text-3xl {
+    font-size: clamp(1.5rem, min(5dvh, 8vw), 3rem);
+  }
+
+  .panel-text-2xl {
+    font-size: clamp(1.2rem, min(3.5dvh, 7vw), 2rem);
+  }
+
+  .panel-text-xl {
+    font-size: clamp(1rem, min(3dvh, 5.5vw), 1.6rem);
+  }
+
+  .panel-text-lg {
+    font-size: clamp(0.9rem, min(2.4dvh, 4.5vw), 1.3rem);
+  }
+
+  .panel-text-md {
+    font-size: clamp(0.8rem, min(2dvh, 3.5vw), 1.1rem);
+  }
+
+  .panel-text-sm {
+    font-size: clamp(0.75rem, min(1.6dvh, 3vw), 0.95rem);
+  }
 }
 
 /* Reduced motion */

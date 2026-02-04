@@ -43,9 +43,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         position: 'relative',
         zIndex: 1,
         maxWidth: '700px',
-        padding: '0 2rem',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
+        padding: '0 1.5rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -55,7 +53,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
-            fontSize: 'clamp(1.8rem, 6dvh, 3rem)',
+            fontSize: 'clamp(1.4rem, min(5dvh, 8vw), 3rem)',
             fontWeight: 700,
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
@@ -68,7 +66,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           <p
             style={{
               opacity: line1Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
+              fontSize: 'clamp(0.95rem, min(2.5dvh, 4.5vw), 1.5rem)',
               color: 'var(--line-art-cream)',
               marginBottom: 'clamp(0.4rem, 0.8dvh, 0.75rem)',
               lineHeight: 1.5,
@@ -80,7 +78,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           <p
             style={{
               opacity: line2Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
+              fontSize: 'clamp(0.95rem, min(2.5dvh, 4.5vw), 1.5rem)',
               color: 'var(--sage)',
               marginBottom: 'clamp(0.4rem, 0.8dvh, 0.75rem)',
               lineHeight: 1.5,
@@ -92,7 +90,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           <p
             style={{
               opacity: line3Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
+              fontSize: 'clamp(0.95rem, min(2.5dvh, 4.5vw), 1.5rem)',
               color: 'var(--sage)',
               marginBottom: 'clamp(0.4rem, 0.8dvh, 0.75rem)',
               lineHeight: 1.5,
@@ -104,7 +102,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           <p
             style={{
               opacity: line4Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
+              fontSize: 'clamp(0.95rem, min(2.5dvh, 4.5vw), 1.5rem)',
               color: 'var(--line-art-cream)',
               lineHeight: 1.5,
               fontWeight: 500,
@@ -118,7 +116,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            fontSize: 'clamp(1.2rem, 3.2dvh, 1.7rem)',
+            fontSize: 'clamp(1rem, min(2.8dvh, 5vw), 1.6rem)',
             color: 'var(--accent-coral)',
             lineHeight: 1.5,
             fontStyle: 'italic',
@@ -132,7 +130,7 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         <p
           style={{
             opacity: kickerOpacity,
-            fontSize: 'clamp(1.1rem, 2.6dvh, 1.5rem)',
+            fontSize: 'clamp(0.9rem, min(2.2dvh, 4vw), 1.4rem)',
             color: 'var(--sage)',
             marginTop: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
             textAlign: 'center',

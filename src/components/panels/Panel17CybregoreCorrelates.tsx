@@ -50,10 +50,8 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         position: 'relative',
         zIndex: 1,
         maxWidth: '700px',
-        padding: '0 2rem',
+        padding: '0 1.5rem',
         textAlign: 'center',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -63,7 +61,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
-            fontSize: 'clamp(1.8rem, 5.5dvh, 3rem)',
+            fontSize: 'clamp(1.4rem, min(4.5dvh, 8vw), 3rem)',
             fontWeight: 700,
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
@@ -75,7 +73,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         <p
           style={{
             opacity: whatItDoesOpacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
+            fontSize: 'clamp(0.95rem, min(2.5dvh, 4.5vw), 1.5rem)',
             color: 'var(--line-art-cream)',
             marginBottom: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
             lineHeight: 1.5,
@@ -101,7 +99,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
           style={{
             opacity: purposeOpacity,
             transform: `scale(${purposeScale})`,
-            fontSize: 'clamp(2.5rem, min(10dvh, 14vw), 5rem)',
+            fontSize: 'clamp(2rem, min(8dvh, 12vw), 5rem)',
             fontWeight: 900,
             color: 'var(--accent-coral)',
             marginBottom: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
@@ -116,7 +114,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
           style={{
             opacity: correlateOpacity,
             transform: `translateY(${correlateY}px)`,
-            fontSize: 'clamp(1.1rem, 2.6dvh, 1.5rem)',
+            fontSize: 'clamp(0.9rem, min(2.2dvh, 4vw), 1.4rem)',
             color: 'var(--sage)',
             lineHeight: 1.5,
             marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
@@ -144,10 +142,10 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
               padding: 'clamp(0.4rem, 0.8dvh, 0.75rem) clamp(0.5rem, 1dvh, 1rem)',
             }}
           >
-            <p style={{ fontSize: 'clamp(0.85rem, 1.8dvh, 1.1rem)', color: 'var(--sage)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 'clamp(0.2rem, 0.4dvh, 0.4rem)' }}>
+            <p style={{ fontSize: 'clamp(0.7rem, min(1.5dvh, 3vw), 1rem)', color: 'var(--sage)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 'clamp(0.2rem, 0.4dvh, 0.4rem)' }}>
               Individual
             </p>
-            <p style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.3rem)', color: 'var(--line-art-cream)', lineHeight: 1.45 }}>
+            <p style={{ fontSize: 'clamp(0.85rem, min(1.9dvh, 3.8vw), 1.2rem)', color: 'var(--line-art-cream)', lineHeight: 1.45 }}>
               It knows lonely people scroll more. So it shows you the post that makes you feel alone.
             </p>
           </div>
@@ -159,10 +157,10 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
               padding: 'clamp(0.4rem, 0.8dvh, 0.75rem) clamp(0.5rem, 1dvh, 1rem)',
             }}
           >
-            <p style={{ fontSize: 'clamp(0.85rem, 1.8dvh, 1.1rem)', color: 'var(--accent-coral)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 'clamp(0.2rem, 0.4dvh, 0.4rem)' }}>
+            <p style={{ fontSize: 'clamp(0.7rem, min(1.5dvh, 3vw), 1rem)', color: 'var(--accent-coral)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 'clamp(0.2rem, 0.4dvh, 0.4rem)' }}>
               Society
             </p>
-            <p style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.3rem)', color: 'var(--line-art-cream)', lineHeight: 1.45 }}>
+            <p style={{ fontSize: 'clamp(0.85rem, min(1.9dvh, 3.8vw), 1.2rem)', color: 'var(--line-art-cream)', lineHeight: 1.45 }}>
               It knows which towns are ready to radicalize. Feeds them the martyr that starts the war.
             </p>
           </div>
@@ -172,7 +170,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
           style={{
             opacity: modelOpacity,
             transform: `translateY(${modelY}px)`,
-            fontSize: 'clamp(1.1rem, 2.6dvh, 1.5rem)',
+            fontSize: 'clamp(0.9rem, min(2.2dvh, 4vw), 1.4rem)',
             color: 'var(--accent-coral)',
             lineHeight: 1.5,
             fontStyle: 'italic',
@@ -186,7 +184,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         <p
           style={{
             opacity: manufacturesOpacity,
-            fontSize: 'clamp(1.05rem, 2.4dvh, 1.4rem)',
+            fontSize: 'clamp(0.85rem, min(2dvh, 3.8vw), 1.3rem)',
             color: 'var(--sage)',
             marginTop: 'clamp(0.5rem, 1dvh, 1rem)',
             lineHeight: 1.55,
@@ -202,7 +200,7 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         <p
           style={{
             opacity: kickerOpacity,
-            fontSize: 'clamp(1.2rem, 2.8dvh, 1.6rem)',
+            fontSize: 'clamp(0.95rem, min(2.4dvh, 4.5vw), 1.5rem)',
             color: 'var(--line-art-cream)',
             marginTop: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
             fontWeight: 600,
