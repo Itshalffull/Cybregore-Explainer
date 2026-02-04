@@ -14,9 +14,19 @@ import type { ExplainerMetadata } from '../types/metadata'
 
 export interface ExplainerDef {
   title: string
-  content: ReactNode
+  /**
+   * The rendered explainer content. Omit to register a stub —
+   * stubs are invisible to users but appear in developer tooling.
+   * Once content is provided, the explainer becomes live automatically.
+   */
+  content?: ReactNode
   /** Structured metadata for narrative documentation and search/discovery */
   metadata?: ExplainerMetadata
+}
+
+/** Returns true if the explainer has been implemented (has content) */
+export function isImplemented(def: ExplainerDef): boolean {
+  return def.content != null
 }
 
 interface BreadcrumbEntry {
@@ -55,14 +65,31 @@ export function useExplainerMetadata() {
   return explainers[current]?.metadata ?? null
 }
 
-/** Access all explainer metadata (for search/listing) */
+/** Access all implemented explainer metadata (for search/listing) */
 export function useAllExplainerMetadata() {
   const { explainers } = useExplainer()
-  return Object.entries(explainers).map(([id, def]) => ({
-    id,
-    title: def.title,
-    metadata: def.metadata,
-  }))
+  return Object.entries(explainers)
+    .filter(([, def]) => isImplemented(def))
+    .map(([id, def]) => ({
+      id,
+      title: def.title,
+      metadata: def.metadata,
+    }))
+}
+
+/**
+ * List all stub (unimplemented) explainers — metadata-only, no content yet.
+ * Useful for developer tooling, dashboards, and planning.
+ */
+export function useStubExplainers() {
+  const { explainers } = useExplainer()
+  return Object.entries(explainers)
+    .filter(([, def]) => !isImplemented(def))
+    .map(([id, def]) => ({
+      id,
+      title: def.title,
+      metadata: def.metadata,
+    }))
 }
 
 // ─── Provider ────────────────────────────────────────────────────────────────
@@ -95,6 +122,10 @@ export default function ExplainerRouter({
       if (phase !== 'idle') return
       if (!explainers[explainer]) {
         console.warn(`ExplainerRouter: unknown explainer "${explainer}"`)
+        return
+      }
+      if (!isImplemented(explainers[explainer])) {
+        console.warn(`ExplainerRouter: explainer "${explainer}" is a stub (no content yet)`)
         return
       }
 
@@ -175,10 +206,24 @@ export default function ExplainerRouter({
   // ── Read hash on mount ──
   useEffect(() => {
     const hash = window.location.hash.replace('#', '')
-    if (hash && explainers[hash]) {
+    if (hash && explainers[hash] && isImplemented(explainers[hash])) {
       setCurrent(hash)
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Dev-mode: log stub explainers ──
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      const stubs = Object.entries(explainers)
+        .filter(([, def]) => !isImplemented(def))
+      if (stubs.length > 0) {
+        console.info(
+          `ExplainerRouter: ${stubs.length} stub explainer(s) registered (metadata only):\n` +
+          stubs.map(([id, def]) => `  • ${id} — "${def.title}"`).join('\n'),
+        )
+      }
+    }
+  }, [explainers])
 
   // ── Transition CSS class ──
   let transitionClass = 'explainer-wrapper'
@@ -193,7 +238,7 @@ export default function ExplainerRouter({
   }
 
   const def = explainers[current]
-  if (!def) return null
+  if (!def || !isImplemented(def)) return null
 
   return (
     <ExplainerContext.Provider

@@ -1,4 +1,4 @@
-import { useExplainer } from './ExplainerRouter'
+import { useExplainer, isImplemented } from './ExplainerRouter'
 
 interface JumpLinkProps {
   /** Target explainer id */
@@ -25,7 +25,11 @@ export default function JumpLink({
   className = '',
   style,
 }: JumpLinkProps) {
-  const { jumpTo, transitioning } = useExplainer()
+  const { jumpTo, transitioning, explainers } = useExplainer()
+
+  // Hide link if target doesn't exist or is a stub (no content yet)
+  const target = explainers[to]
+  if (!target || !isImplemented(target)) return null
 
   return (
     <button
