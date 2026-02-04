@@ -13,12 +13,6 @@ interface ScrollSectionProps {
   style?: React.CSSProperties
   // Animation smoothing factor (higher = more responsive, lower = smoother)
   smoothing?: number
-  /**
-   * Starting progress value before the user scrolls.
-   * Use on the first section of an explainer so content is visible on load.
-   * Once the user scrolls, progress transitions to scroll-driven normally.
-   */
-  initialProgress?: number
 }
 
 /**
@@ -35,13 +29,12 @@ export default function ScrollSection({
   className = '',
   style = {},
   smoothing = 0.15, // Interpolation factor per frame
-  initialProgress = 0,
 }: ScrollSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [animProgress, setAnimProgress] = useState(initialProgress)
-  const animProgressRef = useRef(initialProgress)
-  const targetProgressRef = useRef(initialProgress)
+  const [animProgress, setAnimProgress] = useState(0)
+  const animProgressRef = useRef(0)
+  const targetProgressRef = useRef(0)
   const lastScrollTimeRef = useRef(0)
   const animationFrameRef = useRef<number>()
   const triggerRef = useRef<ScrollTrigger | null>(null)
@@ -132,9 +125,9 @@ export default function ScrollSection({
       onLeaveBack: () => {
         isActiveRef.current = false
         // Reset animation when scrolling back above
-        animProgressRef.current = initialProgress
-        targetProgressRef.current = initialProgress
-        setAnimProgress(initialProgress)
+        animProgressRef.current = 0
+        targetProgressRef.current = 0
+        setAnimProgress(0)
       },
     })
 

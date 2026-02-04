@@ -9,15 +9,10 @@ export default function ExampleExplainer() {
     <div className="app" style={{ overflowX: 'hidden', backgroundColor: 'var(--deep-forest)' }}>
       <PanelAutoScaler />
 
-      {/* Panel 1: Definition with an InlineJumpLink */}
-      <ScrollSection scrollLength={3} initialProgress={0.5}>
+      {/* Panel 1: Definition with an InlineJumpLink — first panel is always visible */}
+      <ScrollSection scrollLength={3}>
         {(progress) => {
-          const titleOpacity = lerp(progress, 0.05, 0.2, 0, 1)
-          const titleY = lerp(progress, 0.05, 0.2, 30, 0)
-          const bodyOpacity = lerp(progress, 0.2, 0.4, 0, 1)
-          const bodyY = lerp(progress, 0.2, 0.4, 20, 0)
-          const body2Opacity = lerp(progress, 0.4, 0.6, 0, 1)
-          const body2Y = lerp(progress, 0.4, 0.6, 20, 0)
+          const scrollHintOpacity = lerp(progress, 0, 0.3, 0.6, 0.3)
 
           return (
             <section
@@ -25,31 +20,29 @@ export default function ExampleExplainer() {
               style={{ background: 'var(--deep-forest)' }}
             >
               <AutoScaleContent maxWidth="700px" style={{ padding: '0 2rem' }}>
-                <h2
-                  className="text-title text-cream text-center mb-xl"
-                  style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
-                >
+                <h2 className="text-title text-cream text-center mb-xl">
                   What is an Egregore?
                 </h2>
 
-                <p
-                  className="text-body text-sage text-center leading-relaxed mb-lg"
-                  style={{ opacity: bodyOpacity, transform: `translateY(${bodyY}px)` }}
-                >
+                <p className="text-body text-sage text-center leading-relaxed mb-lg">
                   An egregore is a collective entity that emerges from shared
                   attention and belief. The concept has roots in esoteric
                   traditions — a group mind that takes on a life of its own.
                 </p>
 
-                <p
-                  className="text-body text-sage text-center leading-relaxed"
-                  style={{ opacity: body2Opacity, transform: `translateY(${body2Y}px)` }}
-                >
+                <p className="text-body text-sage text-center leading-relaxed">
                   When billions of{' '}
                   <InlineJumpLink to="cybregore" fromLabel="Egregore: cyborgs">
                     cyborgs
                   </InlineJumpLink>{' '}
                   feed a single egregore, something unprecedented emerges.
+                </p>
+
+                <p
+                  className="text-body text-sage mt-2xl"
+                  style={{ opacity: scrollHintOpacity }}
+                >
+                  ↓
                 </p>
               </AutoScaleContent>
             </section>
