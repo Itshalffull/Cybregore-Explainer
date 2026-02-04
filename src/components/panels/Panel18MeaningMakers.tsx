@@ -19,88 +19,64 @@ export default function Panel18MeaningMakers({ progress }: Panel18MeaningMakersP
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
-        overflow: 'hidden',
       }}
     >
       <AutoScaleContent maxWidth="750px" style={{ padding: '0 2rem' }}>
         <h2
-          className="heading"
+          className="heading text-title text-cream mb-xl"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1.8rem, 5.5dvh, 3rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(1rem, 2dvh, 2.5rem)',
           }}
         >
           But here's what's different.
         </h2>
 
-        <div style={{ marginBottom: 'clamp(1rem, 1.5dvh, 2rem)' }}>
+        <div className="mb-xl">
           <p
+            className="text-subheading text-cream mb-lg leading-relaxed"
             style={{
               opacity: line1Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-              color: 'var(--line-art-cream)',
-              marginBottom: 'clamp(0.6rem, 1dvh, 1.2rem)',
-              lineHeight: 1.6,
             }}
           >
             Every previous AI — tribe, property, industry, digital networks —
           </p>
           <p
+            className="text-heading text-sage mb-lg leading-relaxed text-medium"
             style={{
               opacity: line2Opacity,
-              fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-              color: 'var(--sage)',
-              marginBottom: 'clamp(0.8rem, 1.2dvh, 1.5rem)',
-              lineHeight: 1.6,
-              fontWeight: 500,
             }}
           >
             created meaning.
           </p>
           <p
+            className="text-subheading text-sage mb-md leading-relaxed"
             style={{
               opacity: line3Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-              color: 'var(--sage)',
-              marginBottom: 'clamp(0.5rem, 0.8dvh, 1rem)',
-              lineHeight: 1.6,
             }}
           >
             They gave you a role. A story. A place in something larger.
           </p>
           <p
+            className="text-subheading text-sage leading-relaxed"
             style={{
               opacity: line4Opacity,
-              fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.6,
             }}
           >
             Even if that meaning was limiting. Even if it was oppressive.
             <br />
-            <span style={{ color: 'var(--sage)', fontStyle: 'italic' }}>
+            <span className="text-sage text-italic">
               It was something.
             </span>
           </p>
         </div>
 
         <p
+          className="text-heading text-cream text-medium leading-relaxed"
           style={{
             opacity: conclusionOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            fontWeight: 500,
-            lineHeight: 1.6,
           }}
         >
           The Cybregore is different.

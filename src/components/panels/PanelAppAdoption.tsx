@@ -55,41 +55,21 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
   const getYearPosition = (year: number) => ((year - startYear) / totalYears) * 100
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(1rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-      }}
-    >
-      <div className="content" style={{ maxWidth: '900px', width: '100%', maxHeight: '92dvh', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <section className="panel panel--dark">
+      <div className="panel-body panel-body--wide">
         <h2
-          className="heading"
+          className="text-heading text-cream text-bold text-center mb-xs"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1.6rem, 4.5dvh, 2.5rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: '0.3rem',
           }}
         >
           Time to Reach 100 Million Users
         </h2>
 
         <p
+          className="text-body-lg text-sage text-center mb-lg"
           style={{
             opacity: subtitleOpacity,
-            fontSize: 'clamp(0.9rem, 2.5dvh, 1.2rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.25rem)',
           }}
         >
           How fast they capture us
@@ -136,12 +116,7 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
                     margin: '0 auto 4px',
                   }}
                 />
-                <span
-                  style={{
-                    fontSize: '0.75rem',
-                    color: 'var(--sage)',
-                  }}
-                >
+                <span className="text-label text-sage">
                   {year}
                 </span>
               </div>
@@ -181,8 +156,8 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
                     }}
                   >
                     <span
+                      className="text-label"
                       style={{
-                        fontSize: 'clamp(0.6rem, 1.1dvh, 0.75rem)',
                         color: isRecent ? 'var(--accent-coral)' : 'var(--line-art-cream)',
                         fontWeight: isRecent ? 600 : 400,
                       }}
@@ -212,10 +187,9 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
                     {/* Duration label inside bar if it fits, otherwise outside */}
                     {(reachedPos - launchPos) > 8 && (
                       <span
+                        className="text-label text-medium"
                         style={{
-                          fontSize: 'clamp(0.45rem, 0.8dvh, 0.55rem)',
                           color: '#fff',
-                          fontWeight: 500,
                           textShadow: '0 1px 2px rgba(0,0,0,0.5)',
                         }}
                       >
@@ -227,10 +201,10 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
                   {/* Duration label outside bar for short bars */}
                   {(reachedPos - launchPos) <= 8 && (
                     <span
+                      className="text-label"
                       style={{
                         position: 'absolute',
                         left: `${reachedPos + 1}%`,
-                        fontSize: 'clamp(0.5rem, 0.9dvh, 0.65rem)',
                         color: isRecent ? 'var(--accent-coral)' : 'var(--sage)',
                         fontWeight: isRecent ? 600 : 400,
                         whiteSpace: 'nowrap',
@@ -261,73 +235,40 @@ export default function PanelAppAdoption({ progress }: PanelAppAdoptionProps) {
 
         {/* Dramatic highlight */}
         <div
+          className="box-coral text-center mb-lg"
           style={{
             opacity: highlightOpacity,
-            textAlign: 'center',
-            padding: 'clamp(0.4rem, 1dvh, 0.75rem) clamp(0.75rem, 1.5dvh, 1.25rem)',
-            background: 'rgba(219, 84, 97, 0.15)',
-            borderRadius: '8px',
-            border: '1px solid var(--accent-coral)',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1rem)',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 3dvh, 1.4rem)',
-              color: 'var(--line-art-cream)',
-              marginBottom: '0.2rem',
-            }}
-          >
-            From <strong>5 years</strong> to <strong style={{ color: 'var(--accent-coral)' }}>5 days</strong>.
+          <p className="text-body-lg text-cream mb-xs">
+            From <strong>5 years</strong> to <strong className="text-coral">5 days</strong>.
           </p>
-          <p
-            style={{
-              fontSize: 'clamp(0.9rem, 2.5dvh, 1.2rem)',
-              color: 'var(--sage)',
-            }}
-          >
+          <p className="text-body-lg text-sage">
             A 365x acceleration in under 20 years.
           </p>
         </div>
 
         {/* Conclusion */}
         <div
+          className="text-center mb-md"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            textAlign: 'center',
-            marginBottom: 'clamp(0.4rem, 1dvh, 0.75rem)',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(1.1rem, 3.5dvh, 1.6rem)',
-              color: 'var(--line-art-cream)',
-              fontWeight: 500,
-              marginBottom: '0.4rem',
-            }}
-          >
+          <p className="text-subheading text-cream text-medium mb-xs">
             Something is hungry for our attention.
           </p>
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 3dvh, 1.4rem)',
-              color: 'var(--sage)',
-              fontStyle: 'italic',
-            }}
-          >
+          <p className="text-body-lg text-sage text-italic">
             What is it?
           </p>
         </div>
 
         {/* Source links */}
         <div
+          className="text-label text-dark text-center leading-relaxed"
           style={{
             opacity: sourceOpacity,
-            fontSize: '0.65rem',
-            color: 'var(--dark-olive)',
-            textAlign: 'center',
-            lineHeight: 1.6,
           }}
         >
           <span>Sources: </span>

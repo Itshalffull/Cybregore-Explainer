@@ -164,23 +164,7 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
   const breathingPhaseOpacity = lerp(progress, 0.55, 0.6, 1, 0)
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        minHeight: '100vh',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: 'hidden',
-      }}
-    >
+    <section className="panel">
       {/* Base background */}
       <div
         style={{
@@ -200,7 +184,7 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
         }}
       />
 
-      <div className="content" style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Breathing phase */}
         <div
           style={{
@@ -215,7 +199,7 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
           }}
         >
           <h2
-            className="heading heading-md text-cream mb-xl"
+            className="text-heading text-cream mb-xl"
             style={{
               opacity: breathingTitleOpacity,
               transform: `translateY(${breathingTitleY}px)`,
@@ -233,7 +217,7 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
           </div>
 
           <p
-            className="body-sm text-cream mt-xl"
+            className="text-body-sm text-cream mt-xl"
             style={{ opacity: breathHintOpacity }}
           >
             Breathe with it...
@@ -255,12 +239,12 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
           }}
         >
           {/* Notification dot */}
-          <div style={{ marginBottom: 'var(--space-xl)' }}>
+          <div className="mb-xl">
             <NotificationPulse opacity={notificationPulseOpacity} />
           </div>
 
           <h2
-            className="heading heading-md text-cream"
+            className="text-heading text-cream"
             style={{
               opacity: revelationText1Opacity,
               transform: `translateY(${revelationText1Y}px)`,
@@ -270,7 +254,7 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
           </h2>
 
           <h2
-            className="heading heading-md text-cream mt-sm"
+            className="text-heading text-cream mt-sm"
             style={{
               opacity: revelationText2Opacity,
               transform: `translateY(${revelationText2Y}px)`,
@@ -283,19 +267,19 @@ export default function Panel9Hunger({ progress }: Panel9HungerProps) {
             className="mt-xl"
             style={{ opacity: supportingTextOpacity }}
           >
-            <p className="body-lg text-cream">
+            <p className="text-body-lg text-cream">
               Data is its oxygen.
             </p>
-            <p className="body-lg text-cream mt-sm">
+            <p className="text-body-lg text-cream mt-sm">
               Your attention is its breath.
             </p>
-            <p className="body-lg text-cream mt-sm">
+            <p className="text-body-lg text-cream mt-sm">
               Your engagement is its heartbeat.
             </p>
           </div>
 
           <p
-            className="body-md text-cream mt-xl"
+            className="text-body text-cream mt-xl"
             style={{ opacity: scrollHintOpacity }}
           >
             ↓ Is there hope?

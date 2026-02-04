@@ -18,57 +18,34 @@ export default function Panel22TheTrap({ progress }: Panel22TheTrapProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
       }}
     >
-      <div className="content" style={{
-        maxWidth: '700px',
-        padding: '0 2rem',
-        textAlign: 'center',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
+      <div className="panel-body text-center">
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line1Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           But here's the trap.
         </p>
 
         <p
+          className="text-heading text-coral mb-lg leading-normal"
           style={{
             opacity: line2Opacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 2rem)',
-            color: 'var(--accent-coral)',
-            marginBottom: 'clamp(0.6rem, 1dvh, 1.2rem)',
-            lineHeight: 1.5,
           }}
         >
           Each scroll deepens the void.
         </p>
 
         <p
+          className="text-subheading text-sage mb-2xl leading-relaxed"
           style={{
             opacity: line3Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1.2rem, 2dvh, 2.5rem)',
-            lineHeight: 1.6,
           }}
         >
           More disconnected narratives.
@@ -79,26 +56,19 @@ export default function Panel22TheTrap({ progress }: Panel22TheTrapProps) {
         </p>
 
         <p
+          className="text-title text-cream mb-xl leading-snug text-semibold"
           style={{
             opacity: trapOpacity,
             transform: `scale(${trapScale})`,
-            fontSize: 'clamp(1.6rem, 5dvh, 2.8rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(1rem, 1.5dvh, 2rem)',
-            lineHeight: 1.4,
-            fontWeight: 600,
           }}
         >
           It's a perfect trap.
         </p>
 
         <p
+          className="text-heading text-sage leading-normal text-medium"
           style={{
             opacity: newOpacity,
-            fontSize: 'clamp(1.3rem, 4dvh, 2.2rem)',
-            color: 'var(--sage)',
-            lineHeight: 1.5,
-            fontWeight: 500,
           }}
         >
           This is new.

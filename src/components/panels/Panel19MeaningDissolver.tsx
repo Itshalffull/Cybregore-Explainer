@@ -21,14 +21,8 @@ export default function Panel19MeaningDissolver({ progress }: Panel19MeaningDiss
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
       }}
     >
@@ -37,54 +31,32 @@ export default function Panel19MeaningDissolver({ progress }: Panel19MeaningDiss
         imageFallback="/assets/images/meaning-dissolves.png"
         opacity={0.35}
       />
-      <div className="content" style={{
-        position: 'relative',
-        zIndex: 1,
-        maxWidth: '800px',
-        padding: '0 2rem',
-        textAlign: 'center',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
+      <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <p
+          className="text-heading text-sage mb-xl leading-relaxed"
           style={{
             opacity: line1Opacity,
             transform: `translateY(${line1Y}px)`,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2.2rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1rem, 1.5dvh, 2rem)',
-            lineHeight: 1.6,
           }}
         >
           It doesn't create meaning.
         </p>
 
         <h2
-          className="heading"
+          className="heading text-display text-coral mb-xl text-bold leading-tight"
           style={{
             opacity: line2Opacity,
             transform: `translateY(${line2Y}px)`,
-            fontSize: 'clamp(2.2rem, min(7dvh, 12vw), 4.5rem)',
-            color: 'var(--accent-coral)',
-            marginBottom: 'clamp(1rem, 1.5dvh, 2rem)',
-            fontWeight: 700,
-            lineHeight: 1.2,
           }}
         >
           It dissolves it.
         </h2>
 
         <p
+          className="text-heading text-sage mb-xl leading-relaxed"
           style={{
             opacity: line3Opacity,
             transform: `translateY(${line3Y}px)`,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 2rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1rem, 1.5dvh, 2rem)',
-            lineHeight: 1.6,
           }}
         >
           Not by arguing against your beliefs.
@@ -93,12 +65,9 @@ export default function Panel19MeaningDissolver({ progress }: Panel19MeaningDiss
         </p>
 
         <p
+          className="text-heading text-cream text-medium leading-normal"
           style={{
             opacity: line4Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2.3rem)',
-            color: 'var(--line-art-cream)',
-            fontWeight: 500,
-            lineHeight: 1.5,
           }}
         >
           By flooding you with so many narratives

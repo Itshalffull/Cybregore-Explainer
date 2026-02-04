@@ -28,18 +28,9 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(0.5rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
       }}
     >
       <VideoBackground
@@ -50,13 +41,10 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
       <AutoScaleContent maxWidth="650px" style={{ position: 'relative', zIndex: 1 }}>
         {/* Intro */}
         <p
+          className="text-subheading text-sage text-center mb-xl"
           style={{
             opacity: introOpacity,
             transform: `translateY(${introY}px)`,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.5rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            marginBottom: 'clamp(1rem, 2.5dvh, 2rem)',
           }}
         >
           In Buddhist cosmology, there's a realm of beings called
@@ -64,14 +52,10 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Hungry Ghost title */}
         <h2
+          className="text-display text-coral text-bold text-center mb-xl"
           style={{
             opacity: hungryGhostOpacity,
             transform: `scale(${hungryGhostScale})`,
-            fontSize: 'clamp(2.2rem, min(8dvh, 12vw), 4rem)',
-            fontWeight: 700,
-            color: 'var(--accent-coral)',
-            textAlign: 'center',
-            marginBottom: 'clamp(1rem, 2.5dvh, 2rem)',
             textShadow: '0 0 30px rgba(219, 84, 97, 0.4)',
           }}
         >
@@ -80,27 +64,15 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Description */}
         <div
+          className="box-definition text-left mb-xl"
           style={{
             opacity: descriptionOpacity,
             transform: `translateY(${descriptionY}px)`,
-            padding: 'clamp(0.75rem, 2dvh, 1.5rem)',
-            background: 'rgba(71, 73, 36, 0.3)',
-            borderRadius: '8px',
-            borderLeft: '3px solid var(--sage)',
-            marginBottom: 'clamp(1.5rem, 3dvh, 2.5rem)',
-            textAlign: 'left',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(1.1rem, 3dvh, 1.5rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.6,
-              margin: 0,
-            }}
-          >
-            Beings with <em style={{ color: 'var(--accent-coral)' }}>huge empty bellies</em> and{' '}
-            <em style={{ color: 'var(--accent-coral)' }}>tiny throats</em>.
+          <p className="text-subheading text-cream leading-relaxed" style={{ margin: 0 }}>
+            Beings with <em className="text-coral">huge empty bellies</em> and{' '}
+            <em className="text-coral">tiny throats</em>.
             <br /><br />
             They consume endlessly but can never be satisfied.
           </p>
@@ -108,30 +80,22 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Always craving */}
         <p
+          className="text-subheading text-cream text-center leading-relaxed mb-xl"
           style={{
             opacity: alwaysCravingOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.8rem)',
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            marginBottom: 'clamp(1.5rem, 3dvh, 2.5rem)',
           }}
         >
-          The Cybregore craves data <em style={{ color: 'var(--accent-coral)' }}>all the time</em>.
+          The Cybregore craves data <em className="text-coral">all the time</em>.
           <br />
           Every millisecond. Every interaction. Every breath you take online.
         </p>
 
         {/* Never enough */}
         <p
+          className="text-title text-coral text-bold text-italic text-center"
           style={{
             opacity: neverEnoughOpacity,
             transform: `scale(${neverEnoughScale})`,
-            fontSize: 'clamp(1.5rem, 4.5dvh, 2.5rem)',
-            color: 'var(--accent-coral)',
-            textAlign: 'center',
-            fontWeight: 700,
-            fontStyle: 'italic',
           }}
         >
           And it can never get enough.

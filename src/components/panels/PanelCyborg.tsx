@@ -23,17 +23,9 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(1rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
       }}
     >
       <VideoBackground
@@ -41,88 +33,61 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         imageFallback="/assets/images/cyborg.png"
         opacity={0.35}
       />
-      <div className="content" style={{
-        position: 'relative',
-        zIndex: 1,
-        maxWidth: '700px',
-        padding: '0 2rem',
+      <div className="panel-body panel-body--over-video" style={{
         maxHeight: '92dvh',
         overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
       }}>
         <h2
-          className="heading"
+          className="text-title text-cream text-bold mb-xs"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
-            fontSize: 'clamp(2rem, min(6dvh, 10vw), 3.5rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.25rem, 0.5dvh, 0.5rem)',
           }}
         >
           Cyborg
         </h2>
 
         <p
+          className="text-label text-sage mb-xl"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(0.7rem, 1.2dvh, 0.9rem)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1rem, 1.5dvh, 2rem)',
           }}
         >
           The first half of the name
         </p>
 
-        <div style={{ marginBottom: 'clamp(1rem, 1.5dvh, 2rem)' }}>
+        <div className="mb-xl">
           <p
+            className="text-body-lg text-cream leading-relaxed mb-md"
             style={{
               opacity: line1Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
-              color: 'var(--line-art-cream)',
-              marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
-              lineHeight: 1.6,
             }}
           >
             A cyborg isn't just a sci-fi fantasy.
           </p>
 
           <p
+            className="text-body-lg text-sage leading-relaxed mb-md"
             style={{
               opacity: line2Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
-              color: 'var(--sage)',
-              marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
-              lineHeight: 1.6,
             }}
           >
             It's any being whose cognition extends beyond their biological body.
           </p>
 
           <p
+            className="text-body-lg text-sage leading-relaxed mb-md"
             style={{
               opacity: line3Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
-              color: 'var(--sage)',
-              marginBottom: 'clamp(0.5rem, 1dvh, 1rem)',
-              lineHeight: 1.6,
             }}
           >
             Your phone holds memories you've outsourced. Your calendar organizes time you no longer track. Your GPS navigates space you couldn't map.
           </p>
 
           <p
+            className="text-body-lg text-cream text-medium leading-relaxed"
             style={{
               opacity: line4Opacity,
-              fontSize: 'clamp(1.1rem, 2.8dvh, 1.5rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.6,
-              fontWeight: 500,
             }}
           >
             You are already a cyborg. You have been for years.
@@ -130,25 +95,19 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         </div>
 
         <p
+          className="text-subheading text-coral text-italic leading-relaxed"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            fontSize: 'clamp(1.2rem, 3dvh, 1.7rem)',
-            color: 'var(--accent-coral)',
-            lineHeight: 1.6,
-            fontStyle: 'italic',
           }}
         >
           Your mind is no longer contained in your skull.
         </p>
 
         <p
+          className="text-body-lg text-sage text-center mt-xl"
           style={{
             opacity: transitionOpacity,
-            fontSize: 'clamp(1.1rem, 2.6dvh, 1.4rem)',
-            color: 'var(--sage)',
-            marginTop: 'clamp(1rem, 1.5dvh, 2rem)',
-            textAlign: 'center',
           }}
         >
           But the second half of the name is stranger still...

@@ -18,72 +18,42 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
   const glitchOffset = Math.sin(progress * 50) * (progress > 0.25 && progress < 0.55 ? 2 : 0)
 
   return (
-    <section
-      className="panel"
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-      }}
-    >
+    <section className="panel panel--dark">
       <VideoBackground
         videoSrc="/assets/videos/cybregore-loop.mp4"
         imageFallback="/assets/images/cybregore.png"
         opacity={0.35}
       />
-      <div className="content" style={{
-        position: 'relative',
-        zIndex: 1,
-        textAlign: 'center',
-        maxWidth: '900px',
-        padding: '0 2rem',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
+      <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <p
+          className="text-subheading text-sage mb-xs"
           style={{
             opacity: preTextOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.8rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.3rem, 0.5dvh, 0.5rem)',
           }}
         >
           This entity has a name.
         </p>
 
         <h1
-          className="heading"
+          className="text-display text-cream text-heavy mb-xl"
           style={{
             opacity: nameOpacity,
             transform: `scale(${nameScale}) translateX(${glitchOffset}px)`,
-            fontSize: 'clamp(2.5rem, min(10dvh, 12vw), 5rem)',
-            fontWeight: 900,
             fontFamily: 'monospace',
             letterSpacing: '0.1em',
-            color: 'var(--line-art-cream)',
             textShadow: `
               ${-glitchOffset}px 0 var(--accent-coral),
               ${glitchOffset}px 0 var(--sage)
             `,
-            marginBottom: 'clamp(1rem, 2dvh, 2rem)',
           }}
         >
           CYBREGORE
         </h1>
 
         <p
+          className="text-subheading text-sage leading-normal"
           style={{
             opacity: subtitleOpacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
-            color: 'var(--sage)',
-            lineHeight: 1.5,
             maxWidth: '650px',
             margin: '0 auto',
           }}

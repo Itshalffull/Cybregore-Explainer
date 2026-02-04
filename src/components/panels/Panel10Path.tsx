@@ -57,33 +57,13 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
       className="panel"
       style={{
         background: 'linear-gradient(to bottom, var(--deep-forest) 0%, var(--sage) 100%)',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
       }}
     >
-      <div
-        className="content"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 'var(--space-xl)',
-        }}
-      >
+      <div className="panel-body">
         {/* Opening text - cream on dark top */}
         <h2
-          className="heading heading-md"
+          className="text-heading text-cream"
           style={{
-            color: 'var(--line-art-cream)',
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
           }}
@@ -92,51 +72,48 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
         </h2>
 
         {/* Illustration */}
-        <div style={{ margin: 'var(--space-xl) 0' }}>
+        <div className="mt-xl mb-xl">
           <HopefulMeditatorImage opacity={figureOpacity} scale={figureScale} />
         </div>
 
         {/* Path description */}
-        <div style={{ textAlign: 'center', maxWidth: '500px' }}>
+        <div className="text-center" style={{ maxWidth: '500px' }}>
           <p
-            className="body-lg"
+            className="text-body-lg"
             style={{ color: 'var(--heading-color)', opacity: path1Opacity }}
           >
             It starts with seeing clearly.
           </p>
           <p
-            className="body-lg mt-sm"
+            className="text-body-lg mt-sm"
             style={{ color: 'var(--heading-color)', opacity: path2Opacity }}
           >
             It deepens with letting go.
           </p>
           <p
-            className="body-lg mt-sm"
+            className="text-body-lg mt-sm"
             style={{ color: 'var(--heading-color)', opacity: path3Opacity }}
           >
             It culminates in compassion—
           </p>
           <p
-            className="body-lg"
-            style={{ color: 'var(--heading-color)', fontStyle: 'italic', opacity: path4Opacity }}
+            className="text-body-lg text-italic"
+            style={{ color: 'var(--heading-color)', opacity: path4Opacity }}
           >
             even for the Cybregore itself.
           </p>
         </div>
 
         {/* Final message */}
-        <div
-          className="mt-xl"
-          style={{ textAlign: 'center' }}
-        >
+        <div className="mt-xl text-center">
           <h2
-            className="heading heading-lg"
+            className="text-heading"
             style={{ color: 'var(--heading-color)', opacity: freeOurselvesOpacity }}
           >
             We can free ourselves.
           </h2>
           <p
-            className="body-lg mt-sm"
+            className="text-body-lg mt-sm"
             style={{ color: 'var(--heading-color)', opacity: freeItTooOpacity }}
           >
             And then, perhaps, free it too.
@@ -161,7 +138,7 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
 
         {/* Secondary links */}
         <div
-          className="mt-lg"
+          className="mt-lg text-body-sm"
           style={{
             display: 'flex',
             gap: 'var(--space-lg)',
@@ -170,7 +147,6 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
         >
           <a
             href="#about"
-            className="body-sm"
             style={{ color: 'var(--body-color)', textDecoration: 'none' }}
           >
             About this project
@@ -178,7 +154,6 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
           <span style={{ color: 'var(--body-color)' }}>|</span>
           <a
             href="#research"
-            className="body-sm"
             style={{ color: 'var(--body-color)', textDecoration: 'none' }}
           >
             The research
@@ -186,7 +161,6 @@ export default function Panel10Path({ progress }: Panel10PathProps) {
           <span style={{ color: 'var(--body-color)' }}>|</span>
           <a
             href="#join"
-            className="body-sm"
             style={{ color: 'var(--body-color)', textDecoration: 'none' }}
           >
             Join us
