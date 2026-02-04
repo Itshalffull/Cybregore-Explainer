@@ -26,14 +26,8 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
         overflow: 'hidden',
       }}
@@ -48,14 +42,10 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
       <AutoScaleContent maxWidth="700px" style={{ padding: '0 2rem', position: 'relative', zIndex: 1 }}>
         {/* The big question */}
         <h2
+          className="text-title text-bold text-cream text-center mb-xl"
           style={{
             opacity: questionOpacity,
             transform: `translateY(${questionY}px)`,
-            fontSize: 'clamp(1.8rem, 5dvh, 2.8rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: 'clamp(1rem, 2.5dvh, 2rem)',
             textShadow: '0 2px 10px rgba(0,0,0,0.5)',
           }}
         >
@@ -64,14 +54,10 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
 
         {/* The challenge */}
         <p
+          className="text-subheading text-sage text-center leading-relaxed mb-2xl"
           style={{
             opacity: answerOpacity,
             transform: `translateY(${answerY}px)`,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.6rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            marginBottom: 'clamp(1.5rem, 3dvh, 2.5rem)',
             textShadow: '0 2px 8px rgba(0,0,0,0.5)',
           }}
         >
@@ -80,18 +66,15 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
 
         {/* Monastic Academy intro */}
         <div
+          className="text-center mb-xl"
           style={{
             opacity: maIntroOpacity,
             transform: `translateY(${maIntroY}px)`,
-            textAlign: 'center',
-            marginBottom: 'clamp(1rem, 2dvh, 1.5rem)',
           }}
         >
           <p
+            className="text-subheading text-cream leading-relaxed"
             style={{
-              fontSize: 'clamp(1rem, 2.8dvh, 1.4rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.6,
               textShadow: '0 2px 8px rgba(0,0,0,0.5)',
             }}
           >
@@ -101,21 +84,19 @@ export default function PanelWhatNow({ progress }: PanelWhatNowProps) {
 
         {/* Monastic Academy link */}
         <div
+          className="text-center"
           style={{
             opacity: linkOpacity,
             transform: `scale(${linkScale})`,
-            textAlign: 'center',
           }}
         >
           <a
             href="https://www.monasticacademy.org/train"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-heading text-bold text-coral"
             style={{
               display: 'inline-block',
-              fontSize: 'clamp(1.5rem, 4dvh, 2.2rem)',
-              fontWeight: 700,
-              color: 'var(--accent-coral)',
               textDecoration: 'none',
               padding: 'clamp(0.75rem, 1.5dvh, 1rem) clamp(1.5rem, 3dvh, 2rem)',
               border: '2px solid var(--accent-coral)',

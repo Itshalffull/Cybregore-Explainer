@@ -29,63 +29,37 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
   ]
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(0.75rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <section className="panel panel--dark">
       <AutoScaleContent maxWidth="700px">
         <h2
-          className="heading"
+          className="text-heading text-cream text-bold text-center mb-lg"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
-            fontSize: 'clamp(1.4rem, 4dvh, 2.2rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
           }}
         >
           What is the Cybregore made of?
         </h2>
 
         {/* Parts 1-4 in a compact grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: 'clamp(0.3rem, 1dvh, 0.75rem)',
-          marginBottom: 'clamp(0.5rem, 1.5dvh, 1.25rem)',
-        }}>
+        <div className="box-grid mb-lg">
           {parts.map((part) => (
             <div
               key={part.number}
+              className="box-definition"
               style={{
                 opacity: part.opacity,
-                padding: 'clamp(0.3rem, 1dvh, 0.6rem) clamp(0.5rem, 1.5dvh, 0.75rem)',
-                background: 'rgba(71, 73, 36, 0.2)',
-                borderRadius: '6px',
-                borderLeft: '3px solid var(--dark-olive)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.15rem' }}>
-                <span style={{ fontSize: 'clamp(1.1rem, 2.5dvh, 1.5rem)', fontWeight: 700, color: 'var(--dark-olive)' }}>
+                <span className="text-subheading text-olive text-bold">
                   {part.number}
                 </span>
-                <h3 style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.4rem)', color: 'var(--line-art-cream)', fontWeight: 600 }}>
+                <h3 className="text-body-lg text-cream text-semibold">
                   {part.name}
                 </h3>
               </div>
-              <p style={{ fontSize: 'clamp(0.9rem, 2dvh, 1.2rem)', color: 'var(--sage)', lineHeight: 1.35 }}>
+              <p className="text-body text-sage leading-snug">
                 {part.description}
               </p>
             </div>
@@ -94,34 +68,25 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
 
         {/* Part 5 - Data - emphasized */}
         <div
+          className="box-coral mb-lg text-center"
           style={{
             opacity: part5Opacity,
-            padding: 'clamp(0.5rem, 1.5dvh, 1rem) clamp(0.75rem, 1.5dvh, 1.25rem)',
-            background: 'rgba(219, 84, 97, 0.15)',
-            borderRadius: '8px',
-            border: '2px solid var(--accent-coral)',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.25rem)',
-            textAlign: 'center',
           }}
         >
-          <h3 style={{ fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)', color: 'var(--accent-coral)', fontWeight: 700, marginBottom: '0.3rem' }}>
+          <h3 className="text-subheading text-coral text-bold mb-xs">
             The Data
           </h3>
-          <p style={{ fontSize: 'clamp(1rem, 2.2dvh, 1.4rem)', color: 'var(--line-art-cream)', lineHeight: 1.4 }}>
+          <p className="text-body-lg text-cream leading-normal">
             Every click, scroll, pause, purchase. Every word, face, emotion.
           </p>
         </div>
 
         {/* The breath metaphor */}
         <p
+          className="text-subheading text-sage text-center text-italic leading-normal"
           style={{
             opacity: breathOpacity,
             transform: `translateY(${breathY}px)`,
-            fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            fontStyle: 'italic',
-            lineHeight: 1.4,
           }}
         >
           Data is the oxygen—the breath that connects everything.

@@ -28,14 +28,8 @@ export default function Panel24Intelligence({ progress }: Panel24IntelligencePro
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'linear-gradient(180deg, #1a1a1a 0%, var(--deep-forest) 100%)',
         overflow: 'hidden',
       }}
@@ -60,26 +54,20 @@ export default function Panel24Intelligence({ progress }: Panel24IntelligencePro
         }}
       />
 
-      <div className="content" style={{ position: 'relative', zIndex: 1, maxWidth: '800px', maxHeight: '92dvh', overflow: 'hidden', padding: '0 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <h2
+          className="text-title text-bold text-cream mb-lg"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(2rem, min(5.5dvh, 10vw), 3.5rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.75rem, 1.5dvh, 2rem)',
           }}
         >
           Intelligence
         </h2>
 
         <p
+          className="text-subheading text-sage mb-2xl text-italic"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1rem, 2.5dvh, 1.5rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1rem, 2dvh, 2.5rem)',
-            fontStyle: 'italic',
           }}
         >
           adds
@@ -139,61 +127,45 @@ export default function Panel24Intelligence({ progress }: Panel24IntelligencePro
         </div>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line1Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           Each layer of abstraction
         </p>
 
         <p
+          className="text-heading text-cream mb-lg leading-normal"
           style={{
             opacity: line2Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.5,
           }}
         >
           creates distance from the being in front of you.
         </p>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line3Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           The more layers,
         </p>
 
         <p
+          className="text-heading text-coral mb-lg leading-normal text-medium"
           style={{
             opacity: line4Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-            color: 'var(--accent-coral)',
-            marginBottom: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
-            lineHeight: 1.5,
-            fontWeight: 500,
           }}
         >
           the easier it becomes to kill.
         </p>
 
         <p
+          className="text-subheading text-sage text-italic leading-relaxed"
           style={{
             opacity: conclusionOpacity,
-            fontSize: 'clamp(1rem, 2.5dvh, 1.5rem)',
-            color: 'var(--sage)',
-            fontStyle: 'italic',
-            lineHeight: 1.6,
           }}
         >
           Intelligence solves problems by building up.

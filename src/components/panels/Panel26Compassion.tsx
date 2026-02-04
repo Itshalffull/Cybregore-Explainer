@@ -22,14 +22,8 @@ export default function Panel26Compassion({ progress }: Panel26CompassionProps) 
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'linear-gradient(180deg, #0d1210 0%, var(--deep-forest) 100%)',
         overflow: 'hidden',
       }}
@@ -74,14 +68,11 @@ export default function Panel26Compassion({ progress }: Panel26CompassionProps) 
         }}
       />
 
-      <div className="content" style={{ position: 'relative', zIndex: 1, maxWidth: '800px', maxHeight: '92dvh', overflow: 'hidden', padding: '0 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <h2
+          className="text-title text-bold text-cream mb-lg"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(2rem, min(5.5dvh, 10vw), 3.5rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.75rem, 1.5dvh, 2rem)',
             animation: titleOpacity > 0.5 ? 'gentleGlow 4s ease-in-out infinite' : 'none',
           }}
         >
@@ -89,12 +80,9 @@ export default function Panel26Compassion({ progress }: Panel26CompassionProps) 
         </h2>
 
         <p
+          className="text-subheading text-sage mb-2xl text-italic"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1rem, 2.5dvh, 1.5rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(1rem, 2dvh, 2.5rem)',
-            fontStyle: 'italic',
           }}
         >
           bridges
@@ -102,8 +90,8 @@ export default function Panel26Compassion({ progress }: Panel26CompassionProps) 
 
         {/* Visual: the room with a door - 3D perspective */}
         <div
+          className="mb-2xl"
           style={{
-            marginBottom: 'clamp(1.25rem, 2.5dvh, 2.5rem)',
             position: 'relative',
             height: 'clamp(100px, 15dvh, 140px)',
             perspective: '600px',
@@ -178,73 +166,54 @@ export default function Panel26Compassion({ progress }: Panel26CompassionProps) 
         </div>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line1Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           You can't pull someone out of a room
         </p>
 
         <p
+          className="text-heading text-cream mb-lg leading-normal"
           style={{
             opacity: line2Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.5,
           }}
         >
           by standing outside and shouting.
         </p>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line3Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           You have to enter the room.
         </p>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line4Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1.2dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           Meet them where they are.
         </p>
 
         <p
+          className="text-heading text-cream mb-lg leading-normal text-medium"
           style={{
             opacity: line5Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.75rem, 1.5dvh, 1.5rem)',
-            lineHeight: 1.5,
-            fontWeight: 500,
           }}
         >
           Use the room to show them the door.
         </p>
 
         <p
+          className="text-subheading text-coral text-italic leading-relaxed"
           style={{
             opacity: finalOpacity,
-            fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)',
-            color: 'var(--accent-coral)',
-            fontStyle: 'italic',
-            lineHeight: 1.6,
           }}
         >
           Intelligence in service of letting go.

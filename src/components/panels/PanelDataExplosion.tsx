@@ -40,44 +40,23 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
   const strokeDashoffset = pathLength * (1 - lineProgress)
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(1rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-      }}
-    >
+    <section className="panel panel--dark">
       <AutoScaleContent maxWidth="700px">
         {/* Intro text */}
         <p
+          className="text-subheading text-sage text-center leading-relaxed mb-lg"
           style={{
             opacity: introOpacity,
             transform: `translateY(${introY}px)`,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.5rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            lineHeight: 1.6,
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1rem)',
           }}
         >
           Over the past two decades, we've witnessed an unprecedented explosion of data on this planet.
         </p>
 
         <h2
-          className="heading"
+          className="text-heading text-cream text-bold text-center mb-lg"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1.8rem, 5dvh, 2.8rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.25rem)',
           }}
         >
           The Data Explosion
@@ -151,11 +130,11 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
 
           {/* Year labels positioned below graph */}
           <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 2.5rem 0 3rem' }}>
-            <span style={{ opacity: label2010Opacity, color: 'var(--sage)', fontSize: '0.8rem' }}>2005</span>
-            <span style={{ opacity: label2010Opacity, color: 'var(--sage)', fontSize: '0.8rem' }}>2010</span>
-            <span style={{ opacity: label2015Opacity, color: 'var(--sage)', fontSize: '0.8rem' }}>2015</span>
-            <span style={{ opacity: label2020Opacity, color: 'var(--sage)', fontSize: '0.8rem' }}>2020</span>
-            <span style={{ opacity: label2023Opacity, color: 'var(--accent-coral)', fontSize: '0.9rem', fontWeight: 600 }}>2023</span>
+            <span className="text-body-sm text-sage" style={{ opacity: label2010Opacity }}>2005</span>
+            <span className="text-body-sm text-sage" style={{ opacity: label2010Opacity }}>2010</span>
+            <span className="text-body-sm text-sage" style={{ opacity: label2015Opacity }}>2015</span>
+            <span className="text-body-sm text-sage" style={{ opacity: label2020Opacity }}>2020</span>
+            <span className="text-body-sm text-coral text-semibold" style={{ opacity: label2023Opacity }}>2023</span>
           </div>
 
           {/* Value callouts */}
@@ -171,42 +150,25 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
               border: '1px solid var(--accent-coral)',
             }}
           >
-            <span style={{ color: 'var(--accent-coral)', fontSize: 'clamp(1.3rem, 3.5dvh, 1.8rem)', fontWeight: 700 }}>120 ZB</span>
+            <span className="text-subheading text-coral text-bold">120 ZB</span>
           </div>
         </div>
 
         {/* Zettabyte definition */}
         <div
+          className="box-subtle text-center mb-md"
           style={{
             opacity: definitionOpacity,
             transform: `translateY(${definitionY}px)`,
-            textAlign: 'center',
-            marginBottom: 'clamp(0.4rem, 1dvh, 0.75rem)',
-            padding: 'clamp(0.4rem, 1dvh, 0.75rem) clamp(0.75rem, 1.5dvh, 1.25rem)',
-            background: 'rgba(71, 73, 36, 0.2)',
-            borderRadius: '6px',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(0.9rem, 2.5dvh, 1.2rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.5,
-              marginBottom: '0.2rem',
-            }}
-          >
-            <strong style={{ color: 'var(--line-art-cream)' }}>What's a zettabyte?</strong>
+          <p className="text-body-lg text-sage leading-normal mb-xs">
+            <strong className="text-cream">What's a zettabyte?</strong>
           </p>
-          <p
-            style={{
-              fontSize: 'clamp(0.85rem, 2.2dvh, 1.1rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.5,
-            }}
-          >
+          <p className="text-body text-sage leading-normal">
             1 ZB = 1 trillion gigabytes = 1,000,000,000,000,000 megabytes
             <br />
-            <span style={{ color: 'var(--dark-olive)', fontSize: '0.9em' }}>
+            <span className="text-dark text-body-sm">
               (That's a 1 followed by 21 zeros in bytes)
             </span>
           </p>
@@ -214,48 +176,27 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
 
         {/* Photo analogy */}
         <div
+          className="box-definition mb-lg"
           style={{
             opacity: analogyOpacity,
             transform: `translateY(${analogyY}px)`,
             textAlign: 'center',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.25rem)',
-            padding: 'clamp(0.5rem, 1.5dvh, 1rem) clamp(0.75rem, 1.5dvh, 1.25rem)',
-            background: 'rgba(71, 73, 36, 0.3)',
-            borderRadius: '8px',
-            borderLeft: '3px solid var(--sage)',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 3dvh, 1.4rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.5,
-              marginBottom: '0.3rem',
-            }}
-          >
-            120 zettabytes is roughly <strong style={{ color: 'var(--accent-coral)' }}>60 trillion photos</strong>.
+          <p className="text-body-lg text-cream leading-normal mb-xs">
+            120 zettabytes is roughly <strong className="text-coral">60 trillion photos</strong>.
           </p>
-          <p
-            style={{
-              fontSize: 'clamp(1.1rem, 3.2dvh, 1.5rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.5,
-            }}
-          >
+          <p className="text-subheading text-sage leading-normal">
             If you viewed one per second, it would take you{' '}
-            <strong style={{ color: 'var(--line-art-cream)' }}>1.9 million years</strong>.
+            <strong className="text-cream">1.9 million years</strong>.
           </p>
         </div>
 
         {/* Conclusion */}
         <p
+          className="text-subheading text-cream text-center text-medium mb-md"
           style={{
             opacity: conclusionOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.8rem)',
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            fontWeight: 500,
-            marginBottom: 'clamp(0.4rem, 1dvh, 0.75rem)',
           }}
         >
           And it's accelerating.
@@ -263,11 +204,9 @@ export default function PanelDataExplosion({ progress }: PanelDataExplosionProps
 
         {/* Source link */}
         <p
+          className="text-label text-dark text-center"
           style={{
             opacity: sourceOpacity,
-            fontSize: '0.7rem',
-            color: 'var(--dark-olive)',
-            textAlign: 'center',
           }}
         >
           <a

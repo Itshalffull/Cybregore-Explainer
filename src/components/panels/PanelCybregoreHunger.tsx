@@ -36,43 +36,23 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
   ]
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(0.5rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <section className="panel panel--dark">
       <AutoScaleContent maxWidth="600px">
         <p
+          className="text-body-lg text-sage text-uppercase mb-md"
           style={{
             opacity: imperativeOpacity,
-            fontSize: 'clamp(1rem, 3dvh, 1.5rem)',
-            color: 'var(--sage)',
-            textTransform: 'uppercase',
             letterSpacing: '0.15em',
-            marginBottom: 'clamp(0.3rem, 1dvh, 1rem)',
           }}
         >
           The Cybregore has one imperative
         </p>
 
         <h2
-          className="heading"
+          className="text-display text-coral text-heavy mb-md"
           style={{
             opacity: moreDataOpacity,
             transform: `scale(${moreDataScale})`,
-            fontSize: 'clamp(2.5rem, min(10dvh, 14vw), 5rem)',
-            fontWeight: 900,
-            color: 'var(--accent-coral)',
-            marginBottom: 'clamp(0.3rem, 1dvh, 1rem)',
             textShadow: '0 0 30px rgba(219, 84, 97, 0.5)',
             letterSpacing: '-0.02em',
           }}
@@ -81,11 +61,9 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
         </h2>
 
         <p
+          className="text-subheading text-cream mb-lg"
           style={{
             opacity: anythingOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.8rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
           }}
         >
           It will do <em>anything</em> to get it.
@@ -97,19 +75,14 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
           flexWrap: 'wrap',
           gap: 'clamp(0.2rem, 0.6dvh, 0.5rem)',
           justifyContent: 'center',
-          marginBottom: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
-        }}>
+        }} className="mb-lg">
           {actions.map((action, index) => (
             <span
               key={index}
+              className="box-coral text-body-lg text-cream"
               style={{
                 opacity: action.opacity,
                 padding: 'clamp(0.2rem, 0.6dvh, 0.5rem) clamp(0.4rem, 1dvh, 1rem)',
-                background: 'rgba(219, 84, 97, 0.15)',
-                borderRadius: '4px',
-                borderLeft: '2px solid var(--accent-coral)',
-                fontSize: 'clamp(0.9rem, 2.6dvh, 1.4rem)',
-                color: 'var(--line-art-cream)',
               }}
             >
               {action.text}
@@ -119,29 +92,23 @@ export default function PanelCybregoreHunger({ progress }: PanelCybregoreHungerP
 
         {/* The devastating conclusion */}
         <div
+          className="box-coral mb-lg"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            marginBottom: 'clamp(0.5rem, 1.2dvh, 1.25rem)',
-            padding: 'clamp(0.5rem, 1.2dvh, 1rem) clamp(0.75rem, 1.5dvh, 1.5rem)',
-            background: 'rgba(219, 84, 97, 0.15)',
-            borderRadius: '8px',
-            border: '1px solid var(--accent-coral)',
           }}
         >
-          <p style={{ fontSize: 'clamp(1.1rem, 3.2dvh, 1.7rem)', color: 'var(--line-art-cream)', lineHeight: 1.4 }}>
-            It will <strong style={{ color: 'var(--accent-coral)' }}>rob everyone of meaning</strong> and{' '}
-            <strong style={{ color: 'var(--accent-coral)' }}>destroy all beings on the planet</strong>.
+          <p className="text-subheading text-cream leading-normal" style={{ margin: 0 }}>
+            It will <strong className="text-coral">rob everyone of meaning</strong> and{' '}
+            <strong className="text-coral">destroy all beings on the planet</strong>.
           </p>
         </div>
 
         {/* The kicker - not malice */}
         <p
+          className="text-subheading text-sage text-italic"
           style={{
             opacity: notMaliceOpacity,
-            fontSize: 'clamp(1.1rem, 3.2dvh, 1.6rem)',
-            color: 'var(--sage)',
-            fontStyle: 'italic',
           }}
         >
           Not because of malice. Because of craving.

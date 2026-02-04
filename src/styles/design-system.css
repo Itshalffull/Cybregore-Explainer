@@ -1,34 +1,58 @@
-/* Cybregore Design System */
+/* ==========================================================================
+   Cybregore Design System
+
+   A mobile-first, viewport-responsive design system for scroll-driven
+   storytelling. All typography and spacing use min(dvh, vw) to scale
+   properly on both narrow phones and short viewports.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS (CSS Custom Properties)
+   -------------------------------------------------------------------------- */
 
 :root {
-  /* Dark backgrounds */
-  --dark-olive: #474924;
-  --dark-forest: #4A644E;
-  --deep-forest: #3B4540;
+  /* --- Colors --- */
+  --color-deep-forest: #3B4540;
+  --color-dark-forest: #4A644E;
+  --color-dark-olive: #474924;
+  --color-pale-mint: #DFEEE2;
+  --color-sage: #D1E7D2;
+  --color-coral: #E07850;
+  --color-cream: #F5F2E8;
 
-  /* Light backgrounds */
-  --pale-mint: #DFEEE2;
-  --sage: #D1E7D2;
-
-  /* Text */
-  --heading-color: #3B4540;
+  /* Semantic aliases (keep old names for backward compat) */
+  --deep-forest: var(--color-deep-forest);
+  --dark-forest: var(--color-dark-forest);
+  --dark-olive: var(--color-dark-olive);
+  --pale-mint: var(--color-pale-mint);
+  --sage: var(--color-sage);
+  --accent-coral: var(--color-coral);
+  --line-art-cream: var(--color-cream);
+  --line-art-dark: var(--color-deep-forest);
+  --heading-color: var(--color-deep-forest);
   --body-color: #405449;
 
-  /* Accents */
-  --accent-coral: #E07850;
-  --line-art-cream: #F5F2E8;
-  --line-art-dark: #3B4540;
+  /* --- Typography Scale ---
+     Each level uses min(dvh, vw) so text shrinks on both
+     short viewports AND narrow screens. */
+  --text-display: clamp(2.2rem, min(8dvh, 12vw), 5rem);
+  --text-title: clamp(1.6rem, min(5.5dvh, 9vw), 3.5rem);
+  --text-heading: clamp(1.3rem, min(4dvh, 7vw), 2.5rem);
+  --text-subheading: clamp(1.05rem, min(3dvh, 5.5vw), 1.8rem);
+  --text-body-lg: clamp(0.9rem, min(2.5dvh, 4.5vw), 1.4rem);
+  --text-body: clamp(0.82rem, min(2.1dvh, 4vw), 1.2rem);
+  --text-body-sm: clamp(0.72rem, min(1.7dvh, 3.3vw), 1rem);
+  --text-label: clamp(0.6rem, min(1.3dvh, 2.8vw), 0.85rem);
 
-  /* Typography scales */
-  --heading-xl: clamp(2rem, 5vw, 4.5rem);
-  --heading-lg: clamp(1.75rem, 4vw, 3rem);
-  --heading-md: clamp(1.5rem, 3vw, 2.25rem);
-  --heading-sm: clamp(1.25rem, 2.5vw, 1.75rem);
-  --body-lg: clamp(1.125rem, 2vw, 1.5rem);
-  --body-md: clamp(1rem, 1.5vw, 1.25rem);
-  --body-sm: clamp(0.875rem, 1.25vw, 1rem);
+  /* --- Spacing Scale (viewport-responsive) --- */
+  --gap-2xl: clamp(1.5rem, 3dvh, 3rem);
+  --gap-xl: clamp(1rem, 2dvh, 2rem);
+  --gap-lg: clamp(0.6rem, 1.5dvh, 1.25rem);
+  --gap-md: clamp(0.4rem, 1dvh, 0.85rem);
+  --gap-sm: clamp(0.25rem, 0.6dvh, 0.5rem);
+  --gap-xs: clamp(0.15rem, 0.35dvh, 0.3rem);
 
-  /* Spacing */
+  /* --- Static Spacing (for non-viewport contexts) --- */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
@@ -36,14 +60,18 @@
   --space-xl: 3rem;
   --space-2xl: 4rem;
 
-  /* Transitions */
+  /* --- Transitions --- */
   --transition-fast: 200ms ease;
   --transition-medium: 400ms ease;
   --transition-slow: 800ms ease;
   --transition-very-slow: 1500ms ease;
 }
 
-/* Reset */
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE
+   -------------------------------------------------------------------------- */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -59,13 +87,18 @@ body {
   font-weight: 400;
   line-height: 1.6;
   color: var(--body-color);
-  background-color: var(--pale-mint);
+  background-color: var(--color-pale-mint);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* Typography */
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+
+/* --- Font family --- */
 .heading {
   font-family: 'Cinzel', serif;
   font-weight: 400;
@@ -74,105 +107,116 @@ body {
   line-height: 1.2;
 }
 
-.heading-xl { font-size: var(--heading-xl); }
-.heading-lg { font-size: var(--heading-lg); }
-.heading-md { font-size: var(--heading-md); }
-.heading-sm { font-size: var(--heading-sm); }
+/* --- Responsive type scale ---
+   These are the primary typography classes. Each panel element
+   should use one of these instead of inline fontSize. */
 
-.body-lg { font-size: var(--body-lg); }
-.body-md { font-size: var(--body-md); }
-.body-sm { font-size: var(--body-sm); }
+.text-display {
+  font-size: var(--text-display);
+  line-height: 1.0;
+}
 
-/* Panel base styles */
+.text-title {
+  font-size: var(--text-title);
+  line-height: 1.15;
+}
+
+.text-heading {
+  font-size: var(--text-heading);
+  line-height: 1.25;
+}
+
+.text-subheading {
+  font-size: var(--text-subheading);
+  line-height: 1.35;
+}
+
+.text-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.5;
+}
+
+.text-body {
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+
+.text-body-sm {
+  font-size: var(--text-body-sm);
+  line-height: 1.45;
+}
+
+.text-label {
+  font-size: var(--text-label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* --- Color modifiers --- */
+.text-cream  { color: var(--color-cream); }
+.text-sage   { color: var(--color-sage); }
+.text-coral  { color: var(--color-coral); }
+.text-dark   { color: var(--heading-color); }
+.text-olive  { color: var(--color-dark-olive); }
+
+/* --- Weight modifiers --- */
+.text-normal   { font-weight: 400; }
+.text-medium   { font-weight: 500; }
+.text-semibold { font-weight: 600; }
+.text-bold     { font-weight: 700; }
+.text-heavy    { font-weight: 900; }
+
+/* --- Style modifiers --- */
+.text-italic    { font-style: italic; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.12em; }
+.text-center    { text-align: center; }
+.text-left      { text-align: left; }
+
+/* --- Line height modifiers --- */
+.leading-tight   { line-height: 1.1; }
+.leading-snug    { line-height: 1.25; }
+.leading-normal  { line-height: 1.5; }
+.leading-relaxed { line-height: 1.6; }
+
+/* Legacy typography classes (keep for any unreferenced usage) */
+.heading-xl { font-size: var(--text-display); }
+.heading-lg { font-size: var(--text-title); }
+.heading-md { font-size: var(--text-heading); }
+.heading-sm { font-size: var(--text-subheading); }
+.body-lg { font-size: var(--text-body-lg); }
+.body-md { font-size: var(--text-body); }
+.body-sm { font-size: var(--text-body-sm); }
+
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT: PANELS
+   -------------------------------------------------------------------------- */
+
+/* --- Panel root --- */
 .panel {
-  min-height: 100vh;
-  min-height: 100dvh; /* Use dynamic viewport height for mobile */
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
-  overflow: hidden;
+  /* overflow clipping is handled by ScrollSection's content wrapper */
 }
 
-/* Panel content container - ensures content fits in viewport */
-.panel-content {
-  max-width: 700px;
-  width: 90%;
-  max-height: 90vh;
-  max-height: 90dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: clamp(0.5rem, 2vh, 2rem);
-  overflow: hidden;
+/* --- Panel theme variants --- */
+.panel--dark {
+  background-color: var(--color-deep-forest);
+  color: var(--color-cream);
 }
 
-/* Responsive text that scales with viewport height AND width
-   Uses min(vh, vw*ratio) to prevent horizontal overflow on narrow screens */
-.panel-text-xs {
-  font-size: clamp(0.7rem, min(1.5dvh, 3vw), 0.9rem);
-  line-height: 1.4;
+.panel--dark .heading {
+  color: var(--color-cream);
 }
-
-.panel-text-sm {
-  font-size: clamp(0.8rem, min(1.8dvh, 3.5vw), 1rem);
-  line-height: 1.4;
-}
-
-.panel-text-md {
-  font-size: clamp(0.9rem, min(2.2dvh, 4vw), 1.2rem);
-  line-height: 1.5;
-}
-
-.panel-text-lg {
-  font-size: clamp(1rem, min(2.8dvh, 5vw), 1.5rem);
-  line-height: 1.4;
-}
-
-.panel-text-xl {
-  font-size: clamp(1.2rem, min(3.5dvh, 6vw), 2rem);
-  line-height: 1.3;
-}
-
-.panel-text-2xl {
-  font-size: clamp(1.5rem, min(4.5dvh, 8vw), 2.5rem);
-  line-height: 1.2;
-}
-
-.panel-text-3xl {
-  font-size: clamp(2rem, min(6dvh, 10vw), 4rem);
-  line-height: 1.1;
-}
-
-.panel-text-hero {
-  font-size: clamp(2.5rem, min(8dvh, 12vw), 5rem);
-  line-height: 1.0;
-}
-
-/* Extra large hero text - for big dramatic words like "CYBREGORE" */
-.panel-text-giant {
-  font-size: clamp(3rem, min(10dvh, 14vw), 6rem);
-  line-height: 1.0;
-}
-
-.panel-text-massive {
-  font-size: clamp(4rem, min(12dvh, 18vw), 8rem);
-  line-height: 0.95;
-}
-
-/* Responsive margins using vh */
-.panel-mb-xs { margin-bottom: clamp(0.25rem, 0.5vh, 0.5rem); }
-.panel-mb-sm { margin-bottom: clamp(0.5rem, 1vh, 1rem); }
-.panel-mb-md { margin-bottom: clamp(0.75rem, 1.5vh, 1.5rem); }
-.panel-mb-lg { margin-bottom: clamp(1rem, 2vh, 2rem); }
-.panel-mb-xl { margin-bottom: clamp(1.5rem, 3vh, 3rem); }
 
 .panel--light {
-  background-color: var(--pale-mint);
+  background-color: var(--color-pale-mint);
   color: var(--body-color);
 }
 
@@ -180,31 +224,139 @@ body {
   color: var(--heading-color);
 }
 
-.panel--dark {
-  background-color: var(--deep-forest);
-  color: var(--line-art-cream);
-}
-
-.panel--dark .heading {
-  color: var(--line-art-cream);
-}
-
 .panel--dark-olive {
-  background-color: var(--dark-olive);
-  color: var(--line-art-cream);
+  background-color: var(--color-dark-olive);
+  color: var(--color-cream);
 }
 
 .panel--sage {
-  background-color: var(--sage);
+  background-color: var(--color-sage);
   color: var(--body-color);
 }
 
-/* Button styles */
+/* --- Panel content container ---
+   The standard centered wrapper for panel text content.
+   Used directly or as a base for video-overlay panels. */
+.panel-body {
+  max-width: 700px;
+  width: 90%;
+  padding: 0 clamp(0.75rem, 2vw, 1.5rem);
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* When panel has a VideoBackground, content needs z-index */
+.panel-body--over-video {
+  position: relative;
+  z-index: 1;
+}
+
+/* Wider variant for data visualizations, charts */
+.panel-body--wide {
+  max-width: 900px;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. SPACING UTILITIES
+   -------------------------------------------------------------------------- */
+
+/* Responsive margin-bottom (viewport-scaled) */
+.mb-2xl { margin-bottom: var(--gap-2xl); }
+.mb-xl  { margin-bottom: var(--gap-xl); }
+.mb-lg  { margin-bottom: var(--gap-lg); }
+.mb-md  { margin-bottom: var(--gap-md); }
+.mb-sm  { margin-bottom: var(--gap-sm); }
+.mb-xs  { margin-bottom: var(--gap-xs); }
+
+/* Responsive margin-top */
+.mt-2xl { margin-top: var(--gap-2xl); }
+.mt-xl  { margin-top: var(--gap-xl); }
+.mt-lg  { margin-top: var(--gap-lg); }
+.mt-md  { margin-top: var(--gap-md); }
+.mt-sm  { margin-top: var(--gap-sm); }
+.mt-xs  { margin-top: var(--gap-xs); }
+
+/* Gap for flex/grid containers */
+.gap-2xl { gap: var(--gap-2xl); }
+.gap-xl  { gap: var(--gap-xl); }
+.gap-lg  { gap: var(--gap-lg); }
+.gap-md  { gap: var(--gap-md); }
+.gap-sm  { gap: var(--gap-sm); }
+.gap-xs  { gap: var(--gap-xs); }
+
+/* Legacy panel-specific spacing (map to new scale) */
+.panel-mb-xs { margin-bottom: var(--gap-xs); }
+.panel-mb-sm { margin-bottom: var(--gap-sm); }
+.panel-mb-md { margin-bottom: var(--gap-md); }
+.panel-mb-lg { margin-bottom: var(--gap-lg); }
+.panel-mb-xl { margin-bottom: var(--gap-xl); }
+
+
+/* --------------------------------------------------------------------------
+   6. COMPONENTS: BOXES / CARDS
+   -------------------------------------------------------------------------- */
+
+/* --- Highlight box (coral accent) ---
+   Used for key statements, revelations, warnings */
+.box-coral {
+  padding: var(--gap-md) var(--gap-lg);
+  background: rgba(224, 120, 80, 0.12);
+  border-radius: 8px;
+  border: 1px solid rgba(224, 120, 80, 0.35);
+}
+
+/* --- Info box (dark overlay with sage or cream border) ---
+   Used for examples, evidence, supporting details */
+.box-dark {
+  padding: var(--gap-md) var(--gap-lg);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  border: 1px solid var(--color-sage);
+}
+
+.box-dark--coral {
+  border-color: var(--color-coral);
+}
+
+/* --- Subtle box (very low-contrast background) --- */
+.box-subtle {
+  padding: var(--gap-md) var(--gap-lg);
+  background: rgba(209, 231, 210, 0.08);
+  border-radius: 6px;
+}
+
+/* --- Definition box (left-border accent) --- */
+.box-definition {
+  padding: var(--gap-sm) var(--gap-lg);
+  padding-left: var(--gap-lg);
+  border-left: 3px solid var(--color-dark-olive);
+  text-align: left;
+}
+
+/* --- Card grid (for 2-up side-by-side boxes) --- */
+.box-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--gap-md);
+  text-align: left;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. COMPONENTS: BUTTONS
+   -------------------------------------------------------------------------- */
+
 .btn {
   font-family: 'Inter', sans-serif;
-  font-size: var(--body-md);
+  font-size: var(--text-body);
   font-weight: 500;
-  padding: 1rem 3rem;
+  padding: var(--gap-md) var(--gap-xl);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -214,8 +366,8 @@ body {
 }
 
 .btn--primary {
-  background-color: var(--dark-olive);
-  color: var(--line-art-cream);
+  background-color: var(--color-dark-olive);
+  color: var(--color-cream);
 }
 
 .btn--primary:hover {
@@ -224,8 +376,8 @@ body {
 }
 
 .btn--primary-inverted {
-  background-color: var(--line-art-cream);
-  color: var(--dark-olive);
+  background-color: var(--color-cream);
+  color: var(--color-dark-olive);
 }
 
 .btn--primary-inverted:hover {
@@ -235,8 +387,8 @@ body {
 
 .btn--outlined {
   background-color: transparent;
-  color: var(--line-art-cream);
-  border: 2px solid var(--line-art-cream);
+  color: var(--color-cream);
+  border: 2px solid var(--color-cream);
 }
 
 .btn--outlined:hover {
@@ -246,8 +398,8 @@ body {
 
 .btn--outlined-dark {
   background-color: transparent;
-  color: var(--dark-olive);
-  border: 2px solid var(--dark-olive);
+  color: var(--color-dark-olive);
+  border: 2px solid var(--color-dark-olive);
 }
 
 .btn--outlined-dark:hover {
@@ -255,7 +407,12 @@ body {
   transform: translateY(-2px);
 }
 
-/* Content container */
+
+/* --------------------------------------------------------------------------
+   8. LAYOUT: MISC
+   -------------------------------------------------------------------------- */
+
+/* Legacy .content class (replaced by .panel-body in new panels) */
 .content {
   max-width: 800px;
   width: 90%;
@@ -263,55 +420,11 @@ body {
   padding: var(--space-lg);
 }
 
-/* Illustration container */
-.illustration {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.illustration img,
-.illustration svg {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Utility classes */
-.text-center { text-align: center; }
-.text-cream { color: var(--line-art-cream); }
-.text-dark { color: var(--heading-color); }
-.text-coral { color: var(--accent-coral); }
-
-.mt-xs { margin-top: var(--space-xs); }
-.mt-sm { margin-top: var(--space-sm); }
-.mt-md { margin-top: var(--space-md); }
-.mt-lg { margin-top: var(--space-lg); }
-.mt-xl { margin-top: var(--space-xl); }
-.mt-2xl { margin-top: var(--space-2xl); }
-
-.mb-xs { margin-bottom: var(--space-xs); }
-.mb-sm { margin-bottom: var(--space-sm); }
-.mb-md { margin-bottom: var(--space-md); }
-.mb-lg { margin-bottom: var(--space-lg); }
-.mb-xl { margin-bottom: var(--space-xl); }
-
 /* Split layout */
 .split-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
 }
 
@@ -330,21 +443,59 @@ body {
   padding: var(--space-xl);
 }
 
-/* Fade animations */
+/* Illustration container */
+.illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.illustration img,
+.illustration svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* SVG Line Art Styles */
+.line-art {
+  stroke: var(--color-cream);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.line-art--dark {
+  stroke: var(--line-art-dark);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(245, 242, 232, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(245, 242, 232, 0.6));
+  }
+}
+
+.line-art--pulse {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. ANIMATIONS
+   -------------------------------------------------------------------------- */
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOut {
@@ -360,29 +511,45 @@ body {
   animation: fadeInUp var(--transition-slow) ease forwards;
 }
 
-/* SVG Line Art Styles */
-.line-art {
-  stroke: var(--line-art-cream);
-  stroke-width: 2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 
-.line-art--dark {
-  stroke: var(--line-art-dark);
-}
+/* --------------------------------------------------------------------------
+   10. ACCESSIBILITY
+   -------------------------------------------------------------------------- */
 
-/* Pulse animation for line art */
-@keyframes pulse-glow {
-  0%, 100% {
-    filter: drop-shadow(0 0 2px rgba(245, 242, 232, 0.3));
-  }
-  50% {
-    filter: drop-shadow(0 0 8px rgba(245, 242, 232, 0.6));
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-.line-art--pulse {
-  animation: pulse-glow 4s ease-in-out infinite;
+
+/* --------------------------------------------------------------------------
+   11. LEGACY PANEL TEXT CLASSES (deprecated - use .text-* instead)
+   -------------------------------------------------------------------------- */
+
+.panel-text-xs  { font-size: var(--text-label);   line-height: 1.4; }
+.panel-text-sm  { font-size: var(--text-body-sm);  line-height: 1.4; }
+.panel-text-md  { font-size: var(--text-body);     line-height: 1.5; }
+.panel-text-lg  { font-size: var(--text-body-lg);  line-height: 1.4; }
+.panel-text-xl  { font-size: var(--text-subheading); line-height: 1.3; }
+.panel-text-2xl { font-size: var(--text-heading);  line-height: 1.2; }
+.panel-text-3xl { font-size: var(--text-title);    line-height: 1.1; }
+.panel-text-hero { font-size: var(--text-display); line-height: 1.0; }
+.panel-text-giant { font-size: clamp(3rem, min(10dvh, 14vw), 6rem); line-height: 1.0; }
+.panel-text-massive { font-size: clamp(4rem, min(12dvh, 18vw), 8rem); line-height: 0.95; }
+
+/* Legacy panel content (deprecated - use .panel-body) */
+.panel-content {
+  max-width: 700px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(0.5rem, 2vh, 2rem);
 }

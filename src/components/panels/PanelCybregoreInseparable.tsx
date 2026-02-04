@@ -77,30 +77,12 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
   const activeConnection = activeIndex >= 0 ? connections[activeIndex] : null
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(0.5rem, 1.5dvh, 1.5rem)',
-        boxSizing: 'border-box',
-        overflow: 'hidden',
-      }}
-    >
+    <section className="panel panel--dark">
       <AutoScaleContent maxWidth="750px">
         <h2
-          className="heading"
+          className="text-heading text-cream text-bold text-center mb-sm"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.8rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: 'clamp(0.3rem, 0.8dvh, 0.6rem)',
           }}
         >
           Where does one part end and another begin?
@@ -183,64 +165,41 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
             maxWidth: '400px',
           }}>
             {activeConnection ? (
-              <div
-                style={{
-                  padding: 'clamp(0.3rem, 0.8dvh, 0.6rem) clamp(0.5rem, 1.5dvh, 0.75rem)',
-                  background: 'rgba(219, 84, 97, 0.15)',
-                  borderRadius: '8px',
-                  border: '1px solid var(--accent-coral)',
-                  textAlign: 'center',
-                }}
-              >
-                <p style={{
-                  fontSize: 'clamp(1rem, 2.2dvh, 1.3rem)',
-                  color: 'var(--line-art-cream)',
-                  lineHeight: 1.35,
-                  margin: 0,
-                }}>
-                  <span style={{ color: 'var(--accent-coral)', fontWeight: 700 }}>{activeConnection.from}</span>
+              <div className="box-coral text-center">
+                <p className="text-body-lg text-cream leading-snug" style={{ margin: 0 }}>
+                  <span className="text-coral text-bold">{activeConnection.from}</span>
                   {' ↔ '}
-                  <span style={{ color: 'var(--accent-coral)', fontWeight: 700 }}>{activeConnection.to}</span>
+                  <span className="text-coral text-bold">{activeConnection.to}</span>
                   <br />
-                  <span style={{ color: 'var(--sage)', fontSize: 'clamp(0.85rem, 1.8dvh, 1.1rem)' }}>
+                  <span className="text-body text-sage">
                     {activeConnection.text}
                   </span>
                 </p>
               </div>
             ) : conn10Opacity >= 1 ? (
-              <p style={{
-                fontSize: 'clamp(0.9rem, 2dvh, 1.2rem)',
-                color: 'var(--sage)',
-                textAlign: 'center',
-                fontStyle: 'italic',
-              }}>
+              <p className="text-body text-sage text-center text-italic">
                 All connected. Every part touches every other.
               </p>
             ) : null}
           </div>
 
           {/* Connection counter */}
-          <div style={{
-            opacity: titleOpacity,
-            fontSize: 'clamp(0.8rem, 1.8dvh, 1.1rem)',
-            color: 'var(--dark-olive)',
-            textAlign: 'center',
-          }}>
+          <div
+            className="text-body-sm text-olive text-center"
+            style={{
+              opacity: titleOpacity,
+            }}
+          >
             {Math.min(10, connections.filter(c => c.opacity >= 1).length)} / 10 connections
           </div>
         </div>
 
         {/* The boundary insight */}
         <p
+          className="text-subheading text-sage text-center mt-md mb-sm leading-normal"
           style={{
             opacity: boundaryOpacity,
             transform: `translateY(${boundaryY}px)`,
-            fontSize: 'clamp(1.05rem, 2.6dvh, 1.5rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            marginTop: 'clamp(0.4rem, 1dvh, 0.75rem)',
-            marginBottom: 'clamp(0.3rem, 0.8dvh, 0.5rem)',
-            lineHeight: 1.4,
           }}
         >
           Any "boundaries" between them are arbitrary.
@@ -248,17 +207,13 @@ export default function PanelCybregoreInseparable({ progress }: PanelCybregoreIn
 
         {/* The organism conclusion */}
         <p
+          className="text-subheading text-cream text-semibold text-center leading-snug"
           style={{
             opacity: organismOpacity,
             transform: `translateY(${organismY}px)`,
-            fontSize: 'clamp(1.1rem, 2.8dvh, 1.6rem)',
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            fontWeight: 600,
-            lineHeight: 1.35,
           }}
         >
-          They are <span style={{ color: 'var(--accent-coral)' }}>one organism</span>.
+          They are <span className="text-coral">one organism</span>.
           <br />
           And you are part of it.
         </p>

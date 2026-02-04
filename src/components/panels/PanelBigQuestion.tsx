@@ -15,14 +15,8 @@ export default function PanelBigQuestion({ progress }: PanelBigQuestionProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
         overflow: 'hidden',
       }}
@@ -34,47 +28,27 @@ export default function PanelBigQuestion({ progress }: PanelBigQuestionProps) {
         opacity={0.4}
       />
 
-      <div
-        className="content"
-        style={{
-          maxWidth: '800px',
-          maxHeight: '92dvh',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '0 clamp(1rem, 2dvh, 2rem)',
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+      <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <p
+          className="text-heading text-cream leading-normal mb-2xl text-medium"
           style={{
             opacity: question1Opacity,
             transform: `translateY(${question1Y}px)`,
-            fontSize: 'clamp(1.4rem, 4.5dvh, 2.4rem)',
-            color: 'var(--line-art-cream)',
-            lineHeight: 1.5,
-            marginBottom: 'clamp(1.5rem, 3dvh, 2.5rem)',
-            fontWeight: 500,
           }}
         >
           How did we get to this point?
         </p>
 
         <p
+          className="text-heading text-sage leading-relaxed"
           style={{
             opacity: question2Opacity,
             transform: `translateY(${question2Y}px)`,
-            fontSize: 'clamp(1.3rem, 4dvh, 2rem)',
-            color: 'var(--sage)',
-            lineHeight: 1.6,
           }}
         >
           Why is it that every time we create more intelligence to solve our problems,
           <br />
-          <span style={{ color: 'var(--accent-coral)' }}>
+          <span className="text-coral">
             we create even bigger problems?
           </span>
         </p>

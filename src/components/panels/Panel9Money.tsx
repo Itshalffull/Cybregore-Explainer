@@ -21,46 +21,27 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
   const transitionOpacity = lerp(progress, 0.82, 0.94, 0, 1)
 
   return (
-    <section
-      className="panel"
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        background: 'var(--deep-forest)',
-      }}
-    >
+    <section className="panel panel--dark">
       <VideoBackground
         videoSrc="/assets/videos/money-loop.mp4"
         imageFallback="/assets/images/money.png"
         opacity={0.4}
       />
-      <div className="content" style={{ position: 'relative', zIndex: 1, maxWidth: '700px', padding: '0 2rem' }}>
+      <div className="panel-body panel-body--over-video">
         {/* Era label */}
         <p
+          className="text-label text-sage mb-xs"
           style={{
             opacity: eraOpacity,
-            fontSize: '0.9rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            color: 'var(--sage)',
-            marginBottom: '0.5rem',
           }}
         >
           ~5,000 years ago
         </p>
 
         <h2
-          className="heading"
+          className="text-title text-cream text-bold mb-xs"
           style={{
             opacity: eraOpacity,
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            marginBottom: '0.5rem',
           }}
         >
           Money
@@ -68,40 +49,30 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
 
         {/* AI Label */}
         <p
+          className="text-label text-coral mb-xl"
           style={{
             opacity: aiLabelOpacity,
-            fontSize: '0.85rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.15em',
-            color: 'var(--accent-coral)',
-            marginBottom: '2rem',
           }}
         >
           AI #3: Abstract Value
         </p>
 
         {/* Problem */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div className="mb-lg">
           <p
+            className="text-label text-dark mb-xs"
             style={{
               opacity: problemOpacity,
               transform: `translateY(${problemY}px)`,
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--dark-forest)',
-              marginBottom: '0.4rem',
             }}
           >
             Problem
           </p>
           <p
+            className="text-body-lg text-cream leading-normal"
             style={{
               opacity: problemOpacity,
               transform: `translateY(${problemY}px)`,
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.5,
             }}
           >
             Property enables trade, but trade is clunky. How many chickens for a cow? What if I don't want chickens?
@@ -109,27 +80,21 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
         </div>
 
         {/* Solution */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div className="mb-lg">
           <p
+            className="text-label text-dark mb-xs"
             style={{
               opacity: solutionOpacity,
               transform: `translateY(${solutionY}px)`,
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--dark-forest)',
-              marginBottom: '0.4rem',
             }}
           >
             The AI
           </p>
           <p
+            className="text-body-lg text-sage leading-normal"
             style={{
               opacity: solutionOpacity,
               transform: `translateY(${solutionY}px)`,
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.5,
             }}
           >
             Abstract value into tokens. Shells. Coins. Numbers. A shared hallucination layered on property.
@@ -137,28 +102,21 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
         </div>
 
         {/* New Problem */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div className="mb-lg">
           <p
+            className="text-label text-dark mb-xs"
             style={{
               opacity: newProblemOpacity,
               transform: `translateY(${newProblemY}px)`,
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--dark-forest)',
-              marginBottom: '0.4rem',
             }}
           >
             New problem created
           </p>
           <p
+            className="text-body-lg text-sage leading-normal text-italic"
             style={{
               opacity: newProblemOpacity,
               transform: `translateY(${newProblemY}px)`,
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-              color: 'var(--sage)',
-              lineHeight: 1.5,
-              fontStyle: 'italic',
             }}
           >
             Accumulation. Debt. Those with tokens control those without. Value divorced from relationship.
@@ -166,27 +124,21 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
         </div>
 
         {/* Destruction data */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        <div className="mb-lg">
           <p
+            className="text-label text-coral mb-xs"
             style={{
               opacity: destructionOpacity,
               transform: `translateY(${destructionY}px)`,
-              fontSize: '0.8rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              color: 'var(--accent-coral)',
-              marginBottom: '0.4rem',
             }}
           >
             Cost
           </p>
           <p
+            className="text-body-lg text-cream leading-normal"
             style={{
               opacity: destructionOpacity,
               transform: `translateY(${destructionY}px)`,
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-              color: 'var(--line-art-cream)',
-              lineHeight: 1.5,
             }}
           >
             Resource extraction accelerates. Mining, logging, fishing — anything that can be sold, is. First regional ecosystems collapse.
@@ -195,13 +147,9 @@ export default function Panel9Money({ progress }: Panel9MoneyProps) {
 
         {/* Transition */}
         <p
+          className="text-body text-sage text-italic text-center mt-md"
           style={{
             opacity: transitionOpacity,
-            fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-            color: 'var(--sage)',
-            fontStyle: 'italic',
-            textAlign: 'center',
-            marginTop: '1rem',
           }}
         >
           But how to coordinate millions across vast distances?

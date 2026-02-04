@@ -151,7 +151,7 @@ export default function ScrollSection({
       <div
         ref={contentRef}
         style={{
-          height: '100vh',
+          height: '100dvh',
           width: '100%',
           overflow: 'hidden',
         }}

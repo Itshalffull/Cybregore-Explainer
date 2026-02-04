@@ -19,14 +19,8 @@ export default function Panel21TheVoid({ progress }: Panel21TheVoidProps) {
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'var(--deep-forest)',
       }}
     >
@@ -35,98 +29,65 @@ export default function Panel21TheVoid({ progress }: Panel21TheVoidProps) {
         imageFallback="/assets/images/void.png"
         opacity={0.5}
       />
-      <div className="content" style={{
-        position: 'relative',
-        zIndex: 1,
-        maxWidth: '700px',
-        padding: '0 2rem',
-        maxHeight: '92dvh',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}>
+      <div className="panel-body panel-body--over-video">
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line1Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.6rem, 1dvh, 1.2rem)',
-            lineHeight: 1.6,
           }}
         >
           And then you start to feel it.
         </p>
 
         <p
+          className="text-heading text-cream mb-lg leading-normal"
           style={{
             opacity: line2Opacity,
-            fontSize: 'clamp(1.3rem, 3.5dvh, 2rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.8rem, 1.2dvh, 1.5rem)',
-            lineHeight: 1.5,
           }}
         >
           The meaninglessness underneath.
         </p>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line3Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.8rem, 1.2dvh, 1.5rem)',
-            lineHeight: 1.6,
           }}
         >
           That feeling is unbearable.
         </p>
 
         <p
+          className="text-heading text-coral mb-lg leading-normal text-medium"
           style={{
             opacity: line4Opacity,
-            fontSize: 'clamp(1.2rem, 3.5dvh, 1.9rem)',
-            color: 'var(--accent-coral)',
-            marginBottom: 'clamp(0.6rem, 1dvh, 1.2rem)',
-            lineHeight: 1.5,
-            fontWeight: 500,
           }}
         >
           So you scroll again.
         </p>
 
         <p
+          className="text-subheading text-sage mb-lg leading-relaxed"
           style={{
             opacity: line5Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.8rem, 1.2dvh, 1.5rem)',
-            lineHeight: 1.6,
           }}
         >
           The scroll isn't seeking pleasure.
         </p>
 
         <p
+          className="text-heading text-cream mb-lg leading-snug text-semibold"
           style={{
             opacity: line6Opacity,
-            fontSize: 'clamp(1.4rem, 4dvh, 2.3rem)',
-            color: 'var(--line-art-cream)',
-            marginBottom: 'clamp(0.8rem, 1.2dvh, 1.5rem)',
-            lineHeight: 1.4,
-            fontWeight: 600,
           }}
         >
           It's fleeing pain.
         </p>
 
         <p
+          className="text-subheading text-sage leading-relaxed text-italic"
           style={{
             opacity: line7Opacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
-            lineHeight: 1.6,
-            fontStyle: 'italic',
           }}
         >
           We face the void.

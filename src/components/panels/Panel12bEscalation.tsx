@@ -28,59 +28,32 @@ export default function Panel12bEscalation({ progress }: Panel12bEscalationProps
   const lineOpacities = [line1Opacity, line2Opacity, line3Opacity, line4Opacity]
 
   return (
-    <section
-      className="panel"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
-        background: 'var(--deep-forest)',
-        padding: 'clamp(0.5rem, 2dvh, 2rem)',
-        boxSizing: 'border-box',
-      }}
-    >
-      <div className="panel-content" style={{
-        maxWidth: '800px',
-        width: '90%',
-        maxHeight: '92dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}>
+    <section className="panel panel--dark">
+      <div className="panel-body panel-body--wide">
         <h2
-          className="heading"
+          className="text-title text-cream text-bold text-center mb-xs"
           style={{
             opacity: titleOpacity,
-            fontSize: 'clamp(1.8rem, 6dvh, 3rem)',
-            fontWeight: 700,
-            color: 'var(--line-art-cream)',
-            textAlign: 'center',
-            marginBottom: 'clamp(0.2rem, 0.5dvh, 0.5rem)',
           }}
         >
           The Pattern
         </h2>
 
         <p
+          className="text-body-lg text-sage text-center mb-2xl"
           style={{
             opacity: patternOpacity,
-            fontSize: 'clamp(1rem, 3dvh, 1.5rem)',
-            color: 'var(--sage)',
-            textAlign: 'center',
-            marginBottom: 'clamp(1rem, 2.5dvh, 2.5rem)',
           }}
         >
           Each AI solves a problem. Each creates a bigger one. Each costs more life.
         </p>
 
         {/* Era progression */}
-        <div style={{ marginBottom: 'clamp(1rem, 2.5dvh, 2.5rem)' }}>
+        <div className="mb-2xl">
           {eras.map((era, index) => (
             <div
               key={index}
+              className="text-body-lg"
               style={{
                 opacity: lineOpacities[index],
                 display: 'grid',
@@ -92,30 +65,14 @@ export default function Panel12bEscalation({ progress }: Panel12bEscalationProps
                 borderBottom: index < eras.length - 1 ? '1px solid var(--dark-olive)' : 'none',
               }}
             >
-              <span
-                style={{
-                  fontSize: 'clamp(0.9rem, 2.5dvh, 1.3rem)',
-                  color: 'var(--accent-coral)',
-                  textAlign: 'right',
-                }}
-              >
+              <span className="text-coral text-right">
                 {era.ai}
               </span>
-              <span
-                style={{
-                  fontSize: 'clamp(1rem, 3dvh, 1.5rem)',
-                  color: 'var(--dark-forest)',
-                }}
-              >
+              <span className="text-dark text-body-lg">
                 →
               </span>
-              <span
-                style={{
-                  fontSize: 'clamp(0.9rem, 2.5dvh, 1.3rem)',
-                  color: 'var(--line-art-cream)',
-                }}
-              >
-                {era.cost} <span style={{ color: 'var(--sage)' }}>({era.scale})</span>
+              <span className="text-cream">
+                {era.cost} <span className="text-sage">({era.scale})</span>
               </span>
             </div>
           ))}
@@ -123,29 +80,16 @@ export default function Panel12bEscalation({ progress }: Panel12bEscalationProps
 
         {/* Conclusion */}
         <div
+          className="text-center"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
-            textAlign: 'center',
           }}
         >
-          <p
-            style={{
-              fontSize: 'clamp(1.2rem, 3.5dvh, 2rem)',
-              color: 'var(--line-art-cream)',
-              fontWeight: 500,
-              marginBottom: 'clamp(0.3rem, 0.8dvh, 1rem)',
-            }}
-          >
+          <p className="text-subheading text-cream text-medium mb-md">
             Each AI accelerates the next.
           </p>
-          <p
-            style={{
-              fontSize: 'clamp(1rem, 3dvh, 1.6rem)',
-              color: 'var(--sage)',
-              fontStyle: 'italic',
-            }}
-          >
+          <p className="text-body-lg text-sage text-italic">
             But what's driving this acceleration now?
           </p>
         </div>

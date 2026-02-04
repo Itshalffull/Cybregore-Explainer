@@ -19,46 +19,29 @@ export default function Panel1Setup({ progress }: Panel1SetupProps) {
       className="panel panel--dark"
       style={{
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100dvh',
         background: 'transparent',
       }}
     >
-      <div className="content" style={{
+      <div className="panel-body panel-body--wide" style={{
         position: 'relative',
         zIndex: 1,
-        textAlign: 'center',
-        maxWidth: '900px',
-        padding: '0 2rem',
         maxHeight: '92dvh',
         overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
       }}>
         <h1
-          className="heading"
+          className="text-title text-cream leading-snug"
           style={{
             opacity: textOpacity,
             transform: `translateY(${textY}px)`,
-            fontSize: 'clamp(2rem, min(7dvh, 10vw), 4.5rem)',
-            fontWeight: 400,
-            lineHeight: 1.2,
-            color: 'var(--line-art-cream)',
           }}
         >
           AI is on track to destroy everything you love.
         </h1>
 
         <p
+          className="text-body-lg text-sage mt-2xl"
           style={{
             opacity: scrollHintOpacity,
-            marginTop: 'clamp(2rem, 4dvh, 4rem)',
-            color: 'var(--sage)',
-            fontSize: 'clamp(1rem, 2dvh, 1.5rem)',
           }}
         >
           ↓

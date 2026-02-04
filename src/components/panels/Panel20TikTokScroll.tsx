@@ -78,7 +78,7 @@ export default function Panel20TikTokScroll({ progress }: Panel20TikTokScrollPro
 
   return (
     <section
-      className="panel"
+      className="panel panel--dark"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -98,10 +98,9 @@ export default function Panel20TikTokScroll({ progress }: Panel20TikTokScrollPro
       }}>
         {/* Intro text */}
         <p
+          className="text-subheading text-sage"
           style={{
             opacity: introOpacity,
-            fontSize: 'clamp(1.1rem, 3dvh, 1.7rem)',
-            color: 'var(--sage)',
             margin: 0,
           }}
         >
@@ -110,10 +109,9 @@ export default function Panel20TikTokScroll({ progress }: Panel20TikTokScrollPro
 
         {/* Current content label - shows ABOVE the phone */}
         <p
+          className="text-heading text-semibold"
           style={{
             opacity: currentLabel.opacity,
-            fontSize: 'clamp(1.3rem, 4dvh, 2.5rem)',
-            fontWeight: 600,
             color: currentLabel.item.color,
             margin: 'clamp(0.3rem, 0.8dvh, 1rem) 0 0 0',
             minHeight: 'clamp(1.2rem, 3dvh, 2.5rem)',
@@ -293,26 +291,22 @@ export default function Panel20TikTokScroll({ progress }: Panel20TikTokScrollPro
         }}
       >
         <p
+          className="text-subheading text-sage mb-sm leading-normal"
           style={{
-            fontSize: 'clamp(1rem, 2.8dvh, 1.6rem)',
-            color: 'var(--sage)',
-            marginBottom: 'clamp(0.3rem, 0.6dvh, 1rem)',
-            lineHeight: 1.5,
+            opacity: 1,
           }}
         >
           Each video is a micro-narrative. A tiny world.
         </p>
         <p
+          className="text-subheading text-cream leading-normal"
           style={{
-            fontSize: 'clamp(1.1rem, 3dvh, 1.8rem)',
-            color: 'var(--line-art-cream)',
-            lineHeight: 1.5,
             margin: 0,
           }}
         >
           But they come so fast, in such disconnected succession,
           <br />
-          <span style={{ color: 'var(--sage)' }}>
+          <span className="text-sage">
             that your nervous system can't integrate any of it.
           </span>
         </p>
