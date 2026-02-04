@@ -40,25 +40,25 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
 
         <div className="mb-xl">
           <p
-            className="text-body-lg text-cream mb-md leading-relaxed"
+            className="text-body text-cream mb-md leading-relaxed"
             style={{ opacity: line1Opacity }}
           >
             An egregore is an old occult concept:
           </p>
           <p
-            className="text-subheading text-sage text-italic mb-md leading-relaxed"
+            className="text-title text-sage text-italic mb-md leading-relaxed"
             style={{ opacity: line2Opacity }}
           >
             A collective entity that emerges from group thought.
           </p>
           <p
-            className="text-body-lg text-sage mb-md leading-relaxed"
+            className="text-body text-sage mb-md leading-relaxed"
             style={{ opacity: line3Opacity }}
           >
             When enough minds focus on the same thing, something larger forms. A corporation. A nation. A movement. It has goals that aren't any individual's goals. It acts through people, but isn't any person.
           </p>
           <p
-            className="text-body-lg text-cream text-medium leading-relaxed"
+            className="text-body text-cream text-medium leading-relaxed"
             style={{ opacity: line4Opacity }}
           >
             An egregore is an intelligence born from collective attention.
@@ -66,14 +66,14 @@ export default function PanelEgregore({ progress }: PanelEgregoreProps) {
         </div>
 
         <p
-          className="text-subheading text-coral leading-relaxed"
+          className="text-title text-coral leading-relaxed"
           style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
         >
           Now imagine an egregore fed by billions of cyborgs, 24 hours a day.
         </p>
 
         <p
-          className="text-subheading text-cream text-medium mt-xl"
+          className="text-title text-cream text-medium mt-xl"
           style={{ opacity: transitionOpacity }}
         >
           Cyborg + Egregore = Cybregore

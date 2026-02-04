@@ -41,7 +41,7 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
       <AutoScaleContent maxWidth="650px" style={{ position: 'relative', zIndex: 1 }}>
         {/* Intro */}
         <p
-          className="text-subheading text-sage text-center mb-xl"
+          className="text-body text-sage text-center mb-xl"
           style={{
             opacity: introOpacity,
             transform: `translateY(${introY}px)`,
@@ -52,11 +52,10 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Hungry Ghost title */}
         <h2
-          className="text-display text-coral text-bold text-center mb-xl"
+          className="text-display text-coral text-bold text-center text-glow-coral mb-xl"
           style={{
             opacity: hungryGhostOpacity,
             transform: `scale(${hungryGhostScale})`,
-            textShadow: '0 0 30px rgba(219, 84, 97, 0.4)',
           }}
         >
           Hungry Ghosts
@@ -70,7 +69,7 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
             transform: `translateY(${descriptionY}px)`,
           }}
         >
-          <p className="text-subheading text-cream leading-relaxed" style={{ margin: 0 }}>
+          <p className="text-body text-cream leading-relaxed" style={{ margin: 0 }}>
             Beings with <em className="text-coral">huge empty bellies</em> and{' '}
             <em className="text-coral">tiny throats</em>.
             <br /><br />
@@ -80,7 +79,7 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
 
         {/* Always craving */}
         <p
-          className="text-subheading text-cream text-center leading-relaxed mb-xl"
+          className="text-body text-cream text-center leading-relaxed mb-xl"
           style={{
             opacity: alwaysCravingOpacity,
           }}

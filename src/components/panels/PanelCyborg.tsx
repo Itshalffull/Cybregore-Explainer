@@ -58,7 +58,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
 
         <div className="mb-xl">
           <p
-            className="text-body-lg text-cream leading-relaxed mb-md"
+            className="text-body text-cream leading-relaxed mb-md"
             style={{
               opacity: line1Opacity,
             }}
@@ -67,7 +67,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
           </p>
 
           <p
-            className="text-body-lg text-sage leading-relaxed mb-md"
+            className="text-body text-sage leading-relaxed mb-md"
             style={{
               opacity: line2Opacity,
             }}
@@ -76,7 +76,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
           </p>
 
           <p
-            className="text-body-lg text-sage leading-relaxed mb-md"
+            className="text-body text-sage leading-relaxed mb-md"
             style={{
               opacity: line3Opacity,
             }}
@@ -85,7 +85,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
           </p>
 
           <p
-            className="text-body-lg text-cream text-medium leading-relaxed"
+            className="text-body text-cream text-medium leading-relaxed"
             style={{
               opacity: line4Opacity,
             }}
@@ -95,7 +95,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         </div>
 
         <p
-          className="text-subheading text-coral text-italic leading-relaxed"
+          className="text-title text-coral text-italic leading-relaxed"
           style={{
             opacity: conclusionOpacity,
             transform: `translateY(${conclusionY}px)`,
@@ -105,7 +105,7 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         </p>
 
         <p
-          className="text-body-lg text-sage text-center mt-xl"
+          className="text-body text-sage text-center mt-xl"
           style={{
             opacity: transitionOpacity,
           }}

@@ -39,7 +39,7 @@ export default function Panel1Setup({ progress }: Panel1SetupProps) {
         </h1>
 
         <p
-          className="text-body-lg text-sage mt-2xl"
+          className="text-body text-sage mt-2xl"
           style={{
             opacity: scrollHintOpacity,
           }}

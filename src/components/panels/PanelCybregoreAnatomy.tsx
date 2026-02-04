@@ -32,7 +32,7 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
     <section className="panel panel--dark">
       <AutoScaleContent maxWidth="700px">
         <h2
-          className="text-heading text-cream text-bold text-center mb-lg"
+          className="text-title text-cream text-bold text-center mb-lg"
           style={{
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
@@ -52,14 +52,14 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
               }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.15rem' }}>
-                <span className="text-subheading text-olive text-bold">
+                <span className="text-body text-olive text-bold">
                   {part.number}
                 </span>
-                <h3 className="text-body-lg text-cream text-semibold">
+                <h3 className="text-body text-cream text-semibold">
                   {part.name}
                 </h3>
               </div>
-              <p className="text-body text-sage leading-snug">
+              <p className="text-small text-sage leading-snug">
                 {part.description}
               </p>
             </div>
@@ -73,17 +73,17 @@ export default function PanelCybregoreAnatomy({ progress }: PanelCybregoreAnatom
             opacity: part5Opacity,
           }}
         >
-          <h3 className="text-subheading text-coral text-bold mb-xs">
+          <h3 className="text-title text-coral text-bold mb-xs">
             The Data
           </h3>
-          <p className="text-body-lg text-cream leading-normal">
+          <p className="text-body text-cream leading-normal">
             Every click, scroll, pause, purchase. Every word, face, emotion.
           </p>
         </div>
 
         {/* The breath metaphor */}
         <p
-          className="text-subheading text-sage text-center text-italic leading-normal"
+          className="text-body text-sage text-center text-italic leading-normal"
           style={{
             opacity: breathOpacity,
             transform: `translateY(${breathY}px)`,

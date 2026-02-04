@@ -26,7 +26,7 @@ export default function PanelSomethingEmerges({ progress }: PanelSomethingEmerge
         overflow: 'hidden',
       }}>
         <p
-          className="text-subheading text-cream leading-relaxed mb-lg"
+          className="text-body text-cream leading-relaxed mb-lg"
           style={{
             opacity: line1Opacity,
             transform: `translateY(${line1Y}px)`,
@@ -36,7 +36,7 @@ export default function PanelSomethingEmerges({ progress }: PanelSomethingEmerge
         </p>
 
         <p
-          className="text-body-lg text-sage leading-relaxed mb-lg"
+          className="text-body text-sage leading-relaxed mb-lg"
           style={{
             opacity: line2Opacity,
             transform: `translateY(${line2Y}px)`,
@@ -46,7 +46,7 @@ export default function PanelSomethingEmerges({ progress }: PanelSomethingEmerge
         </p>
 
         <p
-          className="text-body-lg text-sage leading-relaxed mb-lg"
+          className="text-body text-sage leading-relaxed mb-lg"
           style={{
             opacity: line3Opacity,
             transform: `translateY(${line3Y}px)`,
@@ -56,7 +56,7 @@ export default function PanelSomethingEmerges({ progress }: PanelSomethingEmerge
         </p>
 
         <p
-          className="text-subheading text-coral text-medium leading-relaxed"
+          className="text-body text-coral text-medium leading-relaxed"
           style={{
             opacity: line4Opacity,
             transform: `translateY(${line4Y}px)`,
