@@ -182,14 +182,10 @@ export default function ExplainerRouter({
         // Swap the explainer
         setCurrent(explainer)
 
-        // After React renders the new explainer, restore scroll
+        // Scroll to target position immediately (before enter animation)
         requestAnimationFrame(() => {
           window.scrollTo(0, scrollY)
-          // Give ScrollTrigger a frame to initialize pins
-          requestAnimationFrame(() => {
-            ScrollTrigger.refresh()
-            setPhase('entering')
-          })
+          setPhase('entering')
         })
       }, TRANSITION_MS)
       return () => clearTimeout(timer)
@@ -198,6 +194,11 @@ export default function ExplainerRouter({
     if (phase === 'entering') {
       const timer = setTimeout(() => {
         setPhase('idle')
+        // Refresh ScrollTrigger AFTER enter animation completes
+        // so pins are measured without any transform on the wrapper
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+        })
       }, TRANSITION_MS)
       return () => clearTimeout(timer)
     }
