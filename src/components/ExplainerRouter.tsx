@@ -117,6 +117,7 @@ export default function ExplainerRouter({
   const [phase, setPhase] = useState<TransitionPhase>('idle')
   const [dir, setDir] = useState<TransitionDir>('forward')
   const pendingRef = useRef<{ explainer: string; scrollY: number } | null>(null)
+  const targetScrollYRef = useRef(0)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   const transitioning = phase !== 'idle'
@@ -178,6 +179,7 @@ export default function ExplainerRouter({
         if (!pendingRef.current) return
         const { explainer, scrollY } = pendingRef.current
         pendingRef.current = null
+        targetScrollYRef.current = scrollY
 
         // Swap the explainer
         setCurrent(explainer)
@@ -196,9 +198,12 @@ export default function ExplainerRouter({
       const timer = setTimeout(() => {
         setPhase('idle')
         // Refresh ScrollTrigger AFTER enter animation completes
-        // so pins are measured without any transform on the wrapper
+        // so pins are measured without any transform on the wrapper,
+        // then re-scroll to the target position so it aligns with
+        // the corrected pin measurements.
         requestAnimationFrame(() => {
           ScrollTrigger.refresh()
+          window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
         })
       }, TRANSITION_MS)
       return () => clearTimeout(timer)
