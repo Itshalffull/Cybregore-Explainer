@@ -560,13 +560,21 @@ body {
 
 /* --- Explainer slide transitions ---
    Exit animations run on a DOM-cloned snapshot (position: fixed, z-index: 9999).
-   The snapshot slides away to reveal the new content already in place beneath. */
+   Enter animations run on the live wrapper — they end at `transform: none`
+   (not translateX(0)) so removing the class doesn't change the containing block
+   for GSAP's position:fixed pinned panels, avoiding a visual snap. */
 
 .explainer-exit-left {
   animation: slideOutLeft 350ms ease-in-out forwards;
 }
 .explainer-exit-right {
   animation: slideOutRight 350ms ease-in-out forwards;
+}
+.explainer-enter-right {
+  animation: slideInRight 350ms ease-in-out both;
+}
+.explainer-enter-left {
+  animation: slideInLeft 350ms ease-in-out both;
 }
 
 @keyframes slideOutLeft {
@@ -576,6 +584,14 @@ body {
 @keyframes slideOutRight {
   from { transform: translateX(0); }
   to   { transform: translateX(100%); }
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: none; }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to   { transform: none; }
 }
 
 /* --- Jump link (in-panel cross-explainer link) --- */

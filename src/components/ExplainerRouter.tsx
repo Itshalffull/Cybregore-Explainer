@@ -112,6 +112,7 @@ export default function ExplainerRouter({
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
   const [transitioning, setTransitioning] = useState(false)
+  const [enterClass, setEnterClass] = useState('')
   const targetScrollYRef = useRef(0)
   const snapshotRef = useRef<HTMLElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -122,6 +123,7 @@ export default function ExplainerRouter({
       snapshotRef.current.remove()
       snapshotRef.current = null
     }
+    setEnterClass('')
     setTransitioning(false)
     requestAnimationFrame(() => {
       ScrollTrigger.refresh()
@@ -183,6 +185,7 @@ export default function ExplainerRouter({
       targetScrollYRef.current = 0
       setStack((s) => [...s, entry])
       setCurrent(explainer)
+      setEnterClass('explainer-enter-right')
       setTransitioning(true)
 
       // Scroll new content to top
@@ -207,6 +210,7 @@ export default function ExplainerRouter({
       targetScrollYRef.current = target.scrollY
       setStack((s) => s.slice(0, idx))
       setCurrent(target.explainer)
+      setEnterClass('explainer-enter-left')
       setTransitioning(true)
 
       // Scroll to saved position
@@ -273,7 +277,7 @@ export default function ExplainerRouter({
       ))}
       <div
         ref={wrapperRef}
-        className="explainer-wrapper"
+        className={`explainer-wrapper ${enterClass}`}
         style={{ minHeight: '100dvh' }}
       >
         {def.content}
