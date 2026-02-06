@@ -183,8 +183,9 @@ export default function ExplainerRouter({
         setCurrent(explainer)
 
         // Scroll to target position immediately (before enter animation)
+        // Use 'instant' to override CSS scroll-behavior: smooth
         requestAnimationFrame(() => {
-          window.scrollTo(0, scrollY)
+          window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' })
           setPhase('entering')
         })
       }, TRANSITION_MS)
@@ -214,6 +215,8 @@ export default function ExplainerRouter({
     const hash = window.location.hash.replace('#', '')
     if (hash && explainers[hash] && isImplemented(explainers[hash])) {
       setCurrent(hash)
+      // Ensure we start at the top when loading from a deep link
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
