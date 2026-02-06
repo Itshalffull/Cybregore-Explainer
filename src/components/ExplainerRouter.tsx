@@ -53,7 +53,6 @@ interface ExplainerContextValue {
   explainers: Record<string, ExplainerDef>
 }
 
-type TransitionPhase = 'idle' | 'exiting' | 'entering'
 type TransitionDir = 'forward' | 'back'
 
 const ExplainerContext = createContext<ExplainerContextValue | null>(null)
@@ -105,7 +104,7 @@ interface ExplainerRouterProps {
   children?: ReactNode
 }
 
-const TRANSITION_MS = 280
+const TRANSITION_MS = 350
 
 export default function ExplainerRouter({
   explainers,
@@ -114,18 +113,54 @@ export default function ExplainerRouter({
 }: ExplainerRouterProps) {
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
-  const [phase, setPhase] = useState<TransitionPhase>('idle')
-  const [dir, setDir] = useState<TransitionDir>('forward')
-  const pendingRef = useRef<{ explainer: string; scrollY: number } | null>(null)
+  const [transitioning, setTransitioning] = useState(false)
+  const [enterClass, setEnterClass] = useState('')
   const targetScrollYRef = useRef(0)
+  const snapshotRef = useRef<HTMLElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  const transitioning = phase !== 'idle'
+  // ── Create a DOM snapshot of the current view for the exit animation ──
+  const createSnapshot = useCallback((direction: TransitionDir) => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+
+    const snapshot = wrapper.cloneNode(true) as HTMLElement
+    snapshot.setAttribute('aria-hidden', 'true')
+    Object.assign(snapshot.style, {
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      width: '100vw',
+      height: '100dvh',
+      overflow: 'hidden',
+      zIndex: '9999',
+      pointerEvents: 'none',
+    })
+    snapshot.className = direction === 'forward'
+      ? 'explainer-exit-left'
+      : 'explainer-exit-right'
+    document.body.appendChild(snapshot)
+    snapshotRef.current = snapshot
+  }, [])
+
+  // ── Clean up snapshot and finalize transition ──
+  const finishTransition = useCallback(() => {
+    if (snapshotRef.current) {
+      snapshotRef.current.remove()
+      snapshotRef.current = null
+    }
+    setTransitioning(false)
+    setEnterClass('')
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+      window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
+    })
+  }, [])
 
   // ── Jump forward to another explainer ──
   const jumpTo = useCallback(
     (explainer: string, opts?: { fromLabel?: string }) => {
-      if (phase !== 'idle') return
+      if (transitioning) return
       if (!explainers[explainer]) {
         console.warn(`ExplainerRouter: unknown explainer "${explainer}"`)
         return
@@ -143,72 +178,50 @@ export default function ExplainerRouter({
         fromLabel: opts?.fromLabel || explainers[current].title,
       }
 
-      pendingRef.current = { explainer, scrollY: 0 }
+      // Snapshot the current view, then swap immediately
+      createSnapshot('forward')
+      targetScrollYRef.current = 0
       setStack((s) => [...s, entry])
-      setDir('forward')
-      setPhase('exiting')
+      setCurrent(explainer)
+      setEnterClass('explainer-enter-right')
+      setTransitioning(true)
+
+      // Scroll new content to top
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      })
+
+      setTimeout(finishTransition, TRANSITION_MS)
     },
-    [current, explainers, phase],
+    [current, explainers, transitioning, createSnapshot, finishTransition],
   )
 
   // ── Jump back to a previous breadcrumb ──
   const jumpBack = useCallback(
     (toIndex?: number) => {
-      if (phase !== 'idle' || stack.length === 0) return
+      if (transitioning || stack.length === 0) return
 
       const idx = toIndex ?? stack.length - 1
       const target = stack[idx]
       if (!target) return
 
-      pendingRef.current = {
-        explainer: target.explainer,
-        scrollY: target.scrollY,
-      }
-      // Pop the stack down to the target
+      // Snapshot the current view, then swap immediately
+      createSnapshot('back')
+      targetScrollYRef.current = target.scrollY
       setStack((s) => s.slice(0, idx))
-      setDir('back')
-      setPhase('exiting')
+      setCurrent(target.explainer)
+      setEnterClass('explainer-enter-left')
+      setTransitioning(true)
+
+      // Scroll to saved position
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: target.scrollY, left: 0, behavior: 'instant' })
+      })
+
+      setTimeout(finishTransition, TRANSITION_MS)
     },
-    [phase, stack],
+    [transitioning, stack, createSnapshot, finishTransition],
   )
-
-  // ── Transition state machine ──
-  useEffect(() => {
-    if (phase === 'exiting') {
-      const timer = setTimeout(() => {
-        if (!pendingRef.current) return
-        const { explainer, scrollY } = pendingRef.current
-        pendingRef.current = null
-        targetScrollYRef.current = scrollY
-
-        // Swap the explainer
-        setCurrent(explainer)
-
-        // Scroll to target position immediately (before enter animation)
-        // Use 'instant' to override CSS scroll-behavior: smooth
-        requestAnimationFrame(() => {
-          window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' })
-          setPhase('entering')
-        })
-      }, TRANSITION_MS)
-      return () => clearTimeout(timer)
-    }
-
-    if (phase === 'entering') {
-      const timer = setTimeout(() => {
-        setPhase('idle')
-        // Refresh ScrollTrigger AFTER enter animation completes
-        // so pins are measured without any transform on the wrapper,
-        // then re-scroll to the target position so it aligns with
-        // the corrected pin measurements.
-        requestAnimationFrame(() => {
-          ScrollTrigger.refresh()
-          window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
-        })
-      }, TRANSITION_MS)
-      return () => clearTimeout(timer)
-    }
-  }, [phase])
 
   // ── Sync hash ──
   useEffect(() => {
@@ -239,17 +252,15 @@ export default function ExplainerRouter({
     }
   }, [explainers])
 
-  // ── Transition CSS class ──
-  let transitionClass = 'explainer-wrapper'
-  if (phase === 'exiting') {
-    transitionClass += dir === 'forward'
-      ? ' explainer-exit-left'
-      : ' explainer-exit-right'
-  } else if (phase === 'entering') {
-    transitionClass += dir === 'forward'
-      ? ' explainer-enter-right'
-      : ' explainer-enter-left'
-  }
+  // ── Clean up snapshot on unmount ──
+  useEffect(() => {
+    return () => {
+      if (snapshotRef.current) {
+        snapshotRef.current.remove()
+        snapshotRef.current = null
+      }
+    }
+  }, [])
 
   const def = explainers[current]
   if (!def || !isImplemented(def)) return null
@@ -268,7 +279,7 @@ export default function ExplainerRouter({
       ))}
       <div
         ref={wrapperRef}
-        className={transitionClass}
+        className={`explainer-wrapper ${enterClass}`}
         style={{ minHeight: '100dvh' }}
       >
         {def.content}
