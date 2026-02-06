@@ -577,20 +577,20 @@ body {
 }
 
 @keyframes slideOutLeft {
-  from { opacity: 1; transform: none; }
-  to   { opacity: 0; transform: translateX(-8%); }
+  from { transform: none; }
+  to   { transform: translateX(-8%); }
 }
 @keyframes slideOutRight {
-  from { opacity: 1; transform: none; }
-  to   { opacity: 0; transform: translateX(8%); }
+  from { transform: none; }
+  to   { transform: translateX(8%); }
 }
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(8%); }
-  to   { opacity: 1; transform: none; }
+  from { transform: translateX(8%); }
+  to   { transform: none; }
 }
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-8%); }
-  to   { opacity: 1; transform: none; }
+  from { transform: translateX(-8%); }
+  to   { transform: none; }
 }
 
 /* --- Jump link (in-panel cross-explainer link) --- */
