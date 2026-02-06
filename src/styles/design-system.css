@@ -206,7 +206,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   /* overflow clipping is handled by ScrollSection's content wrapper */
 }
