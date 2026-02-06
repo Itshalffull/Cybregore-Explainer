@@ -19,6 +19,12 @@ export default function PanelAutoScaler() {
     const DEBOUNCE_MS = 150
 
     const scaleToFit = (content: HTMLElement) => {
+      // Skip measuring during explainer transitions — the wrapper has a
+      // translateX transform from the slide animation that would skew results
+      if (content.closest('.explainer-exit-left, .explainer-exit-right, .explainer-enter-left, .explainer-enter-right')) {
+        return
+      }
+
       // Use 88% of viewport — leaves room for vertical auto-margins
       const availableHeight = window.innerHeight * 0.88
 
@@ -86,6 +92,8 @@ export default function PanelAutoScaler() {
         const el = entry.target as HTMLElement
         // Skip panels that handle their own scaling
         if (el.closest('.no-auto-scale')) continue
+        // Skip during explainer transitions
+        if (el.closest('.explainer-exit-left, .explainer-exit-right, .explainer-enter-left, .explainer-enter-right')) continue
         debouncedScaleToFit(el)
       }
     })
