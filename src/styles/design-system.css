@@ -558,39 +558,42 @@ body {
    11. EXPLAINER ROUTER — transitions, jump links, breadcrumbs
    -------------------------------------------------------------------------- */
 
-/* --- Explainer slide transitions --- */
+/* --- Explainer slide transitions ---
+   Exit animations run on a DOM-cloned snapshot (position: fixed, z-index: 9999)
+   while the enter animation runs on the real wrapper underneath.
+   Both play simultaneously so you see old sliding out as new slides in. */
 .explainer-wrapper {
   /* No transition in idle state — avoids jank during scroll */
 }
 
 .explainer-exit-left {
-  animation: slideOutLeft 280ms ease-in forwards;
+  animation: slideOutLeft 350ms ease-in-out forwards;
 }
 .explainer-exit-right {
-  animation: slideOutRight 280ms ease-in forwards;
+  animation: slideOutRight 350ms ease-in-out forwards;
 }
 .explainer-enter-right {
-  animation: slideInRight 280ms ease-out;
+  animation: slideInRight 350ms ease-in-out;
 }
 .explainer-enter-left {
-  animation: slideInLeft 280ms ease-out;
+  animation: slideInLeft 350ms ease-in-out;
 }
 
 @keyframes slideOutLeft {
-  from { transform: none; }
-  to   { transform: translateX(-8%); }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
 }
 @keyframes slideOutRight {
-  from { transform: none; }
-  to   { transform: translateX(8%); }
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
 }
 @keyframes slideInRight {
-  from { transform: translateX(8%); }
-  to   { transform: none; }
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
 }
 @keyframes slideInLeft {
-  from { transform: translateX(-8%); }
-  to   { transform: none; }
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
 }
 
 /* --- Jump link (in-panel cross-explainer link) --- */
