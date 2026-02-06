@@ -558,39 +558,9 @@ body {
    11. EXPLAINER ROUTER — transitions, jump links, breadcrumbs
    -------------------------------------------------------------------------- */
 
-/* --- Explainer slide transitions --- */
+/* --- Explainer transitions --- */
 .explainer-wrapper {
-  /* No transition in idle state — avoids jank during scroll */
-}
-
-.explainer-exit-left {
-  animation: slideOutLeft 280ms ease-in forwards;
-}
-.explainer-exit-right {
-  animation: slideOutRight 280ms ease-in forwards;
-}
-.explainer-enter-right {
-  animation: slideInRight 280ms ease-out;
-}
-.explainer-enter-left {
-  animation: slideInLeft 280ms ease-out;
-}
-
-@keyframes slideOutLeft {
-  from { opacity: 1; transform: none; }
-  to   { opacity: 0; transform: translateX(-8%); }
-}
-@keyframes slideOutRight {
-  from { opacity: 1; transform: none; }
-  to   { opacity: 0; transform: translateX(8%); }
-}
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(8%); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-8%); }
-  to   { opacity: 1; transform: none; }
+  /* No transition — swap is instant */
 }
 
 /* --- Jump link (in-panel cross-explainer link) --- */

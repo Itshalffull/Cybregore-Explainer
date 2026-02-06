@@ -54,7 +54,6 @@ interface ExplainerContextValue {
 }
 
 type TransitionPhase = 'idle' | 'exiting' | 'entering'
-type TransitionDir = 'forward' | 'back'
 
 const ExplainerContext = createContext<ExplainerContextValue | null>(null)
 
@@ -105,7 +104,7 @@ interface ExplainerRouterProps {
   children?: ReactNode
 }
 
-const TRANSITION_MS = 280
+const TRANSITION_MS = 0
 
 export default function ExplainerRouter({
   explainers,
@@ -115,7 +114,6 @@ export default function ExplainerRouter({
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
   const [phase, setPhase] = useState<TransitionPhase>('idle')
-  const [dir, setDir] = useState<TransitionDir>('forward')
   const pendingRef = useRef<{ explainer: string; scrollY: number } | null>(null)
   const targetScrollYRef = useRef(0)
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -145,7 +143,6 @@ export default function ExplainerRouter({
 
       pendingRef.current = { explainer, scrollY: 0 }
       setStack((s) => [...s, entry])
-      setDir('forward')
       setPhase('exiting')
     },
     [current, explainers, phase],
@@ -166,7 +163,6 @@ export default function ExplainerRouter({
       }
       // Pop the stack down to the target
       setStack((s) => s.slice(0, idx))
-      setDir('back')
       setPhase('exiting')
     },
     [phase, stack],
@@ -239,17 +235,7 @@ export default function ExplainerRouter({
     }
   }, [explainers])
 
-  // ── Transition CSS class ──
-  let transitionClass = 'explainer-wrapper'
-  if (phase === 'exiting') {
-    transitionClass += dir === 'forward'
-      ? ' explainer-exit-left'
-      : ' explainer-exit-right'
-  } else if (phase === 'entering') {
-    transitionClass += dir === 'forward'
-      ? ' explainer-enter-right'
-      : ' explainer-enter-left'
-  }
+  const transitionClass = 'explainer-wrapper'
 
   const def = explainers[current]
   if (!def || !isImplemented(def)) return null
