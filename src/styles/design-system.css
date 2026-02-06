@@ -559,24 +559,14 @@ body {
    -------------------------------------------------------------------------- */
 
 /* --- Explainer slide transitions ---
-   Exit animations run on a DOM-cloned snapshot (position: fixed, z-index: 9999)
-   while the enter animation runs on the real wrapper underneath.
-   Both play simultaneously so you see old sliding out as new slides in. */
-.explainer-wrapper {
-  /* No transition in idle state — avoids jank during scroll */
-}
+   Exit animations run on a DOM-cloned snapshot (position: fixed, z-index: 9999).
+   The snapshot slides away to reveal the new content already in place beneath. */
 
 .explainer-exit-left {
   animation: slideOutLeft 350ms ease-in-out forwards;
 }
 .explainer-exit-right {
   animation: slideOutRight 350ms ease-in-out forwards;
-}
-.explainer-enter-right {
-  animation: slideInRight 350ms ease-in-out;
-}
-.explainer-enter-left {
-  animation: slideInLeft 350ms ease-in-out;
 }
 
 @keyframes slideOutLeft {
@@ -586,14 +576,6 @@ body {
 @keyframes slideOutRight {
   from { transform: translateX(0); }
   to   { transform: translateX(100%); }
-}
-@keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
-}
-@keyframes slideInLeft {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(0); }
 }
 
 /* --- Jump link (in-panel cross-explainer link) --- */

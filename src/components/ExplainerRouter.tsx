@@ -104,8 +104,6 @@ interface ExplainerRouterProps {
   children?: ReactNode
 }
 
-const TRANSITION_MS = 350
-
 export default function ExplainerRouter({
   explainers,
   defaultExplainer,
@@ -114,10 +112,22 @@ export default function ExplainerRouter({
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
   const [transitioning, setTransitioning] = useState(false)
-  const [enterClass, setEnterClass] = useState('')
   const targetScrollYRef = useRef(0)
   const snapshotRef = useRef<HTMLElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+
+  // ── Clean up snapshot and finalize transition ──
+  const finishTransition = useCallback(() => {
+    if (snapshotRef.current) {
+      snapshotRef.current.remove()
+      snapshotRef.current = null
+    }
+    setTransitioning(false)
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+      window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
+    })
+  }, [])
 
   // ── Create a DOM snapshot of the current view for the exit animation ──
   const createSnapshot = useCallback((direction: TransitionDir) => {
@@ -139,23 +149,13 @@ export default function ExplainerRouter({
     snapshot.className = direction === 'forward'
       ? 'explainer-exit-left'
       : 'explainer-exit-right'
+
+    // Clean up when the CSS animation actually finishes (more precise than setTimeout)
+    snapshot.addEventListener('animationend', finishTransition, { once: true })
+
     document.body.appendChild(snapshot)
     snapshotRef.current = snapshot
-  }, [])
-
-  // ── Clean up snapshot and finalize transition ──
-  const finishTransition = useCallback(() => {
-    if (snapshotRef.current) {
-      snapshotRef.current.remove()
-      snapshotRef.current = null
-    }
-    setTransitioning(false)
-    setEnterClass('')
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh()
-      window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
-    })
-  }, [])
+  }, [finishTransition])
 
   // ── Jump forward to another explainer ──
   const jumpTo = useCallback(
@@ -183,15 +183,12 @@ export default function ExplainerRouter({
       targetScrollYRef.current = 0
       setStack((s) => [...s, entry])
       setCurrent(explainer)
-      setEnterClass('explainer-enter-right')
       setTransitioning(true)
 
       // Scroll new content to top
       requestAnimationFrame(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
       })
-
-      setTimeout(finishTransition, TRANSITION_MS)
     },
     [current, explainers, transitioning, createSnapshot, finishTransition],
   )
@@ -210,15 +207,12 @@ export default function ExplainerRouter({
       targetScrollYRef.current = target.scrollY
       setStack((s) => s.slice(0, idx))
       setCurrent(target.explainer)
-      setEnterClass('explainer-enter-left')
       setTransitioning(true)
 
       // Scroll to saved position
       requestAnimationFrame(() => {
         window.scrollTo({ top: target.scrollY, left: 0, behavior: 'instant' })
       })
-
-      setTimeout(finishTransition, TRANSITION_MS)
     },
     [transitioning, stack, createSnapshot, finishTransition],
   )
@@ -279,7 +273,7 @@ export default function ExplainerRouter({
       ))}
       <div
         ref={wrapperRef}
-        className={`explainer-wrapper ${enterClass}`}
+        className="explainer-wrapper"
         style={{ minHeight: '100dvh' }}
       >
         {def.content}
