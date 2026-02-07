@@ -559,22 +559,22 @@ body {
    -------------------------------------------------------------------------- */
 
 /* --- Explainer slide transitions ---
-   Exit animations run on a DOM-cloned snapshot (position: fixed, z-index: 9999).
-   Enter animations run on the live wrapper — they end at `transform: none`
-   (not translateX(0)) so removing the class doesn't change the containing block
-   for GSAP's position:fixed pinned panels, avoiding a visual snap. */
+   Both exit and enter animate the real wrapper (no DOM cloning).
+   ScrollTriggers are killed before exit so transform doesn't fight pins.
+   The wrapper slides off-screen, content swaps while invisible, then slides
+   back in. Enter ends at transform:none to avoid lingering containing block. */
 
 .explainer-exit-left {
-  animation: slideOutLeft 350ms ease-in-out forwards;
+  animation: slideOutLeft 200ms ease-in forwards;
 }
 .explainer-exit-right {
-  animation: slideOutRight 350ms ease-in-out forwards;
+  animation: slideOutRight 200ms ease-in forwards;
 }
 .explainer-enter-right {
-  animation: slideInRight 350ms ease-in-out both;
+  animation: slideInRight 200ms ease-out both;
 }
 .explainer-enter-left {
-  animation: slideInLeft 350ms ease-in-out both;
+  animation: slideInLeft 200ms ease-out both;
 }
 
 @keyframes slideOutLeft {
