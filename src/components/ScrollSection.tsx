@@ -145,6 +145,7 @@ export default function ScrollSection({
       className={className}
       style={{
         position: 'relative',
+        background: 'inherit',
         ...style,
       }}
     >
