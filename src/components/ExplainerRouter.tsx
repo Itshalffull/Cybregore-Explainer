@@ -138,6 +138,16 @@ export default function ExplainerRouter({
 
     const snapshot = wrapper.cloneNode(true) as HTMLElement
     snapshot.setAttribute('aria-hidden', 'true')
+
+    // GSAP pins elements with position:fixed. In the clone these break out
+    // of overflow:hidden (no containing block yet). Convert to absolute so
+    // they stay inside the snapshot and slide with it.
+    snapshot.querySelectorAll<HTMLElement>('[style]').forEach((el) => {
+      if (el.style.position === 'fixed') {
+        el.style.position = 'absolute'
+      }
+    })
+
     Object.assign(snapshot.style, {
       position: 'fixed',
       top: '0',
