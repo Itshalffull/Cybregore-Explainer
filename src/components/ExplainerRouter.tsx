@@ -147,6 +147,7 @@ export default function ExplainerRouter({
       overflow: 'hidden',
       zIndex: '9999',
       pointerEvents: 'none',
+      backgroundColor: 'var(--color-deep-forest)',
     })
     snapshot.className = direction === 'forward'
       ? 'explainer-exit-left'
