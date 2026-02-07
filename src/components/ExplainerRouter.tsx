@@ -112,63 +112,55 @@ export default function ExplainerRouter({
   const [current, setCurrent] = useState(defaultExplainer)
   const [stack, setStack] = useState<BreadcrumbEntry[]>([])
   const [transitioning, setTransitioning] = useState(false)
-  const [enterClass, setEnterClass] = useState('')
+  const [animClass, setAnimClass] = useState('')
   const targetScrollYRef = useRef(0)
-  const snapshotRef = useRef<HTMLElement | null>(null)
+  const pendingRef = useRef<{ explainer: string; scrollY: number } | null>(null)
+  const dirRef = useRef<TransitionDir>('forward')
   const wrapperRef = useRef<HTMLDivElement>(null)
 
-  // ── Clean up snapshot and finalize transition ──
-  const finishTransition = useCallback(() => {
-    if (snapshotRef.current) {
-      snapshotRef.current.remove()
-      snapshotRef.current = null
-    }
-    setEnterClass('')
-    setTransitioning(false)
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh()
-      window.scrollTo({ top: targetScrollYRef.current, left: 0, behavior: 'instant' })
-    })
-  }, [])
-
-  // ── Create a DOM snapshot of the current view for the exit animation ──
-  const createSnapshot = useCallback((direction: TransitionDir) => {
+  // ── Handle animationend on the wrapper ──
+  useEffect(() => {
     const wrapper = wrapperRef.current
-    if (!wrapper) return
+    if (!wrapper || !animClass) return
 
-    const snapshot = wrapper.cloneNode(true) as HTMLElement
-    snapshot.setAttribute('aria-hidden', 'true')
+    const handleAnimEnd = () => {
+      const isExiting = animClass.includes('exit')
 
-    // GSAP pins elements with position:fixed. In the clone these break out
-    // of overflow:hidden (no containing block yet). Convert to absolute so
-    // they stay inside the snapshot and slide with it.
-    snapshot.querySelectorAll<HTMLElement>('[style]').forEach((el) => {
-      if (el.style.position === 'fixed') {
-        el.style.position = 'absolute'
+      if (isExiting && pendingRef.current) {
+        // Exit finished — wrapper is off-screen. Swap content + slide in.
+        const { explainer, scrollY } = pendingRef.current
+        pendingRef.current = null
+        targetScrollYRef.current = scrollY
+
+        setCurrent(explainer)
+        setAnimClass(
+          dirRef.current === 'forward'
+            ? 'explainer-enter-right'
+            : 'explainer-enter-left',
+        )
+
+        // Scroll to target while off-screen
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: scrollY, left: 0, behavior: 'instant' })
+        })
+      } else {
+        // Enter finished — transition complete
+        setAnimClass('')
+        setTransitioning(false)
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+          window.scrollTo({
+            top: targetScrollYRef.current,
+            left: 0,
+            behavior: 'instant',
+          })
+        })
       }
-    })
+    }
 
-    Object.assign(snapshot.style, {
-      position: 'fixed',
-      top: '0',
-      left: '0',
-      width: '100vw',
-      height: '100dvh',
-      overflow: 'hidden',
-      zIndex: '9999',
-      pointerEvents: 'none',
-      backgroundColor: 'var(--color-deep-forest)',
-    })
-    snapshot.className = direction === 'forward'
-      ? 'explainer-exit-left'
-      : 'explainer-exit-right'
-
-    // Clean up when the CSS animation actually finishes (more precise than setTimeout)
-    snapshot.addEventListener('animationend', finishTransition, { once: true })
-
-    document.body.appendChild(snapshot)
-    snapshotRef.current = snapshot
-  }, [finishTransition])
+    wrapper.addEventListener('animationend', handleAnimEnd, { once: true })
+    return () => wrapper.removeEventListener('animationend', handleAnimEnd)
+  }, [animClass])
 
   // ── Jump forward to another explainer ──
   const jumpTo = useCallback(
@@ -179,7 +171,9 @@ export default function ExplainerRouter({
         return
       }
       if (!isImplemented(explainers[explainer])) {
-        console.warn(`ExplainerRouter: explainer "${explainer}" is a stub (no content yet)`)
+        console.warn(
+          `ExplainerRouter: explainer "${explainer}" is a stub (no content yet)`,
+        )
         return
       }
 
@@ -191,20 +185,16 @@ export default function ExplainerRouter({
         fromLabel: opts?.fromLabel || explainers[current].title,
       }
 
-      // Snapshot the current view, then swap immediately
-      createSnapshot('forward')
-      targetScrollYRef.current = 0
-      setStack((s) => [...s, entry])
-      setCurrent(explainer)
-      setEnterClass('explainer-enter-right')
-      setTransitioning(true)
+      // Kill ScrollTriggers so the transform doesn't fight pinned elements
+      ScrollTrigger.getAll().forEach((t) => t.kill())
 
-      // Scroll new content to top
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-      })
+      pendingRef.current = { explainer, scrollY: 0 }
+      dirRef.current = 'forward'
+      setStack((s) => [...s, entry])
+      setTransitioning(true)
+      setAnimClass('explainer-exit-left')
     },
-    [current, explainers, transitioning, createSnapshot, finishTransition],
+    [current, explainers, transitioning],
   )
 
   // ── Jump back to a previous breadcrumb ──
@@ -216,20 +206,19 @@ export default function ExplainerRouter({
       const target = stack[idx]
       if (!target) return
 
-      // Snapshot the current view, then swap immediately
-      createSnapshot('back')
-      targetScrollYRef.current = target.scrollY
-      setStack((s) => s.slice(0, idx))
-      setCurrent(target.explainer)
-      setEnterClass('explainer-enter-left')
-      setTransitioning(true)
+      // Kill ScrollTriggers so the transform doesn't fight pinned elements
+      ScrollTrigger.getAll().forEach((t) => t.kill())
 
-      // Scroll to saved position
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: target.scrollY, left: 0, behavior: 'instant' })
-      })
+      pendingRef.current = {
+        explainer: target.explainer,
+        scrollY: target.scrollY,
+      }
+      dirRef.current = 'back'
+      setStack((s) => s.slice(0, idx))
+      setTransitioning(true)
+      setAnimClass('explainer-exit-right')
     },
-    [transitioning, stack, createSnapshot, finishTransition],
+    [transitioning, stack],
   )
 
   // ── Sync hash ──
@@ -242,7 +231,6 @@ export default function ExplainerRouter({
     const hash = window.location.hash.replace('#', '')
     if (hash && explainers[hash] && isImplemented(explainers[hash])) {
       setCurrent(hash)
-      // Ensure we start at the top when loading from a deep link
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -250,26 +238,19 @@ export default function ExplainerRouter({
   // ── Dev-mode: log stub explainers ──
   useEffect(() => {
     if (import.meta.env.DEV) {
-      const stubs = Object.entries(explainers)
-        .filter(([, def]) => !isImplemented(def))
+      const stubs = Object.entries(explainers).filter(
+        ([, def]) => !isImplemented(def),
+      )
       if (stubs.length > 0) {
         console.info(
           `ExplainerRouter: ${stubs.length} stub explainer(s) registered (metadata only):\n` +
-          stubs.map(([id, def]) => `  • ${id} — "${def.title}"`).join('\n'),
+            stubs
+              .map(([id, def]) => `  • ${id} — "${def.title}"`)
+              .join('\n'),
         )
       }
     }
   }, [explainers])
-
-  // ── Clean up snapshot on unmount ──
-  useEffect(() => {
-    return () => {
-      if (snapshotRef.current) {
-        snapshotRef.current.remove()
-        snapshotRef.current = null
-      }
-    }
-  }, [])
 
   const def = explainers[current]
   if (!def || !isImplemented(def)) return null
@@ -288,7 +269,7 @@ export default function ExplainerRouter({
       ))}
       <div
         ref={wrapperRef}
-        className={`explainer-wrapper ${enterClass}`}
+        className={`explainer-wrapper ${animClass}`}
         style={{ minHeight: '100dvh' }}
       >
         {def.content}
