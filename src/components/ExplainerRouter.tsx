@@ -267,12 +267,21 @@ export default function ExplainerRouter({
       {prefetchUrls.map((url) => (
         <link key={url} rel="prefetch" href={url} />
       ))}
+      {/* Dark backdrop — stays fixed behind the sliding wrapper so the
+          body's pale-mint background never peeks through during transitions */}
       <div
-        ref={wrapperRef}
-        className={`explainer-wrapper ${animClass}`}
-        style={{ minHeight: '100dvh' }}
+        style={{
+          backgroundColor: 'var(--color-deep-forest)',
+          position: 'relative',
+        }}
       >
-        {def.content}
+        <div
+          ref={wrapperRef}
+          className={`explainer-wrapper ${animClass}`}
+          style={{ minHeight: '100dvh' }}
+        >
+          {def.content}
+        </div>
       </div>
       {children}
     </ExplainerContext.Provider>
