@@ -36,6 +36,7 @@ export function buildTaskManifest(
         panelId: note.panelId,
         action: 'delete',
         notes: note.note || `Delete panel ${note.panelId}`,
+        panelIndex: note.panelIndex,
       })
       // Skip other actions if deleting
       continue
@@ -48,6 +49,7 @@ export function buildTaskManifest(
         action: 'regenerate',
         notes:
           note.note || `Regenerate panel ${note.panelId} with improvements`,
+        panelIndex: note.panelIndex,
       })
     }
 
@@ -59,6 +61,7 @@ export function buildTaskManifest(
         notes:
           note.note ||
           `Generate an animated video background for panel ${note.panelId}`,
+        panelIndex: note.panelIndex,
       })
     }
 
@@ -74,6 +77,7 @@ export function buildTaskManifest(
         panelId: note.panelId,
         action: 'edit-notes',
         notes: note.note,
+        panelIndex: note.panelIndex,
       })
     }
   }
@@ -102,8 +106,15 @@ export function buildTaskManifest(
 /**
  * Generates a prompt for a Claude Code orchestrator agent that will
  * distribute the tasks to sub-agents using the appropriate skills.
+ *
+ * @param screenshotFiles Map of panel index → downloaded screenshot filename.
+ *   When provided, each task block includes a reference so the agent can
+ *   view the current visual state of the panel before making changes.
  */
-export function buildOrchestratorPrompt(manifest: TaskManifest): string {
+export function buildOrchestratorPrompt(
+  manifest: TaskManifest,
+  screenshotFiles?: Map<number, string>,
+): string {
   if (manifest.tasks.length === 0) {
     return 'No tasks to process.'
   }
@@ -118,6 +129,19 @@ export function buildOrchestratorPrompt(manifest: TaskManifest): string {
     '',
   ]
 
+  if (screenshotFiles && screenshotFiles.size > 0) {
+    lines.push(
+      '> **Screenshots included.** Each task references a screenshot of the',
+    )
+    lines.push(
+      '> panel\'s current visual state. Use the Read tool to view the image',
+    )
+    lines.push(
+      '> file before starting work so you understand what the panel looks like.',
+    )
+    lines.push('')
+  }
+
   for (let i = 0; i < manifest.tasks.length; i++) {
     const task = manifest.tasks[i]
     lines.push(`## Task ${i + 1}: ${task.action} — ${task.panelId}`)
@@ -129,6 +153,17 @@ export function buildOrchestratorPrompt(manifest: TaskManifest): string {
         `- **Position:** Insert after panel index ${task.position.afterIndex}`,
       )
     lines.push(`- **Notes:** ${task.notes}`)
+
+    // Find screenshot for this task's panel index
+    if (screenshotFiles) {
+      const panelIndex = task.panelIndex
+      if (panelIndex !== undefined && screenshotFiles.has(panelIndex)) {
+        lines.push(
+          `- **Screenshot:** \`${screenshotFiles.get(panelIndex)}\` — view this file to see the panel's current appearance`,
+        )
+      }
+    }
+
     lines.push('')
   }
 
@@ -139,6 +174,11 @@ export function buildOrchestratorPrompt(manifest: TaskManifest): string {
   lines.push(
     'Pass the panel ID, explainer slug, and notes as context to each agent.',
   )
+  if (screenshotFiles && screenshotFiles.size > 0) {
+    lines.push(
+      'Pass the screenshot file path to each agent so it can view the current panel state.',
+    )
+  }
   lines.push(
     'After all tasks complete, run /dharma-test-browser to validate the changes.',
   )

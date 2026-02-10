@@ -28,6 +28,8 @@ export interface OrchestratorTask {
   notes: string
   panelType?: string
   position?: { afterIndex: number }
+  /** Index of the panel in the DOM, used to link to screenshots */
+  panelIndex?: number
 }
 
 /** The full manifest exported for the orchestrator */
