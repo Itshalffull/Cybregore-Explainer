@@ -35,7 +35,7 @@ export default function DevPanelControls({
         onClick={() => setExpanded(!expanded)}
       >
         <span className="dev-panel-index">#{panelIndex + 1}</span>
-        <span className="dev-panel-id">{panelId}</span>
+        <span className="dev-panel-id" aria-label={panelId}>{panelId}</span>
         <span className="dev-panel-title">{panelTitle}</span>
         {hasContent && <span className="dev-panel-badge">*</span>}
         <span className="dev-panel-chevron">{expanded ? '\u25B2' : '\u25BC'}</span>

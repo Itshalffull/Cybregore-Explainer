@@ -24,6 +24,8 @@
   border: 1px solid rgba(99, 102, 241, 0.6);
   border-radius: 6px;
   padding: 6px 10px;
+  min-height: 36px;
+  min-width: 44px;
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
@@ -53,12 +55,41 @@
   text-align: center;
 }
 
+/* Desktop: inline row of action buttons */
+.dev-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Mobile: hamburger button (hidden on desktop) */
+.dev-toolbar-menu-btn {
+  display: none;
+  background: rgba(30, 30, 40, 0.85);
+  color: #e0e0e8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-height: 36px;
+  min-width: 44px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+}
+
+/* Mobile dropdown panel (hidden on desktop) */
+.dev-toolbar-dropdown {
+  display: none;
+}
+
 .dev-toolbar-btn {
   background: rgba(30, 30, 40, 0.85);
   color: #e0e0e8;
   border: 1px solid rgba(99, 102, 241, 0.3);
   border-radius: 6px;
   padding: 6px 10px;
+  min-height: 36px;
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
@@ -444,4 +475,145 @@
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
+}
+
+/* ─── Mobile Responsive ──────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  /* Toolbar: show hamburger, hide inline actions */
+  .dev-toolbar-actions {
+    display: none;
+  }
+
+  .dev-toolbar-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Dropdown menu replaces inline toolbar */
+  .dev-toolbar-dropdown {
+    display: block;
+    position: fixed;
+    top: 54px;
+    right: 12px;
+    z-index: 99998;
+  }
+
+  .dev-toolbar-dropdown-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(15, 15, 25, 0.95);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 8px;
+    padding: 8px;
+    backdrop-filter: blur(12px);
+    min-width: 160px;
+  }
+
+  .dev-toolbar-dropdown-inner .dev-toolbar-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px 12px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  /* Panel controls: full width, hide long panelId */
+  .dev-panel-controls {
+    max-width: 100%;
+  }
+
+  .dev-panel-id {
+    display: none;
+  }
+
+  .dev-panel-header {
+    padding: 10px 12px;
+    min-height: 44px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .dev-panel-body {
+    padding: 12px;
+  }
+
+  /* Larger touch targets for checkboxes */
+  .dev-checkbox {
+    padding: 8px 6px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .dev-checkbox input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Textarea: larger on mobile */
+  .dev-note-input {
+    font-size: 14px;
+    padding: 10px;
+    min-height: 80px;
+  }
+
+  /* Insert slot: larger tap target */
+  .dev-insert-button {
+    padding: 10px 16px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .dev-insert-form {
+    max-width: 100%;
+    padding: 14px;
+  }
+
+  .dev-type-button {
+    padding: 8px 12px;
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  /* Preview: full width on mobile */
+  .dev-preview-panel {
+    width: 96%;
+    max-height: 85vh;
+    border-radius: 8px;
+  }
+
+  .dev-preview-content {
+    font-size: 11px;
+    padding: 12px;
+  }
+
+  .dev-preview-header {
+    padding: 14px 12px;
+    font-size: 12px;
+  }
+
+  .dev-preview-header button {
+    font-size: 24px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ─── Tablet tweaks (641–900px) ──────────────────────────────────────────── */
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .dev-panel-controls {
+    max-width: 360px;
+  }
+
+  .dev-panel-id {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
