@@ -1,0 +1,651 @@
+/* ─── Dev Mode Styles ─────────────────────────────────────────────────────────
+ * Only loaded when dev mode is active (gated on import.meta.env.DEV).
+ * Uses a distinct visual language (blue/purple accent) to clearly
+ * differentiate dev UI from content UI.
+ * ──────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Toolbar ────────────────────────────────────────────────────────────── */
+
+.dev-toolbar {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+}
+
+.dev-toolbar-toggle {
+  background: rgba(99, 102, 241, 0.85);
+  color: #fff;
+  border: 1px solid rgba(99, 102, 241, 0.6);
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-height: 36px;
+  min-width: 44px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s;
+}
+
+.dev-toolbar--active .dev-toolbar-toggle {
+  background: rgba(99, 102, 241, 1);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+
+.dev-toolbar-toggle:hover {
+  background: rgba(79, 70, 229, 1);
+}
+
+.dev-toolbar-count {
+  background: #ef4444;
+  color: #fff;
+  border-radius: 10px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Desktop: inline row of action buttons */
+.dev-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Mobile: hamburger button (hidden on desktop) */
+.dev-toolbar-menu-btn {
+  display: none;
+  background: rgba(30, 30, 40, 0.85);
+  color: #e0e0e8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-height: 36px;
+  min-width: 44px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+}
+
+/* Mobile dropdown panel (hidden on desktop) */
+.dev-toolbar-dropdown {
+  display: none;
+}
+
+.dev-toolbar-btn {
+  background: rgba(30, 30, 40, 0.85);
+  color: #e0e0e8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  min-height: 36px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.dev-toolbar-btn:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+.dev-toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dev-toolbar-btn--primary {
+  background: rgba(99, 102, 241, 0.85);
+  color: #fff;
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+.dev-toolbar-btn--primary:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 1);
+}
+
+.dev-toolbar-btn--danger {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.dev-toolbar-btn--danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+/* ─── Panel Controls ─────────────────────────────────────────────────────── */
+
+.dev-portal-anchor {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.dev-panel-controls {
+  pointer-events: auto;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  max-width: 420px;
+}
+
+.dev-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(30, 30, 40, 0.75);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #c4c4d0;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s, border-color 0.15s;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.dev-panel-header:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.5);
+}
+
+.dev-panel-header--has-content {
+  border-color: rgba(250, 204, 21, 0.5);
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.dev-panel-index {
+  color: rgba(99, 102, 241, 0.8);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dev-panel-id {
+  color: #a5b4fc;
+  flex-shrink: 0;
+}
+
+.dev-panel-title {
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.dev-panel-badge {
+  color: #facc15;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.dev-panel-chevron {
+  color: #64748b;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.dev-panel-body {
+  background: rgba(15, 15, 25, 0.9);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 10px;
+  backdrop-filter: blur(12px);
+}
+
+.dev-panel-controls--expanded .dev-panel-header {
+  border-radius: 6px 6px 0 0;
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.12);
+}
+
+/* ─── Note Input ─────────────────────────────────────────────────────────── */
+
+.dev-note-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 4px;
+  color: #e0e0e8;
+  padding: 8px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.dev-note-input::placeholder {
+  color: #64748b;
+}
+
+.dev-note-input:focus {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+/* ─── Action Checkboxes ──────────────────────────────────────────────────── */
+
+.dev-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dev-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+
+.dev-checkbox:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.dev-checkbox--checked {
+  color: #e0e0e8;
+}
+
+.dev-checkbox input[type='checkbox'] {
+  accent-color: #6366f1;
+  cursor: pointer;
+}
+
+/* ─── Insert Slot ────────────────────────────────────────────────────────── */
+
+.dev-insert-anchor {
+  position: relative;
+  z-index: 999;
+  height: 0;
+  overflow: visible;
+}
+
+.dev-insert-slot {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.dev-insert-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 30, 40, 0.6);
+  border: 1px dashed rgba(99, 102, 241, 0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  color: #64748b;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  transition: all 0.15s;
+}
+
+.dev-insert-button:hover {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #a5b4fc;
+}
+
+.dev-insert-slot--active .dev-insert-button {
+  border-color: rgba(250, 204, 21, 0.5);
+  color: #facc15;
+}
+
+.dev-insert-icon {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dev-insert-label {
+  font-size: 11px;
+}
+
+.dev-insert-form {
+  background: rgba(15, 15, 25, 0.92);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 8px;
+  padding: 12px;
+  max-width: 420px;
+  width: 100%;
+  margin: 4px auto;
+  backdrop-filter: blur(12px);
+}
+
+.dev-insert-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #a5b4fc;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.dev-insert-close {
+  background: rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 4px;
+  color: #a5b4fc;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.dev-insert-close:hover {
+  background: rgba(99, 102, 241, 0.35);
+}
+
+.dev-insert-type-row {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.dev-type-button {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 4px;
+  color: #94a3b8;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  transition: all 0.1s;
+}
+
+.dev-type-button:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #c4c4d0;
+}
+
+.dev-type-button--active {
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.6);
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.dev-insert-remove {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  padding: 4px 0;
+  opacity: 0.7;
+}
+
+.dev-insert-remove:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* ─── Preview Panel ──────────────────────────────────────────────────────── */
+
+.dev-preview-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.dev-preview-panel {
+  background: #0f0f19;
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.dev-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dev-preview-header button {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.dev-preview-header button:hover {
+  color: #e0e0e8;
+}
+
+.dev-preview-content {
+  padding: 16px;
+  overflow-y: auto;
+  color: #c4c4d0;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* ─── Capture Progress Overlay ────────────────────────────────────────────── */
+
+.dev-capture-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.dev-capture-status {
+  background: rgba(15, 15, 25, 0.95);
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  border-radius: 10px;
+  padding: 20px 32px;
+  color: #a5b4fc;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  animation: dev-capture-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dev-capture-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ─── Mobile Responsive ──────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  /* Toolbar: show hamburger, hide inline actions */
+  .dev-toolbar-actions {
+    display: none;
+  }
+
+  .dev-toolbar-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Dropdown menu replaces inline toolbar */
+  .dev-toolbar-dropdown {
+    display: block;
+    position: fixed;
+    top: 54px;
+    right: 12px;
+    z-index: 99998;
+  }
+
+  .dev-toolbar-dropdown-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(15, 15, 25, 0.95);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 8px;
+    padding: 8px;
+    backdrop-filter: blur(12px);
+    min-width: 160px;
+  }
+
+  .dev-toolbar-dropdown-inner .dev-toolbar-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px 12px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  /* Panel controls: full width, hide long panelId */
+  .dev-panel-controls {
+    max-width: 100%;
+  }
+
+  .dev-panel-id {
+    display: none;
+  }
+
+  .dev-panel-header {
+    padding: 10px 12px;
+    min-height: 44px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .dev-panel-body {
+    padding: 12px;
+  }
+
+  /* Larger touch targets for checkboxes */
+  .dev-checkbox {
+    padding: 8px 6px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .dev-checkbox input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Textarea: larger on mobile */
+  .dev-note-input {
+    font-size: 14px;
+    padding: 10px;
+    min-height: 80px;
+  }
+
+  /* Insert slot: larger tap target */
+  .dev-insert-button {
+    padding: 10px 16px;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .dev-insert-form {
+    max-width: 100%;
+    padding: 14px;
+  }
+
+  .dev-type-button {
+    padding: 8px 12px;
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  /* Preview: full width on mobile */
+  .dev-preview-panel {
+    width: 96%;
+    max-height: 85vh;
+    border-radius: 8px;
+  }
+
+  .dev-preview-content {
+    font-size: 11px;
+    padding: 12px;
+  }
+
+  .dev-preview-header {
+    padding: 14px 12px;
+    font-size: 12px;
+  }
+
+  .dev-preview-header button {
+    font-size: 24px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ─── Tablet tweaks (641–900px) ──────────────────────────────────────────── */
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .dev-panel-controls {
+    max-width: 360px;
+  }
+
+  .dev-panel-id {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

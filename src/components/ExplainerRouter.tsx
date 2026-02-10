@@ -5,10 +5,17 @@ import {
   useRef,
   useCallback,
   useEffect,
+  lazy,
+  Suspense,
   ReactNode,
 } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { ExplainerMetadata } from '../types/metadata'
+
+// Dev mode layer — lazily loaded, tree-shaken in production builds
+const DevModeLayer = import.meta.env.DEV
+  ? lazy(() => import('../dev/DevModeLayer'))
+  : null
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -284,6 +291,16 @@ export default function ExplainerRouter({
         </div>
       </div>
       {children}
+      {/* Dev mode overlay — zero cost in production (tree-shaken) */}
+      {import.meta.env.DEV && DevModeLayer && (
+        <Suspense fallback={null}>
+          <DevModeLayer
+            wrapperRef={wrapperRef}
+            panels={def.metadata?.panels ?? []}
+            explainerId={current}
+          />
+        </Suspense>
+      )}
     </ExplainerContext.Provider>
   )
 }
