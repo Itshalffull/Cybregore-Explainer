@@ -89,8 +89,12 @@ Each PanelMeta entry must have:
 ```typescript
 {
   id: string,                  // kebab-case, unique, descriptive
-                               // Convention: '{explainer-slug}-{scene-name}'
-                               // e.g., 'language-demon-the-hook'
+                               // Convention: 'panel-{scene-name}'
+                               // e.g., 'panel-the-hook', 'panel-moloch-the-demon'
+                               // IMPORTANT: This id becomes the panelId prop on
+                               // <ScrollSection> and the URL anchor hash.
+                               // The URL /explainer-slug#panel-id links directly
+                               // to this panel, and the hash auto-updates on scroll.
   title: string,               // Short, evocative
   narrativeRole: PanelNarrativeRole, // From the allowed set
   message: string,             // 1-2 sentences — what this panel SAYS
@@ -108,7 +112,8 @@ Each PanelMeta entry must have:
 Check that:
 - [ ] Every act has at least one panel
 - [ ] Every panel belongs to exactly one act
-- [ ] Panel IDs are unique and follow kebab-case convention
+- [ ] Panel IDs are unique, follow kebab-case convention, and start with `panel-`
+- [ ] Panel IDs are clean and URL-friendly (they become URL anchors: `/slug#panel-id`)
 - [ ] All PanelNarrativeRole values are from the allowed set
 - [ ] transitionIn of panel N matches transitionOut of panel N-1
 - [ ] The first panel's transitionIn is "Entry point" or similar

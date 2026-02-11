@@ -271,7 +271,23 @@ Text layer color assignments:
 - Layer 3 (Bridge): `text-title text-cream` in `box-coral` — the loudest
 - Layer 4 (Implication): `text-coral` — personal, addressed to viewer
 
-### Step 11: Validate
+### Step 11: Register the panel in the explainer root component
+
+The panel must be wired into the explainer's root component (e.g.,
+`src/explainers/{Slug}Explainer.tsx`). Each `<ScrollSection>` that renders
+this panel **must** include a `panelId` prop matching the panel's metadata `id`:
+
+```tsx
+<ScrollSection scrollLength={4} panelId="panel-your-panel-id">
+  {(progress) => <PanelYourPanel progress={progress} />}
+</ScrollSection>
+```
+
+The `panelId` sets the DOM `id` attribute, which enables:
+- **URL anchors** — viewers can link directly to `/explainer-slug#panel-id`
+- **Auto-updating hash** — the URL hash updates as the viewer scrolls to this panel
+
+### Step 12: Validate
 
 Check that:
 - [ ] All text layers reveal in the correct sequence
@@ -287,8 +303,9 @@ Check that:
 - [ ] Entry honors `transitionIn`, exit serves `transitionOut`
 - [ ] scrollLength is 3.5-5 (mythology panels need immersion time)
 - [ ] `create-panel-background` has been noted if imagery generation is needed
+- [ ] `panelId` matches the panel's metadata `id` in the explainer root component
 
-### Step 12: Report
+### Step 13: Report
 
 Tell the user:
 - File created and location
@@ -296,5 +313,6 @@ Tell the user:
 - Imagery direction and whether `create-panel-background` needs to be run
 - The mythology bridge statement
 - scrollLength value
+- The `panelId` used for URL anchoring (e.g., `/explainer-slug#panel-id`)
 - Any background assets that need to be generated
 - Next/previous panel context

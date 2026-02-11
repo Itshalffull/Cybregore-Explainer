@@ -240,7 +240,23 @@ Import patterns from the relevant panel type guides:
 
 Keep each mode's elements in their own `<div>` for clean transition management.
 
-### Step 11: Validate
+### Step 11: Register the panel in the explainer root component
+
+The panel must be wired into the explainer's root component (e.g.,
+`src/explainers/{Slug}Explainer.tsx`). Each `<ScrollSection>` that renders
+this panel **must** include a `panelId` prop matching the panel's metadata `id`:
+
+```tsx
+<ScrollSection scrollLength={4} panelId="panel-your-panel-id">
+  {(progress) => <PanelYourPanel progress={progress} />}
+</ScrollSection>
+```
+
+The `panelId` sets the DOM `id` attribute, which enables:
+- **URL anchors** — viewers can link directly to `/explainer-slug#panel-id`
+- **Auto-updating hash** — the URL hash updates as the viewer scrolls to this panel
+
+### Step 12: Validate
 
 Check that:
 - [ ] Both modes deliver their content clearly
@@ -257,8 +273,9 @@ Check that:
 - [ ] The mid-panel transition creates a meaningful shift
 - [ ] scrollLength gives time for both modes (typically 3.5-5)
 - [ ] No competing animations during the transition moment
+- [ ] `panelId` matches the panel's metadata `id` in the explainer root component
 
-### Step 12: Report
+### Step 13: Report
 
 Tell the user:
 - File created and location
@@ -266,5 +283,6 @@ Tell the user:
 - Content summary for each mode
 - The transition style and where it occurs
 - scrollLength value
+- The `panelId` used for URL anchoring (e.g., `/explainer-slug#panel-id`)
 - Any background assets needed
 - Next/previous panel context

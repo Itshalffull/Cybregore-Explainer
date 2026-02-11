@@ -205,12 +205,22 @@ When you have rich source material (e.g., a long talk or multiple articles):
 - **Spacing:** `mb-2xl`, `mb-xl`, `mb-lg`, `mb-md`, `mb-sm`, `mb-xs`
 - **Boxes:** `box-coral` for emphasis callouts
 
+### URL Routing & Panel Anchors
+- **Explainer URLs** are path-based: `/explainer-slug` (not hash-based)
+- **Panel anchors** use the URL hash: `/explainer-slug#panel-id`
+- **Dev mode** is a query parameter: `/explainer-slug#panel-id?dev=true`
+- The hash **auto-updates on scroll** — as the viewer scrolls through panels, the URL hash updates to reflect the currently visible panel via `history.replaceState`
+- Every `<ScrollSection>` in an explainer root component **must** have a `panelId` prop matching the panel's `id` from metadata. This sets the DOM `id` attribute for anchor linking and auto-updating.
+- Panel IDs should be clean, descriptive kebab-case (e.g., `panel-moloch-the-demon`, `panel-breathing-exercise`)
+- The `ExplainerRouter` handles reading the URL on mount, browser back/forward, and syncing the pathname
+
 ### Component Architecture
 - Every panel receives a `progress` prop (0 to 1)
 - Outermost element: `<section className="panel panel--dark">`
 - Content wrapper: `<div className="panel-body">`
 - Export as default function
 - Panel file location: `src/explainers/{slug}/panels/{PanelId}.tsx`
+- **Explainer root component** location: `src/explainers/{Slug}Explainer.tsx` — must include `panelId` on every `<ScrollSection>`
 
 ### Campaign Voice
 - **Bold and specific** — never vague or academic

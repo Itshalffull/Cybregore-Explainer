@@ -259,7 +259,23 @@ import { VideoBackground } from '../../components/VideoBackground'
 </section>
 ```
 
-### Step 11: Validate
+### Step 11: Register the panel in the explainer root component
+
+The panel must be wired into the explainer's root component (e.g.,
+`src/explainers/{Slug}Explainer.tsx`). Each `<ScrollSection>` that renders
+this panel **must** include a `panelId` prop matching the panel's metadata `id`:
+
+```tsx
+<ScrollSection scrollLength={3} panelId="panel-your-panel-id">
+  {(progress) => <PanelYourPanel progress={progress} />}
+</ScrollSection>
+```
+
+The `panelId` sets the DOM `id` attribute, which enables:
+- **URL anchors** — viewers can link directly to `/explainer-slug#panel-id`
+- **Auto-updating hash** — the URL hash updates as the viewer scrolls to this panel
+
+### Step 12: Validate
 
 Check that:
 - [ ] Component renders without errors
@@ -275,12 +291,14 @@ Check that:
 - [ ] Text is readable against the background at all progress points
 - [ ] The `scrollLength` value matches the content plan
 - [ ] Component exports as default function
+- [ ] `panelId` matches the panel's metadata `id` in the explainer root component
 
-### Step 12: Report
+### Step 13: Report
 
 Tell the user:
 - What file was created and where
 - The chosen headline and body copy
 - The scrollLength value
+- The `panelId` used for URL anchoring (e.g., `/explainer-slug#panel-id`)
 - Any background assets needed (note if `create-panel-background` should be run)
 - What the previous and next panels are (for context on integration)
