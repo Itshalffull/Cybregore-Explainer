@@ -13,11 +13,9 @@ export default function PanelBreatheWithMe({ progress }: PanelProps) {
   const line1Opacity = lerp(progress, 0.0, 0.1, 0, 1)
   const line1Y = lerp(progress, 0.0, 0.1, 20, 0)
 
-  const line2Opacity = lerp(progress, 0.12, 0.22, 0, 1)
-  const line2Y = lerp(progress, 0.12, 0.22, 15, 0)
-
-  // Inhale instruction
+  // Inhale instruction — fades in and out
   const inhaleOpacity = lerpMulti(progress, [0.12, 0.22, 0.32, 0.38], [0, 1, 1, 0])
+  const inhaleY = lerp(progress, 0.12, 0.22, 15, 0)
 
   // Exhale instruction — appears and stays
   const exhaleOpacity = lerp(progress, 0.35, 0.45, 0, 1)
@@ -58,7 +56,7 @@ export default function PanelBreatheWithMe({ progress }: PanelProps) {
 
         <p
           className="text-body text-sage text-center mb-lg"
-          style={{ opacity: inhaleOpacity, transform: `translateY(${line2Y}px)` }}
+          style={{ opacity: inhaleOpacity, transform: `translateY(${inhaleY}px)` }}
         >
           Breathe in. Slowly. Fill yourself.
         </p>
