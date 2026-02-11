@@ -1,3 +1,9 @@
+---
+name: dharma-macro
+description: "Generate high-level narrative metadata (thesis, tone, characters, conflict, act structure) for a Dharma campaign explainer. Use when creating the narrative soul of an explainer from a known idea."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-macro: Generate Macro Metadata for a Dharma Campaign Explainer
 
 ## What This Skill Does

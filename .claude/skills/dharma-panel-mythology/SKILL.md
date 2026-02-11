@@ -1,3 +1,9 @@
+---
+name: dharma-panel-mythology
+description: "Create and build a mythology panel React component with layered text reveals over rich imagery, bridging ancient wisdom and modern digital reality. Use when building visually immersive spiritual/mythological panels."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-panel-mythology: Create & Build a Mythology Panel
 
 ## What This Skill Does
