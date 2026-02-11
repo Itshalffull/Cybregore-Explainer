@@ -12,10 +12,40 @@ import {
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { ExplainerMetadata } from '../types/metadata'
 
-// Dev mode layer — lazily loaded, tree-shaken in production builds
-const DevModeLayer = import.meta.env.DEV
-  ? lazy(() => import('../dev/DevModeLayer'))
-  : null
+// Dev mode layer — lazily loaded. Available in production via ?dev=true
+const DevModeLayer = lazy(() => import('../dev/DevModeLayer'))
+
+/** Check if dev mode is enabled via ?dev=true query param or Vite dev server */
+function isDevMode(): boolean {
+  if (import.meta.env.DEV) return true
+  try {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('dev') === 'true'
+  } catch {
+    return false
+  }
+}
+
+// ─── URL helpers ──────────────────────────────────────────────────────────────
+
+/** Get the base path (handles deployments at sub-paths) */
+function getBasePath(): string {
+  return import.meta.env.BASE_URL?.replace(/\/$/, '') || ''
+}
+
+/** Extract explainer slug from pathname */
+function slugFromPath(pathname: string): string {
+  const base = getBasePath()
+  const path = base ? pathname.replace(base, '') : pathname
+  return path.replace(/^\/+/, '').replace(/\/+$/, '') || ''
+}
+
+/** Build URL path for an explainer */
+function pathForExplainer(slug: string, defaultExplainer: string): string {
+  const base = getBasePath()
+  if (slug === defaultExplainer) return base || '/'
+  return `${base}/${slug}`
+}
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -195,13 +225,21 @@ export default function ExplainerRouter({
       // Kill ScrollTriggers so the transform doesn't fight pinned elements
       ScrollTrigger.getAll().forEach((t) => t.kill())
 
+      // Update URL
+      const targetPath = pathForExplainer(explainer, defaultExplainer)
+      window.history.pushState(
+        { explainer },
+        '',
+        targetPath + window.location.search,
+      )
+
       pendingRef.current = { explainer, scrollY: 0 }
       dirRef.current = 'forward'
       setStack((s) => [...s, entry])
       setTransitioning(true)
       setAnimClass('explainer-exit-left')
     },
-    [current, explainers, transitioning],
+    [current, defaultExplainer, explainers, transitioning],
   )
 
   // ── Jump back to a previous breadcrumb ──
@@ -216,6 +254,14 @@ export default function ExplainerRouter({
       // Kill ScrollTriggers so the transform doesn't fight pinned elements
       ScrollTrigger.getAll().forEach((t) => t.kill())
 
+      // Update URL
+      const targetPath = pathForExplainer(target.explainer, defaultExplainer)
+      window.history.pushState(
+        { explainer: target.explainer },
+        '',
+        targetPath + window.location.search,
+      )
+
       pendingRef.current = {
         explainer: target.explainer,
         scrollY: target.scrollY,
@@ -225,22 +271,59 @@ export default function ExplainerRouter({
       setTransitioning(true)
       setAnimClass('explainer-exit-right')
     },
-    [transitioning, stack],
+    [defaultExplainer, transitioning, stack],
   )
 
-  // ── Sync hash ──
+  // ── Sync URL pathname ──
   useEffect(() => {
-    window.location.hash = current === defaultExplainer ? '' : current
+    const targetPath = pathForExplainer(current, defaultExplainer)
+    if (window.location.pathname !== targetPath) {
+      // Preserve query string and hash
+      const url = targetPath + window.location.search + window.location.hash
+      window.history.replaceState({ explainer: current }, '', url)
+    }
   }, [current, defaultExplainer])
 
-  // ── Read hash on mount ──
+  // ── Read pathname on mount ──
   useEffect(() => {
+    const slug = slugFromPath(window.location.pathname)
+    if (slug && explainers[slug] && isImplemented(explainers[slug])) {
+      setCurrent(slug)
+    }
+    // Scroll to panel anchor if hash is present
     const hash = window.location.hash.replace('#', '')
-    if (hash && explainers[hash] && isImplemented(explainers[hash])) {
-      setCurrent(hash)
+    if (hash) {
+      requestAnimationFrame(() => {
+        // Wait for GSAP ScrollTrigger to set up
+        setTimeout(() => {
+          const el = document.getElementById(hash)
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+        }, 300)
+      })
+    } else {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Handle browser back/forward ──
+  useEffect(() => {
+    const handlePopState = (_e: PopStateEvent) => {
+      const slug = slugFromPath(window.location.pathname)
+      const target = slug || defaultExplainer
+      if (target !== current && explainers[target] && isImplemented(explainers[target])) {
+        // Kill ScrollTriggers so the transform doesn't fight pinned elements
+        ScrollTrigger.getAll().forEach((t) => t.kill())
+        setCurrent(target)
+        setStack([]) // Clear breadcrumb stack on browser navigation
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh()
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        })
+      }
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [current, defaultExplainer, explainers])
 
   // ── Dev-mode: log stub explainers ──
   useEffect(() => {
@@ -291,8 +374,8 @@ export default function ExplainerRouter({
         </div>
       </div>
       {children}
-      {/* Dev mode overlay — zero cost in production (tree-shaken) */}
-      {import.meta.env.DEV && DevModeLayer && (
+      {/* Dev mode overlay — available in dev or via ?dev=true */}
+      {isDevMode() && (
         <Suspense fallback={null}>
           <DevModeLayer
             wrapperRef={wrapperRef}

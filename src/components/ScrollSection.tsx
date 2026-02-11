@@ -9,6 +9,8 @@ interface ScrollSectionProps {
   children: (progress: number) => ReactNode
   // How many "screens" worth of scroll height this section takes
   scrollLength?: number
+  /** Panel ID — sets the container's id attribute for anchor links (#panel-id) */
+  panelId?: string
   className?: string
   style?: React.CSSProperties
   // Animation smoothing factor (higher = more responsive, lower = smoother)
@@ -26,6 +28,7 @@ interface ScrollSectionProps {
 export default function ScrollSection({
   children,
   scrollLength = 2,
+  panelId,
   className = '',
   style = {},
   smoothing = 0.15, // Interpolation factor per frame
@@ -142,6 +145,7 @@ export default function ScrollSection({
   return (
     <div
       ref={containerRef}
+      id={panelId}
       className={className}
       style={{
         position: 'relative',

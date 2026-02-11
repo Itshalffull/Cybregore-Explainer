@@ -53,91 +53,91 @@ export default function SuicideCultExplainer() {
 
       {/* === ACT 1: THE PROVOCATION === */}
       <IntroSection>
-        <ScrollSection scrollLength={2}>
+        <ScrollSection scrollLength={2} panelId="panel-you-are-in-a-cult">
           {(progress) => <PanelYouAreInACult progress={progress} />}
         </ScrollSection>
       </IntroSection>
 
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-buy-now-sacrament">
         {(progress) => <PanelBuyNowSacrament progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 2: THE EVIDENCE === */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-extinction-data">
         {(progress) => <PanelExtinctionData progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={4.5}>
+      <ScrollSection scrollLength={4.5} panelId="panel-four-horsemen">
         {(progress) => <PanelFourHorsemen progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-technology-accelerates">
         {(progress) => <PanelTechnologyAccelerates progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 3: THE NAMING === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-this-is-a-cult">
         {(progress) => <PanelThisIsACult progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-invisible-leader">
         {(progress) => <PanelTheInvisibleLeader progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 4: THE ANATOMY === */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-cult-anatomy">
         {(progress) => <PanelCultAnatomy progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-no-exit">
         {(progress) => <PanelNoExit progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 5: THE ESCALATION === */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-nuclear">
         {(progress) => <PanelNuclear progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-bioweapons">
         {(progress) => <PanelBioweapons progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-ai-acceleration">
         {(progress) => <PanelAiAcceleration progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 6: THE FLIP === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-you-are-the-cult-member">
         {(progress) => <PanelYouAreTheCultMember progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-normal-is-extreme">
         {(progress) => <PanelNormalIsExtreme progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-no-moral-standing">
         {(progress) => <PanelNoMoralStanding progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 7: THE MYTHOLOGY === */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-moloch-the-demon">
         {(progress) => <PanelMolochTheDemon progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-possessed-civilization">
         {(progress) => <PanelPossessedCivilization progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 8: THE WAY OUT === */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-we-escaped">
         {(progress) => <PanelWeEscaped progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-monastery">
         {(progress) => <PanelTheMonastery progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-leave-the-cult">
         {(progress) => <PanelLeaveTheCult progress={progress} />}
       </ScrollSection>
     </div>

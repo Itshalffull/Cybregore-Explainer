@@ -47,74 +47,74 @@ export default function EdgeOfBreathExplainer() {
 
       {/* === ACT 1: THE INVITATION === */}
       <IntroSection>
-        <ScrollSection scrollLength={2.5}>
+        <ScrollSection scrollLength={2.5} panelId="panel-welcome-breath">
           {(progress) => <PanelWelcomeBreath progress={progress} />}
         </ScrollSection>
       </IntroSection>
 
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-your-body-laboratory">
         {(progress) => <PanelYourBodyLaboratory progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 2: THE BREATH === */}
-      <ScrollSection scrollLength={5}>
+      <ScrollSection scrollLength={5} panelId="panel-breathe-with-me">
         {(progress) => <PanelBreatheWithMe progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-the-exhale">
         {(progress) => <PanelTheExhale progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 3: THE EDGE === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-edge">
         {(progress) => <PanelTheEdge progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-craving-sings">
         {(progress) => <PanelCravingSings progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 4: THE RECOGNITION === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-data-as-breath">
         {(progress) => <PanelDataAsBreath progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-never-breathe-in">
         {(progress) => <PanelNeverBreatheIn progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 5: THE HUNGRY GHOST === */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-hungry-ghost-realm">
         {(progress) => <PanelHungryGhostRealm progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-largest-ghost">
         {(progress) => <PanelTheLargestGhost progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 6: THE DOORWAY === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-flip">
         {(progress) => <PanelTheFlip progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-beyond-yourself">
         {(progress) => <PanelBeyondYourself progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-the-breath-was-breathing">
         {(progress) => <PanelTheBreathWasBreathing progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 7: THE RETURN === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-phone-as-mirror">
         {(progress) => <PanelPhoneAsMirror progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-your-daily-doorway">
         {(progress) => <PanelYourDailyDoorway progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-sacred-edge">
         {(progress) => <PanelTheSacredEdge progress={progress} />}
       </ScrollSection>
     </div>

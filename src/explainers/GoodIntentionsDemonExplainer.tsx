@@ -50,72 +50,72 @@ export default function GoodIntentionsDemonExplainer() {
 
       {/* === ACT 1: THE HOOK === */}
       <IntroSection>
-        <ScrollSection scrollLength={2}>
+        <ScrollSection scrollLength={2} panelId="panel-flip-it-hook">
           {(progress) => <PanelFlipItHook progress={progress} />}
         </ScrollSection>
       </IntroSection>
 
       {/* === ACT 2: THE FIRST FALL (SILICON VALLEY) === */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-build-to-help">
         {(progress) => <PanelBuildToHelp progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-silicon-valley-fail">
         {(progress) => <PanelSiliconValleyFail progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 3: THE DEEPER FALL (EA) === */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-ea-promise">
         {(progress) => <PanelEaPromise progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-ea-corruption">
         {(progress) => <PanelEaCorruption progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 4: THE DEEPEST FALL (RATIONALISM) === */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-rationalist-mind">
         {(progress) => <PanelRationalistMind progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-yudkowski-paradox">
         {(progress) => <PanelYudkowskiParadox progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 5: THE PATTERN REVEALED === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-three-falls">
         {(progress) => <PanelThreeFalls progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={2.5}>
+      <ScrollSection scrollLength={2.5} panelId="panel-what-is-this">
         {(progress) => <PanelWhatIsThis progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 6: THE DEMON NAMED === */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-helping-mind-demon">
         {(progress) => <PanelHelpingMindDemon progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-moloch-bridge">
         {(progress) => <PanelMolochBridge progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 7: THE MIRROR === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-you-are-the-demon">
         {(progress) => <PanelYouAreTheDemon progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 8: THE ALTERNATIVE === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-monastery-laboratory">
         {(progress) => <PanelMonasteryLaboratory progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-wisdom-acceleration">
         {(progress) => <PanelWisdomAcceleration progress={progress} />}
       </ScrollSection>
 
       {/* === ACT 9: THE CALL === */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-the-call">
         {(progress) => <PanelTheCall progress={progress} />}
       </ScrollSection>
     </div>
