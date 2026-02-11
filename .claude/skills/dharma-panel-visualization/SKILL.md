@@ -1,3 +1,9 @@
+---
+name: dharma-panel-visualization
+description: "Create and build a visualization panel React component with SVG charts, animated counters, and data-driven graphics for a Dharma campaign explainer. Use when building data visualization panels."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-panel-visualization: Create & Build a Visualization Panel
 
 ## What This Skill Does

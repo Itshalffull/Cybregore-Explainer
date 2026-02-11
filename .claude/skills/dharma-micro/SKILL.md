@@ -1,3 +1,9 @@
+---
+name: dharma-micro
+description: "Storyboard every panel of an explainer and generate detailed per-panel metadata. Use after dharma-macro to plan the scene-by-scene scroll experience."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-micro: Storyboard Panels & Generate Micro Metadata
 
 ## What This Skill Does

@@ -1,3 +1,9 @@
+---
+name: dharma-panel-text
+description: "Create and build a text panel React component with scroll-driven typography for a Dharma campaign explainer. Use when building dramatic text panels with headlines and body copy."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-panel-text: Create & Build a Text Panel
 
 ## What This Skill Does

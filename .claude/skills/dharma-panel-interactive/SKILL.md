@@ -1,3 +1,9 @@
+---
+name: dharma-panel-interactive
+description: "Create and build an interactive panel React component where viewers participate (breathing exercises, simulated feeds, choices) for a Dharma campaign explainer. Use when building participatory panels."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-panel-interactive: Create & Build an Interactive Panel
 
 ## What This Skill Does

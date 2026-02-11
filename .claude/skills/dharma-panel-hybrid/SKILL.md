@@ -1,3 +1,9 @@
+---
+name: dharma-panel-hybrid
+description: "Create and build a hybrid panel React component that combines two or more panel types (text, visualization, interactive, mythology) with scroll-driven mode transitions. Use for climax moments and complex reveals."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-panel-hybrid: Create & Build a Hybrid Panel
 
 ## What This Skill Does

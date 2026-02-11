@@ -1,3 +1,9 @@
+---
+name: dharma-extract
+description: "Extract bold, explainer-shaped ideas from source material (talks, articles, transcripts) and delegate to agents for metadata generation. Use when the user provides source content and wants to create new explainers."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Task, WebFetch, AskUserQuestion
+---
+
 # dharma-extract: Extract Explainer Ideas from Source Material & Delegate to Agents
 
 ## What This Skill Does

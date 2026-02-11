@@ -1,3 +1,9 @@
+---
+name: dharma-test-browser
+description: "QA agent that launches an explainer in the browser, tests every panel at multiple scroll positions and viewports, and generates a structured test report with pass/fail results. Use when testing an explainer's visual quality."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, AskUserQuestion
+---
+
 # dharma-test-browser: Run & Test Explainer in Browser
 
 ## What This Skill Does
