@@ -4,6 +4,12 @@ import CybregoreExplainer from './explainers/CybregoreExplainer'
 import cybregoreMetadata from './explainers/cybregore-metadata'
 import ExampleExplainer from './explainers/ExampleExplainer'
 import exampleMetadata from './explainers/example-metadata'
+import GoodIntentionsDemonExplainer from './explainers/GoodIntentionsDemonExplainer'
+import goodIntentionsDemonMetadata from './explainers/good-intentions-demon-metadata'
+import SuicideCultExplainer from './explainers/SuicideCultExplainer'
+import suicideCultMetadata from './explainers/suicide-cult-metadata'
+import EdgeOfBreathExplainer from './explainers/EdgeOfBreathExplainer'
+import edgeOfBreathMetadata from './explainers/edge-of-breath-metadata'
 
 /**
  * App root — wraps all explainers in the ExplainerRouter.
@@ -37,11 +43,21 @@ function App() {
           content: <ExampleExplainer />,
           metadata: exampleMetadata,
         },
-        // Stub example — metadata only, no content yet:
-        // 'meaning-makers': {
-        //   title: 'Meaning Makers',
-        //   metadata: meaningMakersMetadata,
-        // },
+        'good-intentions-demon': {
+          title: 'The Good Intentions Demon',
+          content: <GoodIntentionsDemonExplainer />,
+          metadata: goodIntentionsDemonMetadata,
+        },
+        'suicide-cult': {
+          title: 'The Suicide Cult',
+          content: <SuicideCultExplainer />,
+          metadata: suicideCultMetadata,
+        },
+        'edge-of-breath': {
+          title: 'The Edge of Breath',
+          content: <EdgeOfBreathExplainer />,
+          metadata: edgeOfBreathMetadata,
+        },
       }}
     >
       <JumpBreadcrumbs />

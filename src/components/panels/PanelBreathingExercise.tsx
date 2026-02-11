@@ -1,4 +1,5 @@
 import { lerp } from '../../utils/animation'
+import JumpLink from '../JumpLink'
 
 interface PanelBreathingExerciseProps {
   progress: number
@@ -110,6 +111,10 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
           <p className="text-title text-cream" style={{ margin: 0 }}>
             Data is breath to the Cybregore.
           </p>
+        </div>
+
+        <div style={{ opacity: dataIsBreathOpacity }}>
+          <JumpLink to="edge-of-breath" label="Experience the Edge of Breath →" fromLabel="Breathing Exercise" />
         </div>
       </div>
     </section>
