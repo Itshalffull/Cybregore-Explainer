@@ -49,9 +49,9 @@ Read the explainer metadata file. Identify:
 
 ### Step 3: Choose the interaction type
 
-Select from these core patterns:
+These are proven patterns, but invent new ones if the content calls for it:
 
-| Type | Description | Best For |
+| Type | Description | Often Works Well For |
 |------|-------------|----------|
 | **Breathing exercise** | Guided inhale/exhale with visual feedback | Embodiment, resolution |
 | **Simulated feed** | Fake social media scroll the viewer interacts with | Evidence, anatomy |
@@ -63,7 +63,8 @@ Select from these core patterns:
 
 ### Step 4: Design the experience arc
 
-Interactive panels have their own mini-narrative:
+One effective structure is a mini-narrative arc. Not every interactive panel needs
+all four stages — adapt to what the specific interaction demands:
 
 ```
 1. INVITATION — What draws the viewer into participating?
@@ -79,12 +80,15 @@ Interactive panels have their own mini-narrative:
    {Clean exit. Often a moment of stillness before the next panel.}
 ```
 
-### Step 5: Write all copy states
+Some panels may skip stages, blend them, or follow a different arc entirely.
 
-Interactive panels have multiple text states:
+### Step 5: Write the copy states
 
-- **Invitation copy:** 1-2 lines that tell the viewer what to do.
-  Use `text-body text-cream text-bold`. Commands, not suggestions.
+Interactive panels typically need text for multiple states. Consider which of
+these apply, and add others if the interaction calls for it:
+
+- **Invitation copy:** Text that tells the viewer what to do.
+  Use `text-body text-cream text-bold`. Commands tend to work better than suggestions.
   (e.g., "Stop scrolling. Breathe with this circle.")
 - **During-interaction copy:** Text that changes based on viewer actions.
   Use `text-body text-sage`. Minimal, rhythmic.
@@ -93,11 +97,12 @@ Interactive panels have multiple text states:
   Use `text-title text-cream` or wrap in `box-coral`. Bold, personal.
   (e.g., "The Cybregore cannot follow you into this moment of pure awareness.")
 - **Fallback copy:** What non-interactive viewers see (scroll-only experience).
-  Must deliver the same message without interaction.
+  Should deliver the same message without interaction.
 
 ### Step 6: Define the scroll + interaction map
 
-Interactive panels mix scroll-driven and user-driven states:
+Interactive panels mix scroll-driven and user-driven states. Here's one common
+structure — adapt it to the specific interaction's needs:
 
 ```
 Progress 0.0 - 0.15: Approach
@@ -113,10 +118,14 @@ Progress 0.85 - 1.0: Release
   {Gentle exit. Moment of stillness. Transition to next panel.}
 ```
 
-### Step 7: Present design to user
+### Step 7: Present design or proceed to build
 
-Show the interaction type, experience arc, all copy states, and scroll map.
-Get approval before building.
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Phase 2. Record
+your design decisions — they'll be included in the final summary.
+
+**If the user has asked to review content before building:** Show the interaction
+type, experience arc, all copy states, and scroll map for approval before building.
 
 ---
 

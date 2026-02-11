@@ -61,9 +61,10 @@ panel's message.
 
 ### Step 4: Choose the visualization type
 
-Select from these core types:
+These are common types, but the right choice is whatever makes the data land.
+Don't limit yourself to this list if the content calls for something different.
 
-| Type | Best For | Example |
+| Type | Often Works Well For | Example |
 |------|----------|---------|
 | **Animated counter** | Big numbers that shock | "2,500,000,000,000,000,000 bytes per day" |
 | **Bar chart** | Comparisons | Screen time by generation, platform reach |
@@ -76,19 +77,23 @@ Select from these core types:
 
 ### Step 5: Write the annotation copy
 
-Visualizations need supporting text:
+Consider what supporting text the visualization needs. Common elements include:
 - **Title/label:** What is this showing? (2-5 words)
 - **Axis labels / legends:** Clear, minimal (if applicable)
-- **Callout annotations:** 1-3 moments where text appears to contextualize a data point
-- **The pivot line:** One sentence that reframes the data through the campaign lens
+- **Callout annotations:** Moments where text appears to contextualize a data point
+- **A pivot line:** A sentence that reframes the data through the campaign lens
   (e.g., "This is not just data — it is the metabolism of something alive.")
 
-The pivot line is critical — it's where the visualization stops being informational
-and becomes narrative. It often uses the metadata's `keyPhrases`.
+A pivot line is one of the most effective tools for landing a visualization — it's
+where data stops being informational and becomes narrative. It often draws from
+the metadata's `keyPhrases`. That said, not every visualization needs an explicit
+pivot — sometimes the data speaks for itself or the framing is woven throughout.
 
 ### Step 6: Design the scroll animation sequence
 
-Map the visualization build to scroll progress:
+Map the visualization build to scroll progress. Here's one proven sequence, but
+adapt it to the specific content — a simple counter may need a different rhythm
+than a complex network diagram:
 
 ```
 Progress 0.0 - 0.1: Setup
@@ -105,10 +110,15 @@ Progress 0.85 - 1.0: Source / Exit
   {Source citation fades in. Content stays visible.}
 ```
 
-### Step 7: Present content to user
+### Step 7: Present content or proceed to build
 
-Show the data plan, visualization type, annotation copy, and animation
-sequence for approval before building.
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Phase 2. Record
+your content decisions — they'll be included in the final summary.
+
+**If the user has asked to review content before building:** Show the data plan,
+visualization type, annotation copy, and animation sequence for approval before
+building.
 
 ---
 

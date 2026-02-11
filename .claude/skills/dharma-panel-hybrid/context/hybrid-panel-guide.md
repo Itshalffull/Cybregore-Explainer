@@ -30,12 +30,15 @@ what — is doing the capturing?") while the data provides the scale.
 - The transition would feel forced or arbitrary
 - The panel's message is simple enough for one approach
 
-### The Five Hybrid Patterns
+### Common Hybrid Patterns
+
+These are proven patterns, but hybrids are inherently flexible — combine, adapt,
+or invent new patterns as the content demands.
 
 #### Pattern 1: Sequential (A → B)
 Mode A plays out, then Mode B takes over.
 
-**Best for:** claim → evidence, setup → payoff, buildup → release
+**Often works well for:** claim → evidence, setup → payoff, buildup → release
 
 **Scroll structure:**
 ```
@@ -47,7 +50,7 @@ Mode A plays out, then Mode B takes over.
 #### Pattern 2: Simultaneous (A + B)
 Both modes are present throughout, occupying different visual layers.
 
-**Best for:** text over data, mythology with embedded visualization
+**Often works well for:** text over data, mythology with embedded visualization
 
 **Scroll structure:**
 ```
@@ -59,7 +62,7 @@ Both modes are present throughout, occupying different visual layers.
 #### Pattern 3: Split (A | B)
 Screen is divided, each half showing a different mode.
 
-**Best for:** comparison, before/after, "Flip It" reveals, dual perspective
+**Often works well for:** comparison, before/after, "Flip It" reveals, dual perspective
 
 **Scroll structure:**
 ```
@@ -72,7 +75,7 @@ Screen is divided, each half showing a different mode.
 #### Pattern 4: Transform (A → morphs into → B)
 Mode A visually morphs into Mode B.
 
-**Best for:** reveal moments, "Flip It" inversions, paradigm shifts
+**Often works well for:** reveal moments, "Flip It" inversions, paradigm shifts
 
 **Scroll structure:**
 ```
@@ -85,7 +88,7 @@ Mode A visually morphs into Mode B.
 #### Pattern 5: Interrupt (A → ! → B)
 Mode A is interrupted by Mode B, creating surprise or dissonance.
 
-**Best for:** attention trap reveals, "Flip It" shocks, escalation peaks
+**Often works well for:** attention trap reveals, "Flip It" shocks, escalation peaks
 
 **Scroll structure:**
 ```
@@ -95,21 +98,26 @@ Mode A is interrupted by Mode B, creating surprise or dissonance.
 0.85 ── 1.0: Exit
 ```
 
-### Content Design Rules for Hybrids
+### Content Design Principles for Hybrids
 
-**Mode hierarchy:** One mode is primary (carries the message), the other
-supports. Never let both modes compete equally — one leads.
+These principles tend to make hybrids work well, but adapt them to the content:
 
-**Transition = meaning:** The transition itself should carry narrative weight.
+**Mode hierarchy:** Generally one mode is primary (carries the message) and the
+other supports. Letting both modes compete equally can be confusing — though
+sometimes tension between modes IS the point.
+
+**Transition = meaning:** The transition itself can carry narrative weight.
 A dissolve says "these are connected." A push says "this replaces that."
 An interrupt says "you were wrong."
 
-**Content budget:** Each mode gets LESS content than a standalone panel of
-that type would. If a standalone text panel has 3 headline lines + body copy,
-the text portion of a hybrid gets 1-2 headlines, max.
+**Content budget:** Each mode typically gets less content than a standalone panel
+of that type. If a standalone text panel has 3 headline lines + body copy,
+the text portion of a hybrid might get 1-2 headlines. Adjust based on what
+the content actually needs.
 
-**scrollLength is longer:** Hybrids need 3.5-5 scrollLength to give both
-modes room. Don't compress two types into the same time as one type.
+**scrollLength is longer:** Hybrids typically need 3.5-5 scrollLength to give
+both modes room. Compressing two types into the same time as one type usually
+feels rushed.
 
 ---
 

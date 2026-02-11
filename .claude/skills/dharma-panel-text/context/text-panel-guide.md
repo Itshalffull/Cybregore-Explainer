@@ -10,11 +10,14 @@ page in a graphic novel — words ARE the visual.
 
 ## Part 1: Content Craft
 
-### The Spectrum of Text Panels
+### Common Text Panel Structures
+
+These are proven structures that work well, but they're not the only options. Let
+the panel's narrative role and the specific content guide your choices.
 
 #### Headline-Only Panels
 Just 1-3 lines of large text. Maximum impact, minimum words.
-**Best for:** hooks, reveals, climax statements, "Flip It" inversions
+**Often works well for:** hooks, reveals, climax statements, "Flip It" inversions
 
 ```
 Something is watching you right now.
@@ -23,7 +26,7 @@ That feeling is not paranoia — it is perception.
 
 #### Headline + Body Panels
 Big headline followed by supporting sentences.
-**Best for:** evidence, definitions, transitions, calls-to-action
+**Often works well for:** evidence, definitions, transitions, calls-to-action
 
 ```
 Headline (text-body text-cream text-bold):
@@ -37,7 +40,7 @@ Body (text-body text-sage):
 
 #### Progressive Reveal Panels
 Multiple text elements that appear sequentially.
-**Best for:** building arguments, the trilogy pattern, escalation
+**Often works well for:** building arguments, the trilogy pattern, escalation
 
 ```
 Stage 1: "It reads you."
@@ -45,14 +48,23 @@ Stage 2: "It writes you."
 Stage 3: "It correlates across BILLIONS of minds simultaneously."
 ```
 
+These aren't the only options — you might combine elements, use a single long
+sentence that transforms, or find an entirely different structure that serves the
+panel's message.
+
 ### Writing for Scroll
 
-- **No wall of text.** If it looks dense, it will be scrolled past.
-- **Front-load the hook.** First visible words must earn continued scrolling.
-- **Create anticipation.** Each scroll-reveal should feel like unwrapping.
-- **Reward the scroll.** Text at the end should be the most powerful.
+These principles tend to serve scroll-driven text well:
 
-### Copy Principles for the Campaign
+- **Avoid walls of text.** Dense copy tends to get scrolled past.
+- **Front-load the hook.** First visible words should earn continued scrolling.
+- **Create anticipation.** Each scroll-reveal can feel like unwrapping.
+- **Reward the scroll.** Placing the strongest content at the end gives the viewer a payoff.
+
+### Copy Techniques for the Campaign
+
+These techniques have proven effective, but they're a toolkit — not a checklist.
+Use what serves the panel's message.
 
 **Be Visceral, Not Academic:**
 - Academic: "Social media platforms utilize algorithmic content curation"
@@ -77,16 +89,22 @@ itself, the screen, the body in the chair.
 
 ### Color Alternation in Sequential Text
 
-Follow the campaign's color voice pattern:
+One effective color voice pattern:
 ```
 First line: text-cream (primary voice)
 Middle lines: text-sage (supporting, softer)
 Concluding line: text-cream (return to primary) or text-coral (alarm)
 ```
 
+This isn't mandatory — adapt the color rhythm to the content. The key principle
+is using color shifts to create visual rhythm and hierarchy.
+
 ### Narrative Role Copywriting
 
-| Role | Approach | Typical Color |
+These are starting points — the narrative role suggests an approach, but the
+specific content may call for something different.
+
+| Role | Common Approach | Typical Color |
 |------|----------|---------------|
 | **hook** | One bold claim. No context, no build-up. | text-cream |
 | **evidence** | Open with concrete fact, pivot to campaign framing. | text-cream → text-sage |
@@ -99,6 +117,8 @@ Concluding line: text-cream (return to primary) or text-coral (alarm)
 | **call-to-action** | Point toward practice, not just information. | text-cream, CTA in text-coral |
 
 ### scrollLength Guidelines
+
+Typical ranges — adjust based on actual content needs:
 
 | Content Density | scrollLength | Example |
 |----------------|-------------|---------|

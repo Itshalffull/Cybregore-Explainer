@@ -49,31 +49,36 @@ Read the explainer metadata file. Find the specific panel entry and understand:
 
 ### Step 3: Write the headline copy
 
-Every text panel has **1-3 headline lines** — the big, bold text that dominates
-the screen.
+Most text panels center on **headline text** — the big, bold text that dominates
+the screen. A common approach is 1-3 headline lines, but the structure should
+serve the content. Some panels may use a single transforming sentence, a question,
+or something else entirely.
 
-Rules for headline copy:
-- **Short.** 3-10 words per line. Every word must earn its place.
+Principles that tend to work well for headlines:
+- **Short.** 3-10 words per line. Every word should earn its place.
 - **Bold.** No hedging, no qualifiers, no academic tone.
 - **Rhythmic.** Read it out loud. It should have cadence.
 - **Campaign-aligned.** Match the tones specified in the macro metadata.
 
 Write 2-3 headline options for the user to choose from.
 
-### Step 4: Write the body copy
+### Step 4: Write the body copy (if applicable)
 
-Body copy is the supporting text that appears around or after the headlines.
-Not every text panel needs body copy — some are headline-only.
+Body copy is supporting text that appears around or after the headlines.
+Not every text panel needs body copy — some are headline-only, and that's often
+more powerful.
 
-If body copy is warranted:
-- **2-4 sentences maximum.** This is a scroll experience, not an article.
-- **Second person.** Address "you" — the viewer is a character in this story.
+If body copy serves the panel:
+- **Keep it lean.** This is a scroll experience, not an article. 2-4 sentences is a good default but not a hard rule.
+- **Second person tends to land well.** Address "you" — the viewer is a character in this story.
 - **Advance the argument.** Each sentence should move the thesis forward.
 - **End with a hook.** The last line should pull the viewer into scrolling further.
 
 ### Step 5: Define the scroll choreography
 
-Map content to the panel's scroll progress (0.0 to 1.0):
+Map content to the panel's scroll progress (0.0 to 1.0). Here's one common
+pattern, but adapt it to the specific content — some panels may need longer
+holds, faster reveals, or a completely different rhythm:
 
 ```
 Progress 0.0 - 0.12: Entry
@@ -105,10 +110,16 @@ Progress 0.90 - 1.0: Exit
 - If a generated background is needed, note for `create-panel-background` skill
 - For video backgrounds, use `panel-body--over-video` + `text-shadow-depth`
 
-### Step 7: Present content to user
+### Step 7: Present content or proceed to build
 
-Show the complete content plan and get approval before building.
-After approval (or if the user says to proceed without review), move to Phase 2.
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Phase 2. Record
+your content decisions — they'll be included in the final summary.
+
+**If the user has asked to review content before building:** Show the complete
+content plan and get approval before moving to Phase 2.
+
+Either way, move to Phase 2.
 
 ---
 

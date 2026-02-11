@@ -53,13 +53,26 @@ Panels needed: {N}
 - Transition to next: {what does it set up?}
 - Suggested scroll length: {N viewport-heights, 2-5 typical}
 - Panel type: {text | visualization | interactive | mythology | hybrid}
+- JumpLink opportunities: {any cross-explainer links that belong in this panel?}
 ```
 
-Present this storyboard to the user for feedback BEFORE writing the TypeScript.
+**JumpLink identification:** If you've been given an inventory of existing
+explainers (slugs, theses, tags), look for natural interlinking points. A panel
+that mentions a concept covered in depth by another explainer is a good candidate
+for a `<JumpLink>` or `<InlineJumpLink>`. These auto-hide when the target is a
+stub, so it's safe to add links to explainers that don't exist yet.
+
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Step 4. The
+storyboard plan serves as your working notes — it'll be included in the final
+summary.
+
+**If the user has asked to review the storyboard first:** Present this storyboard
+to the user for feedback before writing the TypeScript.
 
 ### Step 4: Generate the panel metadata
 
-After user approval, update the macro metadata file:
+Update the macro metadata file:
 
 1. **Populate the `panels` array** with full PanelMeta entries for every panel
 2. **Fill in act `panelIds`** with the IDs of panels belonging to each act
@@ -107,6 +120,7 @@ Tell the user:
 - Panel breakdown by act
 - Estimated scroll duration
 - Which panels are the most complex (likely need longer scrollLength)
+- Any JumpLink opportunities identified (which panels, linking to which explainers)
 - Remind them that actual panel component development is the next step
 
 ## Allowed PanelNarrativeRole Values

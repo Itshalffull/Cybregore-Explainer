@@ -35,12 +35,18 @@ digital entities — digital entities ARE hungry ghosts.
 
 ### The Mythology Bridge Pattern
 
-Every mythology panel follows:
+A proven structure for mythology panels moves through these layers. This is one
+effective approach — adapt, reorder, or restructure based on what the specific
+mythological content demands:
 
 1. **The Ancient** — Introduce tradition with reverence. `text-body text-sage text-italic`
 2. **The Description** — Paint vivid picture. `text-body text-cream`
 3. **The Bridge** — Connect ancient to modern (the pivot). `text-title text-cream`
 4. **The Implication** — What it means for the viewer. `text-body text-coral`
+
+Some panels may need fewer layers, more layers, or a different progression
+entirely. The bridge might come first, the ancient might be woven throughout,
+or the implication might be left unspoken.
 
 **Example (Cybregore - Hungry Ghosts):**
 1. "In Buddhist cosmology, Hungry Ghosts are beings with enormous appetites and tiny throats..."
@@ -50,11 +56,14 @@ Every mythology panel follows:
 
 ### Text Layering Principles
 
-- Earlier layers are quieter (smaller, lighter, italic `text-sage`)
-- The bridge layer is the loudest (`text-title text-cream` or in `box-coral`)
-- Implication layer uses coral (`text-coral`) for personal address
-- Give each layer a "hold" period before the next appears
-- Each layer should be readable independently
+These principles tend to create effective mythology panels, but they're
+guidelines, not rules:
+
+- Earlier layers are often quieter (smaller, lighter, italic `text-sage`)
+- The bridge layer tends to be the loudest (`text-title text-cream` or in `box-coral`)
+- Implication layer often uses coral (`text-coral`) for personal address
+- Giving each layer a "hold" period before the next appears helps absorption
+- Each layer should ideally be readable independently
 
 ### Imagery Direction for `create-panel-background`
 
@@ -210,6 +219,8 @@ For extra-dramatic text, combine with `text-glow-coral`:
 ```
 
 ### scrollLength Guidelines
+
+Typical ranges — adjust based on actual content needs:
 
 | Complexity | scrollLength |
 |-----------|-------------|

@@ -14,16 +14,23 @@ into this moment" — is proven by doing it.
 
 ## Part 1: Interaction Design
 
-### The Golden Rule
+### The Core Principle
 
-**The interaction must PROVE the message, not just illustrate it.**
+**The strongest interactive panels PROVE their message through experience, not just illustrate it.**
 
 - Illustrating: "Breathing helps you escape" + picture of lungs
 - Proving: "Stop scrolling. Breathe." + actual breathing exercise
 
+This is the ideal to aim for, but some interactions may work differently — a
+panel might create dissonance, build awareness gradually, or use interaction as
+a metaphor. Let the panel's message guide the design.
+
 ### Interaction Types
 
-| Type | Best For | Proves |
+These are proven patterns, but they're not the only options. Invent new
+interaction types if the content calls for something different.
+
+| Type | Often Works Well For | Can Prove |
 |------|----------|--------|
 | **Breathing exercise** | Embodiment, resolution | Awareness can be reclaimed |
 | **Simulated feed** | Evidence, anatomy | You don't notice being tracked |
@@ -34,21 +41,28 @@ into this moment" — is proven by doing it.
 
 ### Experience Arc
 
-Every interactive panel has a mini-narrative:
+One effective structure for interactive panels is a mini-narrative arc:
 
 1. **INVITATION** — Clear, low-friction entry. "Stop scrolling. Breathe."
 2. **ENGAGEMENT** — The core loop. 10-30 seconds of interaction.
 3. **REVELATION** — The "aha" moment. The interaction PROVES the message.
 4. **RELEASE** — Clean exit, moment of stillness before next panel.
 
+Not every interactive panel needs all four stages. Some may skip the revelation
+(letting the experience itself be the point), others may blur invitation and
+engagement, or use a completely different rhythm.
+
 ### Copy States
 
-Interactive panels have multiple text states:
+Interactive panels typically have multiple text states. Common ones include:
 
 - **Invitation:** 1-2 lines, commands not suggestions. `text-body text-cream text-bold`
 - **During:** Minimal, rhythmic. `text-body text-sage`
 - **Revelation:** The payoff. Bold, personal. `text-title text-cream` or in `box-coral`
-- **Fallback:** What non-interactive viewers see (scroll-only). Must deliver same message.
+- **Fallback:** What non-interactive viewers see (scroll-only). Should deliver the same message.
+
+Adapt these to the specific interaction — some panels may need more states, fewer,
+or different ones entirely.
 
 ---
 
@@ -355,6 +369,8 @@ const prefersReducedMotion =
 ```
 
 ### scrollLength Guidelines
+
+Typical ranges — adjust based on the actual interaction:
 
 | Interaction | scrollLength |
 |------------|-------------|

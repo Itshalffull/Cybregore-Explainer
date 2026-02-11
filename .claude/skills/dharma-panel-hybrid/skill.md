@@ -55,9 +55,9 @@ Read the explainer metadata file. Identify:
 
 ### Step 3: Identify the type combination
 
-Common hybrid combinations:
+Common hybrid combinations — but don't limit yourself to these:
 
-| Combination | Use Case | Example |
+| Combination | Often Used For | Example |
 |------------|----------|---------|
 | **text → visualization** | Claim followed by evidence | Bold thesis + data chart proving it |
 | **visualization → text** | Data followed by reframing | Chart builds + pivot line reveals |
@@ -68,32 +68,38 @@ Common hybrid combinations:
 
 ### Step 4: Design the mode transition
 
-The key to a hybrid panel is the **transition point**. Define:
+A key design decision for hybrid panels is how modes relate to each other.
+Consider:
 
-- **Transition trigger:** At what scroll progress does the mode change? (typically 0.4-0.6)
-- **Transition style:**
+- **Transition trigger:** At what scroll progress does the mode change? (typically 0.4-0.6 for sequential hybrids)
+- **Transition style** — some common options:
   - **Dissolve:** Mode A fades out, Mode B fades in (gentle)
   - **Push:** Mode A slides away, Mode B slides in (energetic)
   - **Transform:** Mode A morphs into Mode B (magical)
   - **Overlay:** Mode B appears on top of Mode A (layered)
   - **Split:** Screen splits, one mode per side (confrontational)
 
+The transition style should serve the narrative. Invent new transition approaches
+if the content calls for it.
+
 ### Step 5: Write content for each mode
 
-Apply content craft rules from the relevant panel type guides:
+Draw on content craft from the relevant panel type guides:
 
-**For text:** Headlines and body copy following text panel craft rules
+**For text:** Headlines and body copy
 **For visualization:** Data, chart type, annotation copy, pivot line
-**For interactive:** Interaction type, experience arc, all copy states, fallback
+**For interactive:** Interaction type, experience arc, copy states, fallback
 **For mythology:** Text layers, imagery direction, mythology bridge
 
-**Content budget:** Each mode gets LESS content than a standalone panel would.
+**Content budget:** Each mode typically gets less content than a standalone panel.
 If a standalone text panel has 3 headlines + body, the text portion of a hybrid
-gets 1-2 headlines max.
+might get 1-2 headlines. Adjust based on what the content actually needs — some
+hybrids lean heavily on one mode with the other as accent.
 
 ### Step 6: Design the unified scroll choreography
 
-Map both modes to a single scroll progress timeline:
+Map both modes to a single scroll progress timeline. Here are common starting
+points — adapt based on the specific content:
 
 **For sequential hybrids (A → B):**
 ```
@@ -113,10 +119,15 @@ Progress 0.7 - 0.85: Combined emphasis (data highlights sync with text)
 Progress 0.85 - 1.0: Exit
 ```
 
-### Step 7: Present design to user
+### Step 7: Present design or proceed to build
 
-Show the type combination, content for each mode, the transition design,
-and the unified choreography for approval.
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Phase 2. Record
+your design decisions — they'll be included in the final summary.
+
+**If the user has asked to review content before building:** Show the type
+combination, content for each mode, the transition design, and the unified
+choreography for approval before building.
 
 ---
 

@@ -19,7 +19,13 @@ content are created.
 6. **Desired tone** — Which tones should dominate? (See allowed values below)
 7. **Any specific "Flip It" inversions** — Counterintuitive claims the explainer should make
 
-If the user doesn't provide all inputs, ask for the missing ones before proceeding.
+**When running standalone:** If the user doesn't provide all inputs, ask for the
+missing ones before proceeding.
+
+**When running in the pipeline** (delegated from dharma-extract): Use the
+information from the extraction — the source material package, thesis, pillar,
+audience, tone, and concepts. Infer reasonable defaults for anything not
+explicitly provided and proceed without stopping to ask.
 
 ## Steps
 

@@ -49,8 +49,8 @@ Read the explainer metadata file. Identify:
 
 ### Step 3: Identify the mythology bridge
 
-Every mythology panel creates a **bridge** between an ancient concept and the
-modern thesis. Define:
+A core technique in mythology panels is the **bridge** — connecting an ancient
+concept to the modern thesis. Consider:
 
 - **Ancient anchor:** What tradition, concept, or entity is being invoked?
 - **Modern connection:** How does the ancient concept map to the modern phenomenon?
@@ -58,10 +58,14 @@ modern thesis. Define:
   (e.g., "The Cybregore is a digital Hungry Ghost: infinite appetite for attention,
   zero capacity for meaning.")
 
+Not every mythology panel needs an explicit bridge statement — some may let the
+connection emerge gradually, or leave it for the viewer to complete.
+
 ### Step 4: Write the layered text
 
-Mythology panels use **3-5 text layers** that reveal sequentially. Each layer
-deepens the mythological connection:
+A proven approach is **3-5 text layers** that reveal sequentially, each deepening
+the mythological connection. Here's one common structure — adapt it to the
+specific content:
 
 ```
 Layer 1: The Ancient  [text-body text-sage text-italic]
@@ -80,9 +84,13 @@ Layer 5: The Lingering (optional)  [text-body text-sage]
   {A final resonant phrase that stays.}
 ```
 
+Some panels may need fewer layers, more layers, or a different progression.
+The bridge might come first, the ancient might be woven throughout, or the
+implication might be left unspoken.
+
 ### Step 5: Specify imagery direction
 
-Mythology panels are image-heavy. Specify:
+Mythology panels are typically image-heavy. Consider specifying:
 
 **Subject matter:** What mythological imagery? Real-world references?
 Modern digital echoes (circuit patterns, screen glows, data streams)?
@@ -96,9 +104,13 @@ Modern digital echoes (circuit patterns, screen glows, data streams)?
 **Generation note:** If the image needs to be generated, write a detailed prompt
 for the `create-panel-background` skill.
 
+Not every mythology panel needs generated imagery — CSS atmospheric backgrounds
+or even a stark dark background can work if it serves the content.
+
 ### Step 6: Design the reveal sequence
 
-Map text layers and visual changes to scroll progress:
+Map text layers and visual changes to scroll progress. Here's a common sequence
+— adjust timing and structure based on the actual content:
 
 ```
 Progress 0.0 - 0.10: Background fades in
@@ -109,9 +121,14 @@ Progress 0.70 - 0.82: Layer 4 — The Implication
 Progress 0.85 - 1.0: Hold / Exit
 ```
 
-### Step 7: Present content to user
+### Step 7: Present content or proceed to build
 
-Show the text layers, imagery direction, and reveal sequence for approval.
+**Default (pipeline mode):** If you're running as part of the full pipeline
+(extract → macro → micro → panel builds), proceed directly to Phase 2. Record
+your content decisions — they'll be included in the final summary.
+
+**If the user has asked to review content before building:** Show the text layers,
+imagery direction, and reveal sequence for approval before building.
 
 ---
 

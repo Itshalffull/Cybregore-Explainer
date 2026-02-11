@@ -21,7 +21,10 @@ Campaign visualizations are NOT neutral infographics. They have a perspective:
 
 ### Visualization Type Selection
 
-| Type | Best For | Campaign Example |
+These are common types, but don't limit yourself — the right visualization is
+whatever makes the data land viscerally.
+
+| Type | Often Works Well For | Campaign Example |
 |------|----------|-----------------|
 | **Animated counter** | Big shocking numbers | "2,500,000,000,000,000,000 bytes per day" |
 | **Bar chart** | Comparisons | Screen time by generation, platform reach |
@@ -33,21 +36,26 @@ Campaign visualizations are NOT neutral infographics. They have a perspective:
 
 ### The Pivot Line
 
-Every visualization needs a **pivot line** — where data becomes narrative.
+A proven technique is the **pivot line** — a sentence where data becomes narrative.
+This is one of the most effective ways to land a visualization, though not every
+panel needs one (sometimes the data speaks for itself, or the framing is woven
+throughout).
 
-**Pattern:** Present data neutrally → Reframe through campaign lens
+**Common pattern:** Present data neutrally → Reframe through campaign lens
 
 - Data: 2.5 quintillion bytes/day → Pivot: "This is not data — it is metabolism."
 - Data: Adoption curves accelerating → Pivot: "Something new is possible at this speed."
 - Data: Trillions spent on attention → Pivot: "But who — or what — is doing the capturing?"
 
-The pivot line should:
+When using a pivot line, it tends to work well to:
 - Use the em dash for the turn (—)
 - Match the campaign's visceral, bold tone
 - Often use `text-title text-cream` and appear in a `box-coral` component
-- Usually contains a `keyPhrase` from the metadata
+- Draw from `keyPhrase` entries in the metadata
 
 ### Annotation Copy
+
+Common annotation elements — use what the panel needs:
 
 - **Axis labels:** Minimal, `text-label text-sage` or SVG equivalent
 - **Data labels:** Only on the most important data points
@@ -307,6 +315,8 @@ fill="var(--accent-coral)"      // Highlight labels
 ```
 
 ### scrollLength Guidelines
+
+Typical ranges — adjust based on actual content needs:
 
 | Complexity | scrollLength |
 |-----------|-------------|
