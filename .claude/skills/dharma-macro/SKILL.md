@@ -15,7 +15,8 @@ content are created.
 
 ## Inputs You Need From the User
 
-1. **Explainer slug** — kebab-case identifier (e.g., `language-demon`, `wisdom-accelerator`)
+1. **Explainer slug** — kebab-case identifier (e.g., `language-demon`, `wisdom-accelerator`).
+   This becomes the URL path segment: the explainer will live at `/slug`.
 2. **Core thesis** — What is the central message? (1-2 sentences)
 3. **Which campaign pillar(s)** — Research Institute (Discover), Mystery School (Design),
    Media Outlet (Distribute), or a combination

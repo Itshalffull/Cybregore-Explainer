@@ -222,8 +222,11 @@ created. This is the user's first look at the full output, so make it thorough.
    - Whether to use `<JumpLink>` (block, end of panel) or `<InlineJumpLink>`
      (inline within text)
    - The label/text for the link
+   - The shareable URL for the link target: `/explainer-slug#panel-id`
    Include links to both new and existing explainers. JumpLinks auto-hide when
    the target is a stub, so it's safe to add links to stubs that aren't built yet.
+   **URL structure:** Each explainer lives at `/slug` and each panel has an anchor
+   `#panel-id`. The URL hash auto-updates on scroll.
 6. **Next steps** — what the user should do next (panel component development,
    background generation, testing)
 

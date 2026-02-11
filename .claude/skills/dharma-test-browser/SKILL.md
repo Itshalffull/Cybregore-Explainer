@@ -84,12 +84,16 @@ Before opening the browser, understand what you are testing:
 Build a **panel inventory table**:
 
 ```
-| # | Panel Component | scrollLength | Narrative Role | Act |
-|---|----------------|-------------|----------------|-----|
-| 1 | Panel1Setup     | 2           | hook           | 1   |
-| 2 | PanelDataExplosion | 3.5     | evidence       | 2   |
+| # | Panel Component | panelId | scrollLength | Narrative Role | Act |
+|---|----------------|---------|-------------|----------------|-----|
+| 1 | Panel1Setup     | panel-1-setup | 2       | hook           | 1   |
+| 2 | PanelDataExplosion | panel-data-explosion | 3.5 | evidence | 2   |
 | ...
 ```
+
+Verify that every `<ScrollSection>` has a `panelId` prop matching its panel's
+metadata `id`. Missing `panelId` means the panel has no URL anchor and won't
+appear in the auto-updating hash.
 
 This table is your testing checklist. Every row must be tested.
 
@@ -109,9 +113,17 @@ If port 5173 is taken, try 5174, 5175, etc.
 Use the browser tool (or Puppeteer if available) to:
 
 1. Open the dev server URL (e.g., `http://localhost:5173/`)
-2. If testing a specific explainer, append the hash: `http://localhost:5173/#explainer-slug`
-3. Set the viewport to the first test size (desktop: 1280x800)
-4. Wait for the page to fully load (fonts, images, initial animations)
+2. If testing a specific explainer, use the path-based URL: `http://localhost:5173/explainer-slug`
+3. To jump directly to a specific panel, append the panel anchor: `http://localhost:5173/explainer-slug#panel-id`
+4. To enable the dev mode overlay, add `?dev=true`: `http://localhost:5173/explainer-slug?dev=true`
+5. Set the viewport to the first test size (desktop: 1280x800)
+6. Wait for the page to fully load (fonts, images, initial animations)
+
+**URL routing notes:**
+- The app uses **path-based routing** (`/slug`), not hash-based (`/#slug`)
+- Each panel has a URL anchor via its `panelId` prop on `<ScrollSection>`
+- The URL hash **auto-updates on scroll** to reflect the currently visible panel
+- Verify during testing that the hash updates correctly as you scroll through panels
 
 ### Step 5: Systematic panel-by-panel testing
 
