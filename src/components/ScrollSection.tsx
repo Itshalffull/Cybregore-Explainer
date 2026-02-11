@@ -113,6 +113,9 @@ export default function ScrollSection({
       onEnter: (self) => {
         isActiveRef.current = true
         targetProgressRef.current = self.progress
+        if (panelId) {
+          history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${panelId}`)
+        }
       },
       onLeave: () => {
         isActiveRef.current = false
@@ -124,6 +127,9 @@ export default function ScrollSection({
       onEnterBack: (self) => {
         isActiveRef.current = true
         targetProgressRef.current = self.progress
+        if (panelId) {
+          history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${panelId}`)
+        }
       },
       onLeaveBack: () => {
         isActiveRef.current = false
