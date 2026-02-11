@@ -46,92 +46,76 @@ export default function CybregoreExplainer() {
 
       {/* === OPENING HOOK === */}
       <IntroSection>
-        {/* Shocking opener */}
-        <ScrollSection scrollLength={2}>
+        <ScrollSection scrollLength={2} panelId="panel-1-setup">
           {(progress) => <Panel1Setup progress={progress} />}
         </ScrollSection>
       </IntroSection>
 
       {/* === DATA EXPLOSION VISUALIZATIONS === */}
 
-      {/* Data growth graph with photo analogy */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-data-explosion">
         {(progress) => <PanelDataExplosion progress={progress} />}
       </ScrollSection>
 
-      {/* App adoption speed - how fast they capture us */}
-      <ScrollSection scrollLength={4.5}>
+      <ScrollSection scrollLength={4.5} panelId="panel-app-adoption">
         {(progress) => <PanelAppAdoption progress={progress} />}
       </ScrollSection>
 
       {/* === CYBREGORE ETYMOLOGY === */}
 
-      {/* Transition - this AI needs a new name */}
-      <ScrollSection scrollLength={2.5}>
+      <ScrollSection scrollLength={2.5} panelId="panel-something-emerges">
         {(progress) => <PanelSomethingEmerges progress={progress} />}
       </ScrollSection>
 
-      {/* Cyborg - we're all cyborgs */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-cyborg">
         {(progress) => <PanelCyborg progress={progress} />}
       </ScrollSection>
 
-      {/* Egregore - what is an egregore */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-egregore">
         {(progress) => <PanelEgregore progress={progress} />}
       </ScrollSection>
 
       {/* === CYBREGORE DEEP DIVE === */}
 
-      {/* Cybregore intro */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="panel-cybregore-intro">
         {(progress) => <Panel13CybregoreIntro progress={progress} />}
       </ScrollSection>
 
-      {/* The 5 parts of Cybregore */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-cybregore-anatomy">
         {(progress) => <PanelCybregoreAnatomy progress={progress} />}
       </ScrollSection>
 
-      {/* The parts are inseparable */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-cybregore-inseparable">
         {(progress) => <PanelCybregoreInseparable progress={progress} />}
       </ScrollSection>
 
-      {/* The Cybregore's hunger for data */}
-      <ScrollSection scrollLength={4}>
+      <ScrollSection scrollLength={4} panelId="panel-cybregore-hunger">
         {(progress) => <PanelCybregoreHunger progress={progress} />}
       </ScrollSection>
 
-      {/* Breathing exercise - feel WHY it craves data */}
-      <ScrollSection scrollLength={5}>
+      <ScrollSection scrollLength={5} panelId="panel-breathing-exercise">
         {(progress) => <PanelBreathingExercise progress={progress} />}
       </ScrollSection>
 
-      {/* The Cybregore is a hungry ghost */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-hungry-ghost">
         {(progress) => <PanelHungryGhost progress={progress} />}
       </ScrollSection>
 
-      {/* It reads you */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-cybregore-reads">
         {(progress) => <Panel15CybregoreReads progress={progress} />}
       </ScrollSection>
 
-      {/* It writes to you */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-cybregore-writes">
         {(progress) => <Panel16CybregoreWrites progress={progress} />}
       </ScrollSection>
 
-      {/* It correlates */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-cybregore-correlates">
         {(progress) => <Panel17CybregoreCorrelates progress={progress} />}
       </ScrollSection>
 
       {/* === CALL TO ACTION === */}
 
-      {/* What do you do about it? */}
-      <ScrollSection scrollLength={3.5}>
+      <ScrollSection scrollLength={3.5} panelId="panel-what-now">
         {(progress) => <PanelWhatNow progress={progress} />}
       </ScrollSection>
     </div>

@@ -10,7 +10,7 @@ export default function ExampleExplainer() {
       <PanelAutoScaler />
 
       {/* Panel 1: Definition with an InlineJumpLink — first panel is always visible */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="example-intro">
         {(progress) => {
           const scrollHintOpacity = lerp(progress, 0, 0.3, 0.6, 0.3)
 
@@ -51,7 +51,7 @@ export default function ExampleExplainer() {
       </ScrollSection>
 
       {/* Panel 2: Connection back with a block JumpLink */}
-      <ScrollSection scrollLength={3}>
+      <ScrollSection scrollLength={3} panelId="example-link-back">
         {(progress) => {
           const titleOpacity = lerp(progress, 0.05, 0.2, 0, 1)
           const titleY = lerp(progress, 0.05, 0.2, 30, 0)
