@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import JumpLink from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -64,11 +65,17 @@ export default function PanelTheCall({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-small text-sage text-center"
+          className="text-small text-sage text-center mb-xl"
           style={{ opacity: closerOpacity, transform: `translateY(${closerY}px)` }}
         >
           The door is open. What you do next matters less than where you see from.
         </p>
+
+        <div style={{ opacity: closerOpacity }}>
+          <JumpLink to="edge-of-breath" label="Experience the Edge of Breath →" fromLabel="The Call" />
+          <JumpLink to="suicide-cult" label="See the Cult You're In →" fromLabel="The Call" />
+          <JumpLink to="cybregore" label="Meet the Cybregore →" fromLabel="The Call" />
+        </div>
       </div>
     </section>
   )

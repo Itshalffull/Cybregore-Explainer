@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import { InlineJumpLink } from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -57,7 +58,7 @@ export default function PanelTheInvisibleLeader({ progress }: PanelProps) {
           className="text-body text-coral text-bold text-center"
           style={{ opacity: closerOpacity, transform: `translateY(${closerY}px)` }}
         >
-          The demon you can't see because it IS the system.
+          The demon you can't see because it IS the <InlineJumpLink to="cybregore">system</InlineJumpLink>.
         </p>
       </div>
     </section>

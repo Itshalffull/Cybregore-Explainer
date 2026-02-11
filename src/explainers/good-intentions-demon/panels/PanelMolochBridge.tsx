@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import { InlineJumpLink } from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -64,7 +65,7 @@ export default function PanelMolochBridge({ progress }: PanelProps) {
           style={{ opacity: boxOpacity, transform: `translateY(${boxY}px)` }}
         >
           <p className="text-body text-sage text-center">
-            The Cybregore's hunger, applied to the domain of virtue.
+            The <InlineJumpLink to="cybregore">Cybregore</InlineJumpLink>'s hunger, applied to the domain of virtue.
             Every good intention, metabolized into fuel for the machine
             that no one chose to build.
           </p>

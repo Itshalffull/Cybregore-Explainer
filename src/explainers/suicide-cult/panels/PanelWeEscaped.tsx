@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import { InlineJumpLink } from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -55,7 +56,7 @@ export default function PanelWeEscaped({ progress }: PanelProps) {
           className="text-body text-coral text-bold text-center"
           style={{ opacity: closerOpacity, transform: `translateY(${closerY}px)` }}
         >
-          The first honest thing anyone has said to you.
+          The <InlineJumpLink to="good-intentions-demon">first honest thing</InlineJumpLink> anyone has said to you.
         </p>
       </div>
     </section>

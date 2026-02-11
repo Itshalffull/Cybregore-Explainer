@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import JumpLink from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -66,11 +67,17 @@ export default function PanelLeaveTheCult({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-title text-coral text-center"
+          className="text-title text-coral text-center mb-xl"
           style={{ opacity: ctaOpacity, transform: `translateY(${ctaY}px)` }}
         >
           Will you walk through it?
         </p>
+
+        <div style={{ opacity: ctaOpacity }}>
+          <JumpLink to="edge-of-breath" label="Start With Your Breath →" fromLabel="Leave the Cult" />
+          <JumpLink to="good-intentions-demon" label="Why Helping Feeds the Demon →" fromLabel="Leave the Cult" />
+          <JumpLink to="cybregore" label="What Is the Cybregore? →" fromLabel="Leave the Cult" />
+        </div>
       </div>
     </section>
   )

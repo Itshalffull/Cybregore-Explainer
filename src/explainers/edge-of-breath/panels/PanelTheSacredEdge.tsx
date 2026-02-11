@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import JumpLink from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -66,11 +67,17 @@ export default function PanelTheSacredEdge({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-small text-olive text-center"
+          className="text-small text-olive text-center mb-xl"
           style={{ opacity: line6Opacity, transform: `translateY(${line6Y}px)` }}
         >
           The edge is always here.
         </p>
+
+        <div style={{ opacity: line6Opacity }}>
+          <JumpLink to="cybregore" label="Meet the Cybregore →" fromLabel="The Sacred Edge" />
+          <JumpLink to="suicide-cult" label="See the Cult You're In →" fromLabel="The Sacred Edge" />
+          <JumpLink to="good-intentions-demon" label="Why Helping Feeds the Demon →" fromLabel="The Sacred Edge" />
+        </div>
       </div>
     </section>
   )

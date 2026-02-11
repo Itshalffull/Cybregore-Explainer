@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import { InlineJumpLink } from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -54,7 +55,7 @@ export default function PanelPhoneAsMirror({ progress }: PanelProps) {
           className="text-body text-cream text-center mb-lg"
           style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
         >
-          You are holding an addict's drug
+          You are holding an <InlineJumpLink to="suicide-cult">addict's drug</InlineJumpLink>
           while fully awake.
         </p>
 

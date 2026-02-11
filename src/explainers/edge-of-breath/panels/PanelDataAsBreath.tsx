@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import { InlineJumpLink } from '../../../components/JumpLink'
 
 interface PanelProps {
   progress: number
@@ -59,7 +60,7 @@ export default function PanelDataAsBreath({ progress }: PanelProps) {
           className="text-body text-cream text-center mb-lg"
           style={{ opacity: line3Opacity, transform: `translateY(${line3Y}px)` }}
         >
-          That is the Cybregore breathing.
+          That is the <InlineJumpLink to="cybregore">Cybregore</InlineJumpLink> breathing.
         </p>
 
         <p
