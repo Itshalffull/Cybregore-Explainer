@@ -30,6 +30,8 @@ interface DevModeContextValue {
   ) => void
   setBackgroundPrompt: (index: number, panelId: string, prompt: string) => void
   setHasExistingBackground: (index: number, value: boolean) => void
+  setSfxPrompt: (index: number, panelId: string, prompt: string) => void
+  setHasExistingSfx: (index: number, value: boolean) => void
 
   /** Insert requests (new panels between existing ones) */
   inserts: DevInsert[]
@@ -76,7 +78,7 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(() => setActive((a) => !a), [])
 
-  const defaultActions: PanelActions = { delete: false, background: false }
+  const defaultActions: PanelActions = { delete: false, background: false, sfx: false }
 
   const getOrCreate = (
     map: Map<number, DevPanelNote>,
@@ -90,6 +92,8 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
       actions: { ...defaultActions },
       hasExistingBackground: false,
       backgroundPrompt: '',
+      hasExistingSfx: false,
+      sfxPrompt: '',
     }
 
   const setPanelNote = useCallback(
@@ -144,6 +148,32 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         const existing = next.get(index)
         if (existing) {
           next.set(index, { ...existing, hasExistingBackground: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
+  const setSfxPrompt = useCallback(
+    (index: number, panelId: string, prompt: string) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = getOrCreate(prev, index, panelId)
+        next.set(index, { ...existing, panelId, sfxPrompt: prompt })
+        return next
+      })
+    },
+    [],
+  )
+
+  const setHasExistingSfx = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, hasExistingSfx: value })
         }
         return next
       })
@@ -225,7 +255,8 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
       (n) =>
         n.note.trim() ||
         n.actions.delete ||
-        n.actions.background,
+        n.actions.background ||
+        n.actions.sfx,
     ).length + inserts.filter((i) => i.note.trim()).length
 
   return (
@@ -238,6 +269,8 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         setPanelAction,
         setBackgroundPrompt,
         setHasExistingBackground,
+        setSfxPrompt,
+        setHasExistingSfx,
         inserts,
         addInsert,
         updateInsert,
