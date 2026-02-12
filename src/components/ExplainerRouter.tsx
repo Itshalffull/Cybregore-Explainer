@@ -41,9 +41,8 @@ function slugFromPath(pathname: string): string {
 }
 
 /** Build URL path for an explainer */
-function pathForExplainer(slug: string, defaultExplainer: string): string {
+function pathForExplainer(slug: string, _defaultExplainer: string): string {
   const base = getBasePath()
-  if (slug === defaultExplainer) return base || '/'
   return `${base}/${slug}`
 }
 
@@ -289,6 +288,11 @@ export default function ExplainerRouter({
     const slug = slugFromPath(window.location.pathname)
     if (slug && explainers[slug] && isImplemented(explainers[slug])) {
       setCurrent(slug)
+    } else if (!slug) {
+      // Redirect base URL to the default explainer URL
+      const targetPath = pathForExplainer(defaultExplainer, defaultExplainer)
+      const url = targetPath + window.location.search + window.location.hash
+      window.history.replaceState({ explainer: defaultExplainer }, '', url)
     }
     // Scroll to panel anchor if hash is present
     const hash = window.location.hash.replace('#', '')
@@ -310,6 +314,11 @@ export default function ExplainerRouter({
     const handlePopState = (_e: PopStateEvent) => {
       const slug = slugFromPath(window.location.pathname)
       const target = slug || defaultExplainer
+      // Redirect bare URL to the default explainer path
+      if (!slug) {
+        const targetPath = pathForExplainer(defaultExplainer, defaultExplainer)
+        window.history.replaceState({ explainer: defaultExplainer }, '', targetPath + window.location.search)
+      }
       if (target !== current && explainers[target] && isImplemented(explainers[target])) {
         // Kill ScrollTriggers so the transform doesn't fight pinned elements
         ScrollTrigger.getAll().forEach((t) => t.kill())

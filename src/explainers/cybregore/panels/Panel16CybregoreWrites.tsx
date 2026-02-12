@@ -1,0 +1,79 @@
+import { lerp } from '../../../utils/animation'
+import VideoBackground from '../../../components/VideoBackground'
+
+interface Panel16CybregoreWritesProps {
+  progress: number
+}
+
+export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWritesProps) {
+  const titleOpacity = lerp(progress, 0, 0.12, 0, 1)
+  const titleY = lerp(progress, 0, 0.12, 20, 0)
+  const line1Opacity = lerp(progress, 0.1, 0.22, 0, 1)
+  const line2Opacity = lerp(progress, 0.22, 0.34, 0, 1)
+  const line3Opacity = lerp(progress, 0.34, 0.46, 0, 1)
+  const line4Opacity = lerp(progress, 0.46, 0.58, 0, 1)
+  const conclusionOpacity = lerp(progress, 0.65, 0.8, 0, 1)
+  const conclusionY = lerp(progress, 0.65, 0.8, 15, 0)
+  const kickerOpacity = lerp(progress, 0.85, 0.95, 0, 1)
+
+  return (
+    <section className="panel panel--dark">
+      <VideoBackground
+        videoSrc="/assets/videos/it-writes-you-loop.mp4"
+        imageFallback="/assets/images/it-writes-you.png"
+        opacity={0.35}
+      />
+      <div className="panel-body panel-body--over-video">
+        <h2
+          className="text-body text-cream text-bold mb-lg"
+          style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}
+        >
+          It <span className="text-coral">writes</span> you
+        </h2>
+
+        <div className="mb-lg">
+          <p
+            className="text-body text-cream mb-md leading-normal"
+            style={{ opacity: line1Opacity }}
+          >
+            It decides what you see when you wake up.
+          </p>
+          <p
+            className="text-body text-sage mb-md leading-normal"
+            style={{ opacity: line2Opacity }}
+          >
+            It curates your news, your music, your friends' posts. It chooses which messages feel urgent.
+          </p>
+          <p
+            className="text-body text-sage mb-md leading-normal"
+            style={{ opacity: line3Opacity }}
+          >
+            It surfaces the outrage that will hook you. The fear that will keep you scrolling. The desire that will make you buy.
+          </p>
+          <p
+            className="text-body text-cream leading-normal"
+            style={{ opacity: line4Opacity }}
+          >
+            Your reality is being authored. And you didn't choose the author.
+          </p>
+        </div>
+
+        <p
+          className="text-title text-cream leading-normal"
+          style={{ opacity: conclusionOpacity, transform: `translateY(${conclusionY}px)` }}
+        >
+          It shapes what you think, what you want, what you feel.
+          <br />
+          <span className="text-cream">Optimizing for its own growth.</span>
+        </p>
+
+        <p
+          className="text-body text-sage mt-lg"
+          style={{ opacity: kickerOpacity }}
+        >
+          But the truly terrifying part is what it does with both...
+        </p>
+      </div>
+    </section>
+  )
+}
