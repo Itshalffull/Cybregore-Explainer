@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import VideoBackground from '../../../components/VideoBackground'
 
 interface PanelProps {
   progress: number
@@ -24,11 +25,19 @@ export default function PanelBeyondYourself({ progress }: PanelProps) {
   const line6Opacity = lerp(progress, 0.78, 0.88, 0, 1)
   const line6Y = lerp(progress, 0.78, 0.88, 20, 0)
 
+  // Background fades in early and stays
+  const bgOpacity = lerp(progress, 0, 0.15, 0, 0.35)
+
   return (
-    <section className="panel panel--dark">
-      <div className="panel-body">
+    <section className="panel panel--dark" style={{ position: 'relative' }}>
+      <VideoBackground
+        videoSrc="/assets/videos/beyond-yourself-loop.mp4"
+        imageFallback="/assets/images/beyond-yourself.png"
+        opacity={bgOpacity}
+      />
+      <div className="panel-body panel-body--over-video" style={{ position: 'relative', zIndex: 1 }}>
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center text-shadow-depth mb-lg"
           style={{ opacity: line1Opacity, transform: `translateY(${line1Y}px)` }}
         >
           It is amazing that there is this thing we need
@@ -36,21 +45,21 @@ export default function PanelBeyondYourself({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-bold text-cream text-center mb-xl"
+          className="text-body text-bold text-cream text-center text-shadow-depth mb-xl"
           style={{ opacity: line2Opacity, transform: `translateY(${line2Y}px)` }}
         >
           Total suffering and total surrender — the same mechanism.
         </p>
 
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center text-shadow-depth mb-lg"
           style={{ opacity: line3Opacity, transform: `translateY(${line3Y}px)` }}
         >
           The same edge.
         </p>
 
         <p
-          className="text-body text-cream text-center mb-lg"
+          className="text-body text-cream text-center text-shadow-depth mb-lg"
           style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
         >
           The breath you are desperate for
@@ -58,7 +67,7 @@ export default function PanelBeyondYourself({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-sage text-center mb-xl"
+          className="text-body text-sage text-center text-shadow-depth mb-xl"
           style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
         >
           What you need is to stay at the edge
@@ -66,7 +75,7 @@ export default function PanelBeyondYourself({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-bold text-cream text-center"
+          className="text-body text-bold text-cream text-center text-shadow-depth"
           style={{ opacity: line6Opacity, transform: `translateY(${line6Y}px)` }}
         >
           What is on the other side of you.

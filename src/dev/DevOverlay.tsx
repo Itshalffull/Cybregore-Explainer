@@ -31,6 +31,18 @@ function detectBackground(panelEl: HTMLElement): boolean {
   if (panelEl.querySelector('video')) return true
   // panel-body--over-video class indicates a panel designed for a background
   if (panelEl.querySelector('.panel-body--over-video')) return true
+  // VideoBackground component renders a wrapper div with position:absolute
+  // containing <img> or <picture> (image fallback renders before video loads)
+  if (panelEl.querySelector('picture')) return true
+  // Check for absolute-positioned direct child divs with z-index:0 —
+  // this is the VideoBackground wrapper pattern
+  const children = panelEl.children
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i] as HTMLElement
+    if (child.style?.position === 'absolute' && child.style?.zIndex === '0') {
+      return true
+    }
+  }
   // IntroSection: fixed video is a sibling — check if the ScrollSection's
   // ancestor contains a fixed video
   const scrollSection = panelEl.parentElement?.parentElement
@@ -103,8 +115,20 @@ export default function DevOverlay({
         const panelSections = container.querySelectorAll('section.panel')
         if (panelSections.length === 0) return
 
-        // Avoid re-scanning if panel count hasn't changed
-        if (entriesRef.current.length === panelSections.length) return
+        // If panel count hasn't changed, just re-check backgrounds
+        // (video/image elements may render after initial scan)
+        if (entriesRef.current.length === panelSections.length) {
+          let changed = false
+          entriesRef.current.forEach((entry) => {
+            const bg = detectBackground(entry.element)
+            if (bg !== entry.hasBackground) {
+              entry.hasBackground = bg
+              changed = true
+            }
+          })
+          if (changed) setEntries([...entriesRef.current])
+          return
+        }
 
         // Clean up old containers and separators
         entriesRef.current.forEach((entry) => {
@@ -171,6 +195,8 @@ export default function DevOverlay({
 
     // Initial scan after a brief delay to let GSAP set up
     const timer = setTimeout(scan, 300)
+    // Re-scan backgrounds after videos/images have had time to render
+    const bgTimer = setTimeout(scan, 1500)
 
     // Watch for DOM changes (panels being added/removed during transitions)
     // Only observe direct children of the container, not subtree —
@@ -182,6 +208,7 @@ export default function DevOverlay({
 
     return () => {
       clearTimeout(timer)
+      clearTimeout(bgTimer)
       observer.disconnect()
     }
   }, [dev?.active, containerRef]) // eslint-disable-line react-hooks/exhaustive-deps

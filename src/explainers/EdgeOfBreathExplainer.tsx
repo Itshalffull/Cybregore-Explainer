@@ -6,7 +6,7 @@ import PanelAutoScaler from '../components/PanelAutoScaler'
 
 // Act 1: The Invitation
 import PanelWelcomeBreath from './edge-of-breath/panels/PanelWelcomeBreath'
-import PanelYourBodyLaboratory from './edge-of-breath/panels/PanelYourBodyLaboratory'
+// PanelYourBodyLaboratory removed
 
 // Act 2: The Breath
 import PanelBreatheWithMe from './edge-of-breath/panels/PanelBreatheWithMe'
@@ -27,12 +27,12 @@ import PanelTheLargestGhost from './edge-of-breath/panels/PanelTheLargestGhost'
 // Act 6: The Doorway
 import PanelTheFlip from './edge-of-breath/panels/PanelTheFlip'
 import PanelBeyondYourself from './edge-of-breath/panels/PanelBeyondYourself'
-import PanelTheBreathWasBreathing from './edge-of-breath/panels/PanelTheBreathWasBreathing'
+// PanelTheBreathWasBreathing removed
 
 // Act 7: The Return
-import PanelPhoneAsMirror from './edge-of-breath/panels/PanelPhoneAsMirror'
+// PanelPhoneAsMirror removed
 import PanelYourDailyDoorway from './edge-of-breath/panels/PanelYourDailyDoorway'
-import PanelTheSacredEdge from './edge-of-breath/panels/PanelTheSacredEdge'
+import PanelDataDoorway from './edge-of-breath/panels/PanelDataDoorway'
 
 
 export default function EdgeOfBreathExplainer() {
@@ -51,10 +51,6 @@ export default function EdgeOfBreathExplainer() {
           {(progress) => <PanelWelcomeBreath progress={progress} />}
         </ScrollSection>
       </IntroSection>
-
-      <ScrollSection scrollLength={3} panelId="panel-your-body-laboratory">
-        {(progress) => <PanelYourBodyLaboratory progress={progress} />}
-      </ScrollSection>
 
       {/* === ACT 2: THE BREATH === */}
       <ScrollSection scrollLength={5} panelId="panel-breathe-with-me">
@@ -101,22 +97,15 @@ export default function EdgeOfBreathExplainer() {
         {(progress) => <PanelBeyondYourself progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={4} panelId="panel-the-breath-was-breathing">
-        {(progress) => <PanelTheBreathWasBreathing progress={progress} />}
-      </ScrollSection>
-
       {/* === ACT 7: THE RETURN === */}
-      <ScrollSection scrollLength={3.5} panelId="panel-phone-as-mirror">
-        {(progress) => <PanelPhoneAsMirror progress={progress} />}
-      </ScrollSection>
-
       <ScrollSection scrollLength={3.5} panelId="panel-your-daily-doorway">
         {(progress) => <PanelYourDailyDoorway progress={progress} />}
       </ScrollSection>
 
-      <ScrollSection scrollLength={3.5} panelId="panel-the-sacred-edge">
-        {(progress) => <PanelTheSacredEdge progress={progress} />}
+      <ScrollSection scrollLength={4} panelId="panel-data-doorway">
+        {(progress) => <PanelDataDoorway progress={progress} />}
       </ScrollSection>
+
     </div>
   )
 }

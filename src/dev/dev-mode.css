@@ -452,11 +452,11 @@
 .dev-panel-separator::before {
   content: '';
   position: absolute;
-  left: 5%;
-  right: 5%;
+  left: 0;
+  right: 0;
   top: 50%;
   height: 0;
-  border-top: 1px dashed rgba(99, 102, 241, 0.25);
+  border-top: 5px dashed rgba(99, 102, 241, 0.6);
 }
 
 /* ─── Insert Slot ────────────────────────────────────────────────────────── */

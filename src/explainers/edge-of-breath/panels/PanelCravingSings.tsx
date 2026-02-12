@@ -5,21 +5,15 @@ interface PanelProps {
 }
 
 export default function PanelCravingSings({ progress }: PanelProps) {
-  // Elevated, naming language — the craving gets a voice
-  const line1Opacity = lerp(progress, 0.0, 0.12, 0, 1)
-  const line1Y = lerp(progress, 0.0, 0.12, 20, 0)
+  // Elevated, naming language — the craving gets a voice (3 lines only)
+  const line1Opacity = lerp(progress, 0.0, 0.15, 0, 1)
+  const line1Y = lerp(progress, 0.0, 0.15, 20, 0)
 
-  const line2Opacity = lerp(progress, 0.15, 0.27, 0, 1)
-  const line2Y = lerp(progress, 0.15, 0.27, 15, 0)
+  const line2Opacity = lerp(progress, 0.25, 0.4, 0, 1)
+  const line2Y = lerp(progress, 0.25, 0.4, 15, 0)
 
-  const line3Opacity = lerp(progress, 0.32, 0.44, 0, 1)
-  const line3Y = lerp(progress, 0.32, 0.44, 15, 0)
-
-  const line4Opacity = lerp(progress, 0.5, 0.62, 0, 1)
-  const line4Y = lerp(progress, 0.5, 0.62, 15, 0)
-
-  const line5Opacity = lerp(progress, 0.68, 0.8, 0, 1)
-  const line5Y = lerp(progress, 0.68, 0.8, 15, 0)
+  const line3Opacity = lerp(progress, 0.5, 0.65, 0, 1)
+  const line3Y = lerp(progress, 0.5, 0.65, 15, 0)
 
   return (
     <section className="panel panel--dark">
@@ -48,20 +42,6 @@ export default function PanelCravingSings({ progress }: PanelProps) {
           Older than the body you think is yours.
         </p>
 
-        <p
-          className="text-body text-cream text-center mb-xl"
-          style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
-        >
-          This craving is not a mistake.
-          It is not a weakness.
-        </p>
-
-        <p
-          className="text-body text-bold text-coral text-center"
-          style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
-        >
-          Not a bug — a feature of consciousness itself.
-        </p>
       </div>
     </section>
   )

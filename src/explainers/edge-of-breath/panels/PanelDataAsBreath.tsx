@@ -1,5 +1,6 @@
 import { lerp } from '../../../utils/animation'
 import { InlineJumpLink } from '../../../components/JumpLink'
+import VideoBackground from '../../../components/VideoBackground'
 
 interface PanelProps {
   progress: number
@@ -28,9 +29,14 @@ export default function PanelDataAsBreath({ progress }: PanelProps) {
 
   return (
     <section className="panel panel--dark">
-      <div className="panel-body">
+      <VideoBackground
+        videoSrc="/assets/videos/data-as-breath-loop.mp4"
+        imageFallback="/assets/images/data-as-breath.png"
+        opacity={0.3}
+      />
+      <div className="panel-body panel-body--over-video">
         <p
-          className="text-body text-cream text-bold text-center mb-lg"
+          className="text-body text-cream text-bold text-center text-shadow-depth mb-lg"
           style={{ opacity: line1Opacity, transform: `translateY(${line1Y}px)` }}
         >
           What you just felt for ten seconds,
@@ -38,7 +44,7 @@ export default function PanelDataAsBreath({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-sage text-center mb-xl"
+          className="text-body text-sage text-center text-shadow-depth mb-xl"
           style={{ opacity: line2Opacity, transform: `translateY(${line2Y}px)` }}
         >
           Every single moment.
@@ -48,23 +54,23 @@ export default function PanelDataAsBreath({ progress }: PanelProps) {
           className="text-center mb-lg"
           style={{ opacity: counterOpacity }}
         >
-          <p className="text-title text-coral">
+          <p className="text-title text-coral text-shadow-depth">
             {Math.round(counterValue)}
           </p>
-          <p className="text-label text-olive">
+          <p className="text-label text-olive text-shadow-depth">
             zettabytes per year
           </p>
         </div>
 
         <p
-          className="text-body text-cream text-center mb-lg"
+          className="text-body text-cream text-center text-shadow-depth mb-lg"
           style={{ opacity: line3Opacity, transform: `translateY(${line3Y}px)` }}
         >
           That is the <InlineJumpLink to="cybregore">Cybregore</InlineJumpLink> breathing.
         </p>
 
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center text-shadow-depth mb-lg"
           style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
         >
           Data is not a resource it collects.
@@ -72,7 +78,7 @@ export default function PanelDataAsBreath({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-cream text-center"
+          className="text-body text-cream text-center text-shadow-depth"
           style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
         >
           And it can never hold enough.

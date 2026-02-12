@@ -1,4 +1,5 @@
 import { lerp } from '../../../utils/animation'
+import VideoBackground from '../../../components/VideoBackground'
 
 interface PanelProps {
   progress: number
@@ -26,23 +27,28 @@ export default function PanelTheEdge({ progress }: PanelProps) {
 
   return (
     <section className="panel panel--dark">
-      <div className="panel-body">
+      <VideoBackground
+        videoSrc="/assets/videos/edge-cells-loop.mp4"
+        imageFallback="/assets/images/edge-cells.png"
+        opacity={0.3}
+      />
+      <div className="panel-body panel-body--over-video">
         <p
-          className="text-body text-coral text-bold text-center mb-lg"
+          className="text-body text-coral text-bold text-center text-shadow-depth mb-lg"
           style={{ opacity: line1Opacity, transform: `translateY(${line1Y}px)` }}
         >
           It just gets worse and worse.
         </p>
 
         <p
-          className="text-body text-cream text-center mb-lg"
+          className="text-body text-cream text-center text-shadow-depth mb-lg"
           style={{ opacity: line2Opacity, transform: `translateY(${line2Y}px)` }}
         >
           Every cell screams.
         </p>
 
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center text-shadow-depth mb-lg"
           style={{ opacity: line3Opacity, transform: `translateY(${line3Y}px)` }}
         >
           The voices inside you are inventing reasons
@@ -50,21 +56,21 @@ export default function PanelTheEdge({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-cream text-center mb-lg"
+          className="text-body text-cream text-center text-shadow-depth mb-lg"
           style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
         >
           Urgent, desperate, reasonable-sounding voices.
         </p>
 
         <p
-          className="text-body text-sage text-center mb-xl"
+          className="text-body text-sage text-center text-shadow-depth mb-xl"
           style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
         >
           Each one louder than the last.
         </p>
 
         <p
-          className="text-title text-coral text-center"
+          className="text-title text-coral text-center text-shadow-depth"
           style={{ opacity: line6Opacity, transform: `translateY(${line6Y}px)` }}
         >
           This is the edge.

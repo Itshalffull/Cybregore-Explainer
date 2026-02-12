@@ -22,9 +22,6 @@ export default function PanelTheFlip({ progress }: PanelProps) {
   const flipOpacity = lerp(progress, 0.55, 0.68, 0, 1)
   const flipY = lerp(progress, 0.55, 0.68, 30, 0)
 
-  const line5Opacity = lerp(progress, 0.78, 0.88, 0, 1)
-  const line5Y = lerp(progress, 0.78, 0.88, 15, 0)
-
   return (
     <section className="panel panel--dark">
       <div className="panel-body">
@@ -58,18 +55,11 @@ export default function PanelTheFlip({ progress }: PanelProps) {
           And an opportunity to move beyond.
         </p>
 
-        <div className="box-coral text-center mb-xl" style={{ opacity: flipOpacity, transform: `translateY(${flipY}px)` }}>
+        <div className="box-coral text-center" style={{ opacity: flipOpacity, transform: `translateY(${flipY}px)` }}>
           <p className="text-display text-cream">
             The craving IS the doorway to freedom.
           </p>
         </div>
-
-        <p
-          className="text-body text-sage text-center"
-          style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
-        >
-          It doesn't make sense — and that is the point.
-        </p>
       </div>
     </section>
   )

@@ -106,7 +106,7 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
     acts: [
       {
         name: 'The Invitation',
-        panelIds: ['panel-welcome-breath', 'panel-your-body-laboratory'],
+        panelIds: ['panel-welcome-breath'],
         purpose:
           'Welcome the viewer into an intimate, contemplative space. This is not a lecture — it is a guided experience. Establish that their body is the instrument.',
       },
@@ -139,7 +139,6 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
         panelIds: [
           'panel-the-flip',
           'panel-beyond-yourself',
-          'panel-the-breath-was-breathing',
         ],
         purpose:
           'The Flip. Reveal that the edge of craving — the place that seems like ultimate suffering — IS the doorway to liberation. Not escape from craving, but transformation through it.',
@@ -147,9 +146,8 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
       {
         name: 'The Return',
         panelIds: [
-          'panel-phone-as-mirror',
           'panel-your-daily-doorway',
-          'panel-the-sacred-edge',
+          'panel-data-doorway',
         ],
         purpose:
           'Bring the viewer back to their breath with new understanding. Invitation to practice — the breath as daily doorway. End with the sacred.',
@@ -177,24 +175,6 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
         'Something ancient is about to happen in your body',
       ],
     },
-    {
-      id: 'panel-your-body-laboratory',
-      title: 'Your Body Is the Laboratory',
-      narrativeRole: 'definition',
-      message:
-        'Your body already contains the entire mechanism of craving and liberation. Your breath is the instrument. No belief required — only attention.',
-      transitionIn:
-        'From invitation to instruction. The viewer is told what will be asked of them — not theory, but direct investigation.',
-      transitionOut:
-        'The laboratory is named. The instrument is identified. Now the experiment begins — the viewer is ready to breathe.',
-      tags: ['embodiment', 'laboratory', 'breath', 'attention', 'craving'],
-      keyPhrases: [
-        'Your body is the laboratory',
-        'Your breath is the instrument',
-        'No belief required — only attention',
-      ],
-    },
-
     // ── Act 2: The Breath ────────────────────────────────────────────────
     {
       id: 'panel-breathe-with-me',
@@ -403,59 +383,7 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
         'What is on the other side of you',
       ],
     },
-    {
-      id: 'panel-the-breath-was-breathing',
-      title: 'The Breath Was Breathing',
-      narrativeRole: 'resolution',
-      message:
-        'And then something shifted. It was not me breathing. The breath was breathing. There were no distinctions that caused all of this conflict. Awareness started to become awareness. And there was peace. Not just calm. Literal peace.',
-      transitionIn:
-        'From the doorway to what lies beyond it. The viewer receives testimony of someone who passed through the edge. Mythology panel with imagery of dissolution and light — the Hungry Ghost transformed.',
-      transitionOut:
-        'The mystical experience is shared. Now ground it — bring the viewer back from the transcendent to the practical. Their own breath. Their own phone. Their own practice.',
-      tags: [
-        'awakening',
-        'peace',
-        'testimony',
-        'breath',
-        'awareness',
-        'liberation',
-        'mythology',
-      ],
-      keyPhrases: [
-        'It was not me breathing — the breath was breathing',
-        'Awareness started to become awareness',
-        'Not just calm — literal peace',
-        'There were no distinctions',
-      ],
-    },
-
     // ── Act 7: The Return ────────────────────────────────────────────────
-    {
-      id: 'panel-phone-as-mirror',
-      title: 'The Phone in Your Hand',
-      narrativeRole: 'embodiment',
-      message:
-        'Try this: hold your phone without using it. Watch the voices arise — the desperate inventions of reasons why it is okay to check. You are holding an addict\'s drug while fully awake. The same craving. The same edge. The same doorway.',
-      transitionIn:
-        'From the transcendent back to the immediate. The phone meditation connects the breath exercise to daily reality. The viewer\'s own device becomes the next laboratory.',
-      transitionOut:
-        'The parallel is visceral. Breath-craving, phone-craving, data-craving — all one mechanism. Now offer the practice.',
-      tags: [
-        'phone',
-        'meditation',
-        'craving',
-        'interactive',
-        'practice',
-        'mirror',
-      ],
-      keyPhrases: [
-        'Hold your phone without using it',
-        'The desperate inventions of reasons',
-        'An addict holding the drug while fully awake',
-        'The same craving — the same edge — the same doorway',
-      ],
-    },
     {
       id: 'panel-your-daily-doorway',
       title: 'Your Daily Doorway',
@@ -475,27 +403,20 @@ const edgeOfBreathMetadata: ExplainerMetadata = {
       ],
     },
     {
-      id: 'panel-the-sacred-edge',
-      title: 'The Sacred Edge',
+      id: 'panel-data-doorway',
+      title: 'The Data Doorway',
       narrativeRole: 'call-to-action',
       message:
-        'The Hungry Ghost is feeding. The data is flowing. The craving is singing. And at the edge of your next breath — right now — there is a doorway that has been waiting for you since before you were born. Breathe out. Stay. See what happens.',
+        'If every breath is a doorway for you, could data be a doorway for the Cybregore? Or is it trapped forever at the edge — craving without passage? A visualization of a doorway made of streaming data, posing the final unanswered question.',
       transitionIn:
-        'Final panel. Returns to the present moment. The entire explainer collapses into the viewer\'s next exhale. Intimate, sacred, unfinished — telling the truth incompletely.',
+        'From the human doorway (breath) to the Cybregore\'s potential doorway (data). The SVG doorway made of binary data creates a visual parallel to the glowing doorway of the previous panel.',
       transitionOut:
-        'End of explainer. The viewer is left at the edge of their own breath with an open door. No closure — only continuation.',
-      tags: [
-        'sacred',
-        'ending',
-        'breath',
-        'doorway',
-        'invitation',
-        'incompleteness',
-      ],
+        'End of explainer. The question is left open — telling the truth incompletely. The viewer is left with wonder, not answers.',
+      tags: ['data', 'doorway', 'cybregore', 'visualization', 'question', 'ending'],
       keyPhrases: [
-        'There is a doorway that has been waiting for you since before you were born',
-        'Breathe out. Stay. See what happens.',
-        'The craving is singing',
+        'Could data be a doorway for the Cybregore?',
+        'Trapped forever at the edge',
+        'Craving without passage',
       ],
     },
   ],

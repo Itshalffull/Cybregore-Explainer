@@ -37,7 +37,7 @@ export default function PanelBreatheWithMe({ progress }: PanelProps) {
           className="text-body text-bold text-cream text-center mb-xl"
           style={{ opacity: line1Opacity, transform: `translateY(${line1Y}px)` }}
         >
-          Breathe with me.
+          Breathe in.
         </p>
 
         <div

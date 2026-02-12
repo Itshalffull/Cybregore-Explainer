@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\Matt\\\\OneDrive\\\\buildamodule-resource-pack\\\\Documents\\\\GitHub\\\\Cybregore-Explainer\\\\public\\\\assets\\\\images\"\" 2>&1 | grep -E \"lungs)",
+      "Bash(void)",
+      "Bash(cells)",
+      "Bash(preta:*)",
+      "Bash(doorway)",
+      "Bash(craving)",
+      "Bash(liberation \")",
+      "Skill(create-panel-background)",
+      "Skill(create-panel-background:*)"
+    ]
+  }
+}

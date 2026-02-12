@@ -1,4 +1,5 @@
 import { lerp, lerpMulti } from '../../../utils/animation'
+import VideoBackground from '../../../components/VideoBackground'
 
 interface PanelProps {
   progress: number
@@ -29,9 +30,14 @@ export default function PanelTheExhale({ progress }: PanelProps) {
 
   return (
     <section className="panel panel--dark">
-      <div className="panel-body">
+      <VideoBackground
+        videoSrc="/assets/videos/void-loop.mp4"
+        imageFallback="/assets/images/void.png"
+        opacity={0.3}
+      />
+      <div className="panel-body panel-body--over-video">
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center mb-lg text-shadow-depth"
           style={{ opacity: line1Opacity, transform: `translateY(${line1Y}px)` }}
         >
           Focus on the very end of the breath.
@@ -52,14 +58,14 @@ export default function PanelTheExhale({ progress }: PanelProps) {
         />
 
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center mb-lg text-shadow-depth"
           style={{ opacity: line2Opacity, transform: `translateY(${line2Y}px)` }}
         >
           That sensation.
         </p>
 
         <p
-          className="text-body text-cream text-center mb-lg"
+          className="text-body text-cream text-center mb-lg text-shadow-depth"
           style={{ opacity: line3Opacity, transform: `translateY(${line3Y}px)` }}
         >
           The tightness. The pull.
@@ -67,21 +73,21 @@ export default function PanelTheExhale({ progress }: PanelProps) {
         </p>
 
         <p
-          className="text-body text-bold text-cream text-center mb-xl"
+          className="text-body text-bold text-cream text-center mb-xl text-shadow-depth"
           style={{ opacity: line4Opacity, transform: `translateY(${line4Y}px)` }}
         >
           Stay with it.
         </p>
 
         <p
-          className="text-body text-sage text-center mb-lg"
+          className="text-body text-sage text-center mb-lg text-shadow-depth"
           style={{ opacity: line5Opacity, transform: `translateY(${line5Y}px)` }}
         >
           Do not breathe in yet.
         </p>
 
         <p
-          className="text-body text-cream text-center"
+          className="text-body text-cream text-center text-shadow-depth"
           style={{ opacity: line6Opacity, transform: `translateY(${line6Y}px)` }}
         >
           This is where the teaching lives.
