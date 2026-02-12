@@ -178,15 +178,83 @@ function extractArrayField(str, fieldName) {
     .filter(Boolean);
 }
 
+// ── Extract visible text from panel TSX component ───────────────────────────
+
+/**
+ * Read a panel's TSX component file and extract the visible text content.
+ * Converts kebab-case panel ID to PascalCase filename, reads the JSX,
+ * and pulls out text between tags (skipping JSX expressions, short
+ * fragments, and non-text content like arrows/icons).
+ *
+ * Returns the concatenated panel text, or null if the file doesn't exist
+ * or contains no extractable text.
+ */
+function extractPanelText(panelId) {
+  // Convert kebab-case panel ID → PascalCase filename
+  // e.g. "panel-flip-it-hook" → "PanelFlipItHook"
+  const pascalCase = panelId
+    .split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+
+  const root = path.resolve(__dirname, '..', '..', '..');
+  const panelPaths = [
+    path.join(root, 'src', 'explainers', slug, 'panels', `${pascalCase}.tsx`),
+    path.join(root, 'src', 'explainers', slug, 'panels', `${pascalCase}.jsx`),
+  ];
+
+  for (const filePath of panelPaths) {
+    if (!fs.existsSync(filePath)) continue;
+
+    const content = fs.readFileSync(filePath, 'utf8');
+
+    // Find the JSX return block
+    const returnIdx = content.lastIndexOf('return (');
+    if (returnIdx === -1) continue;
+
+    const jsx = content.slice(returnIdx);
+    const textParts = [];
+
+    // Extract text content between > and < (i.e. visible text inside tags)
+    const regex = />([^<]+)</g;
+    let m;
+
+    while ((m = regex.exec(jsx)) !== null) {
+      let text = m[1];
+      // Strip JSX expressions like {variable} or {`template`}
+      text = text.replace(/\{[^}]*\}/g, '');
+      // Normalize whitespace
+      text = text.replace(/\s+/g, ' ').trim();
+      // Keep only meaningful text: at least 3 chars with real words
+      if (text.length >= 3 && /[a-zA-Z]{2,}/.test(text)) {
+        textParts.push(text);
+      }
+    }
+
+    if (textParts.length > 0) {
+      return textParts.join(' ');
+    }
+  }
+
+  return null;
+}
+
 // ── Generate voiceover text from panel metadata ─────────────────────────────
 
 function generateVoiceoverText(panel) {
-  // Use explicit voiceover field if present
+  // Priority 1: Use explicit voiceover field if present
   if (panel.voiceover) {
     return panel.voiceover;
   }
 
-  // Auto-generate from message + keyPhrases
+  // Priority 2: Extract visible text from the panel component
+  const panelText = extractPanelText(panel.id);
+  if (panelText) {
+    console.log(`  (using panel component text)`);
+    return panelText;
+  }
+
+  // Priority 3: Auto-generate from message + keyPhrases
   let text = '';
 
   if (panel.message) {
