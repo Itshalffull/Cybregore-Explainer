@@ -108,6 +108,9 @@ export interface PanelMeta {
   tags?: string[]
   /** Key quotes or phrases from this panel */
   keyPhrases?: string[]
+  /** Voiceover narration text for short-form video generation.
+   *  If omitted, auto-generated from message + keyPhrases. */
+  voiceover?: string
 }
 
 // ─── Combined Explainer Metadata ─────────────────────────────────────────────

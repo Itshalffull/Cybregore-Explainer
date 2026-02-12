@@ -41,6 +41,24 @@ function extractClaudeMessage(data: Record<string, unknown>): string | null {
   return null
 }
 
+// ── Video generation types ──────────────────────────────────────────────────
+
+interface VideoConfig {
+  format: '9:16' | '16:9'
+  dual: boolean
+  musicPrompt: string
+  reuseVoiceover: boolean
+  reuseMusic: boolean
+}
+
+interface VideoLogEntry {
+  key: number
+  text: string
+  type: 'log' | 'error' | 'status'
+}
+
+type VideoPhase = 'idle' | 'running' | 'done' | 'error'
+
 export default function DevToolbar({ explainerId }: DevToolbarProps) {
   const dev = useDevMode()
   const [showPreview, setShowPreview] = useState(false)
@@ -51,6 +69,20 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
   const [showClaudePanel, setShowClaudePanel] = useState(false)
   const logEndRef = useRef<HTMLDivElement>(null)
 
+  // Video generation state
+  const [showVideoPanel, setShowVideoPanel] = useState(false)
+  const [videoPhase, setVideoPhase] = useState<VideoPhase>('idle')
+  const [videoLog, setVideoLog] = useState<VideoLogEntry[]>([])
+  const [videoStatus, setVideoStatus] = useState('')
+  const [videoConfig, setVideoConfig] = useState<VideoConfig>({
+    format: '9:16',
+    dual: false,
+    musicPrompt: 'Dark ambient electronic, minimal, meditative, deep bass drone, cinematic tension',
+    reuseVoiceover: false,
+    reuseMusic: false,
+  })
+  const videoLogEndRef = useRef<HTMLDivElement>(null)
+
   if (!dev) return null
 
   const { claudeSession } = dev
@@ -59,10 +91,16 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
     claudeSession.phase === 'submitting' ||
     claudeSession.phase === 'running'
 
-  // Auto-scroll the log panel
+  const isVideoActive = videoPhase === 'running'
+
+  // Auto-scroll the log panels
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [claudeSession.log.length])
+
+  useEffect(() => {
+    videoLogEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [videoLog.length])
 
   const manifest = buildTaskManifest(explainerId, dev.panelNotes, dev.inserts)
   // Preview prompt without screenshots (screenshots added during submit)
@@ -260,6 +298,106 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
     }
   }, [dev])
 
+  // ── Video generation handlers ─────────────────────────────────────────
+
+  const handleGenerateVideo = useCallback(async () => {
+    setMenuOpen(false)
+    setShowVideoPanel(true)
+    setVideoPhase('running')
+    setVideoLog([])
+    setVideoStatus('Starting video generation...')
+
+    let logIdx = 0
+
+    try {
+      const res = await fetch('/api/video/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: explainerId,
+          format: videoConfig.format,
+          dual: videoConfig.dual,
+          musicPrompt: videoConfig.musicPrompt,
+          reuseVoiceover: videoConfig.reuseVoiceover,
+          reuseMusic: videoConfig.reuseMusic,
+        }),
+      })
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || `HTTP ${res.status}`)
+      }
+
+      // Parse SSE stream
+      const reader = res.body?.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (reader) {
+        const { done, value } = await reader.read()
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+
+        let currentEvent = ''
+        for (const line of lines) {
+          if (line.startsWith('event: ')) {
+            currentEvent = line.slice(7)
+          } else if (line.startsWith('data: ') && currentEvent) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              const idx = logIdx++
+
+              if (currentEvent === 'log') {
+                setVideoLog((prev) => [
+                  ...prev,
+                  { key: idx, text: data.text, type: 'log' },
+                ])
+                setVideoStatus(data.text)
+              } else if (currentEvent === 'error') {
+                setVideoLog((prev) => [
+                  ...prev,
+                  { key: idx, text: data.text || data.message || 'Error', type: 'error' },
+                ])
+              } else if (currentEvent === 'status') {
+                setVideoLog((prev) => [
+                  ...prev,
+                  { key: idx, text: data.message, type: 'status' },
+                ])
+                setVideoStatus(data.message)
+              } else if (currentEvent === 'done') {
+                setVideoPhase(data.code === 0 ? 'done' : 'error')
+                setVideoStatus(
+                  data.code === 0
+                    ? 'Video generation complete!'
+                    : `Generation failed (exit code ${data.code})`,
+                )
+              }
+            } catch {
+              // ignore parse errors
+            }
+            currentEvent = ''
+          }
+        }
+      }
+    } catch (err) {
+      setVideoPhase('error')
+      setVideoStatus(err instanceof Error ? err.message : 'Failed to start video generation.')
+    }
+  }, [explainerId, videoConfig])
+
+  const handleCancelVideo = useCallback(async () => {
+    try {
+      await fetch('/api/video/cancel', { method: 'POST' })
+      setVideoPhase('error')
+      setVideoStatus('Generation cancelled.')
+    } catch {
+      setVideoStatus('Failed to cancel.')
+    }
+  }, [])
+
   const actionButtons = (
     <>
       <button
@@ -298,6 +436,18 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
         title="Download orchestrator markdown + screenshots"
       >
         {capturing ? 'Exporting...' : 'Export'}
+      </button>
+
+      <button
+        className="dev-toolbar-btn dev-toolbar-btn--video"
+        onClick={() => {
+          setShowVideoPanel(true)
+          setMenuOpen(false)
+        }}
+        disabled={isVideoActive}
+        title="Generate short-form video from this explainer"
+      >
+        {isVideoActive ? 'Recording...' : 'Video'}
       </button>
 
       <button
@@ -394,6 +544,17 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
             &bull; CLAUDE
           </button>
         )}
+
+        {/* Video generation indicator */}
+        {isVideoActive && (
+          <button
+            className="dev-toolbar-video-indicator"
+            onClick={() => setShowVideoPanel(true)}
+            title="Video generation in progress — click to view"
+          >
+            &bull; VIDEO
+          </button>
+        )}
       </div>
 
       {/* Mobile dropdown menu */}
@@ -485,6 +646,189 @@ export default function DevToolbar({ explainerId }: DevToolbarProps) {
                 <strong>{claudeSession.branch}</strong>. Vite will hot-reload
                 modified files.
               </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Video generation panel */}
+      {showVideoPanel && (
+        <div
+          className="dev-claude-overlay"
+          onClick={() => {
+            if (!isVideoActive) setShowVideoPanel(false)
+          }}
+        >
+          <div
+            className="dev-claude-panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="dev-claude-header">
+              <div className="dev-claude-header-left">
+                <span
+                  className={`dev-claude-dot dev-claude-dot--${
+                    videoPhase === 'running'
+                      ? 'running'
+                      : videoPhase === 'done'
+                        ? 'done'
+                        : videoPhase === 'error'
+                          ? 'error'
+                          : 'cancelled'
+                  }`}
+                />
+                <span className="dev-claude-title">Video Generator</span>
+              </div>
+              <div className="dev-claude-header-right">
+                {isVideoActive && (
+                  <button
+                    className="dev-toolbar-btn dev-toolbar-btn--danger dev-toolbar-btn--sm"
+                    onClick={handleCancelVideo}
+                  >
+                    Cancel
+                  </button>
+                )}
+                {!isVideoActive && (
+                  <button
+                    className="dev-claude-close"
+                    onClick={() => {
+                      setShowVideoPanel(false)
+                      if (videoPhase !== 'idle') {
+                        setVideoPhase('idle')
+                        setVideoLog([])
+                      }
+                    }}
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Config form (visible when idle) */}
+            {videoPhase === 'idle' && (
+              <div className="dev-video-config">
+                <div className="dev-video-config-row">
+                  <label className="dev-video-label">Format</label>
+                  <div className="dev-insert-type-row">
+                    <button
+                      className={`dev-type-button ${
+                        !videoConfig.dual && videoConfig.format === '9:16'
+                          ? 'dev-type-button--active'
+                          : ''
+                      }`}
+                      onClick={() =>
+                        setVideoConfig((c) => ({ ...c, format: '9:16', dual: false }))
+                      }
+                    >
+                      9:16
+                    </button>
+                    <button
+                      className={`dev-type-button ${
+                        !videoConfig.dual && videoConfig.format === '16:9'
+                          ? 'dev-type-button--active'
+                          : ''
+                      }`}
+                      onClick={() =>
+                        setVideoConfig((c) => ({ ...c, format: '16:9', dual: false }))
+                      }
+                    >
+                      16:9
+                    </button>
+                    <button
+                      className={`dev-type-button ${
+                        videoConfig.dual ? 'dev-type-button--active' : ''
+                      }`}
+                      onClick={() =>
+                        setVideoConfig((c) => ({ ...c, dual: !c.dual }))
+                      }
+                    >
+                      Both
+                    </button>
+                  </div>
+                </div>
+
+                <div className="dev-video-config-row">
+                  <label className="dev-video-label">Music Prompt</label>
+                  <textarea
+                    className="dev-note-input"
+                    rows={2}
+                    value={videoConfig.musicPrompt}
+                    onChange={(e) =>
+                      setVideoConfig((c) => ({ ...c, musicPrompt: e.target.value }))
+                    }
+                    placeholder="Background music description..."
+                  />
+                </div>
+
+                <div className="dev-video-config-row">
+                  <label
+                    className={`dev-checkbox ${
+                      videoConfig.reuseVoiceover ? 'dev-checkbox--checked' : ''
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={videoConfig.reuseVoiceover}
+                      onChange={(e) =>
+                        setVideoConfig((c) => ({
+                          ...c,
+                          reuseVoiceover: e.target.checked,
+                        }))
+                      }
+                    />
+                    Reuse existing voiceover
+                  </label>
+                  <label
+                    className={`dev-checkbox ${
+                      videoConfig.reuseMusic ? 'dev-checkbox--checked' : ''
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={videoConfig.reuseMusic}
+                      onChange={(e) =>
+                        setVideoConfig((c) => ({
+                          ...c,
+                          reuseMusic: e.target.checked,
+                        }))
+                      }
+                    />
+                    Reuse existing music
+                  </label>
+                </div>
+
+                <button
+                  className="dev-toolbar-btn dev-toolbar-btn--primary"
+                  style={{ width: '100%', marginTop: '8px' }}
+                  onClick={handleGenerateVideo}
+                >
+                  Generate Video
+                </button>
+              </div>
+            )}
+
+            {/* Status + log (visible when running/done/error) */}
+            {videoPhase !== 'idle' && (
+              <>
+                <div className="dev-claude-status">{videoStatus}</div>
+                <div className="dev-claude-log">
+                  {videoLog.map((entry) => (
+                    <div
+                      key={entry.key}
+                      className={`dev-claude-log-entry dev-claude-log-entry--${entry.type}`}
+                    >
+                      {entry.text}
+                    </div>
+                  ))}
+                  <div ref={videoLogEndRef} />
+                </div>
+
+                {videoPhase === 'done' && (
+                  <div className="dev-claude-footer">
+                    Video saved to <strong>output/</strong> directory.
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
