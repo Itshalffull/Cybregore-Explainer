@@ -18,16 +18,22 @@ export default function DevPanelControls({
 
   const existing = dev.panelNotes.get(panelIndex)
   const note = existing?.note ?? ''
-  const actions = existing?.actions ?? { delete: false, background: false }
+  const actions = existing?.actions ?? { delete: false, background: false, sfx: false }
   const hasExistingBackground = existing?.hasExistingBackground ?? false
   const backgroundPrompt = existing?.backgroundPrompt ?? ''
+  const hasExistingSfx = existing?.hasExistingSfx ?? false
+  const sfxPrompt = existing?.sfxPrompt ?? ''
 
   const isDeleting = actions.delete
-  const hasContent = note.trim() || isDeleting || actions.background
+  const hasContent = note.trim() || isDeleting || actions.background || actions.sfx
 
   const backgroundLabel = hasExistingBackground
     ? 'Regenerate background'
     : 'Add animated background'
+
+  const sfxLabel = hasExistingSfx
+    ? 'Regenerate background SFX'
+    : 'Add background SFX'
 
   return (
     <div
@@ -95,6 +101,25 @@ export default function DevPanelControls({
               />
               {backgroundLabel}
             </label>
+
+            <label
+              className={`dev-checkbox ${actions.sfx ? 'dev-checkbox--checked' : ''} ${isDeleting ? 'dev-checkbox--disabled' : ''}`}
+            >
+              <input
+                type="checkbox"
+                checked={actions.sfx}
+                disabled={isDeleting}
+                onChange={(e) =>
+                  dev.setPanelAction(
+                    panelIndex,
+                    panelId,
+                    'sfx',
+                    e.target.checked,
+                  )
+                }
+              />
+              {sfxLabel}
+            </label>
           </div>
 
           {actions.background && !isDeleting && (
@@ -105,6 +130,20 @@ export default function DevPanelControls({
                 value={backgroundPrompt}
                 onChange={(e) =>
                   dev.setBackgroundPrompt(panelIndex, panelId, e.target.value)
+                }
+                rows={2}
+              />
+            </div>
+          )}
+
+          {actions.sfx && !isDeleting && (
+            <div className="dev-bg-prompt">
+              <textarea
+                className="dev-note-input"
+                placeholder="Describe the ambient sound (environment, texture, mood)..."
+                value={sfxPrompt}
+                onChange={(e) =>
+                  dev.setSfxPrompt(panelIndex, panelId, e.target.value)
                 }
                 rows={2}
               />

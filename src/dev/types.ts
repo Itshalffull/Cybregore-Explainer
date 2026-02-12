@@ -2,6 +2,7 @@
 export interface PanelActions {
   delete: boolean
   background: boolean
+  sfx: boolean
 }
 
 /** A dev note attached to an existing panel */
@@ -14,6 +15,10 @@ export interface DevPanelNote {
   hasExistingBackground: boolean
   /** Description/prompt for the background (prepopulated if existing) */
   backgroundPrompt: string
+  /** Whether this panel already has background audio (detected from DOM) */
+  hasExistingSfx: boolean
+  /** Description/prompt for the SFX */
+  sfxPrompt: string
 }
 
 /** A request to insert a new panel at a specific position */
@@ -31,6 +36,8 @@ export interface OrchestratorTask {
     | 'delete'
     | 'add-background'
     | 'regenerate-background'
+    | 'add-sfx'
+    | 'regenerate-sfx'
     | 'create'
     | 'edit-notes'
   notes: string
@@ -40,6 +47,8 @@ export interface OrchestratorTask {
   panelIndex?: number
   /** Background prompt/description for background tasks */
   backgroundPrompt?: string
+  /** SFX prompt/description for audio tasks */
+  sfxPrompt?: string
 }
 
 /** The full manifest exported for the orchestrator */

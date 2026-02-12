@@ -71,6 +71,24 @@ export function buildTaskManifest(
         panelIndex: note.panelIndex,
       })
     }
+
+    // SFX task (add or regenerate depending on whether audio exists)
+    if (note.actions.sfx) {
+      const sfxAction = note.hasExistingSfx
+        ? 'regenerate-sfx'
+        : 'add-sfx'
+      const defaultNotes = note.hasExistingSfx
+        ? `Regenerate the background SFX for panel ${note.panelId}`
+        : `Generate ambient background SFX for panel ${note.panelId}`
+      tasks.push({
+        skill: 'create-panel-background',
+        panelId: note.panelId,
+        action: sfxAction,
+        notes: note.sfxPrompt.trim() || defaultNotes,
+        sfxPrompt: note.sfxPrompt.trim() || undefined,
+        panelIndex: note.panelIndex,
+      })
+    }
   }
 
   // Process insert requests
@@ -146,6 +164,8 @@ export function buildOrchestratorPrompt(
     lines.push(`- **Notes:** ${task.notes}`)
     if (task.backgroundPrompt)
       lines.push(`- **Background prompt:** ${task.backgroundPrompt}`)
+    if (task.sfxPrompt)
+      lines.push(`- **SFX prompt:** ${task.sfxPrompt}`)
 
     // Find screenshot for this task's panel index
     if (screenshotFiles) {
