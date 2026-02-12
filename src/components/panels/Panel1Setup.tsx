@@ -1,4 +1,5 @@
 import { lerp } from '../../utils/animation'
+import AudioBackground from '../AudioBackground'
 
 interface Panel1SetupProps {
   progress: number
@@ -22,6 +23,14 @@ export default function Panel1Setup({ progress }: Panel1SetupProps) {
         background: 'transparent',
       }}
     >
+      <AudioBackground
+        audioSrc="/assets/audio/panel-1-setup-ambience.mp3"
+        progress={progress}
+        maxVolume={0.3}
+        fadeInEnd={0.1}
+        fadeOutStart={0.8}
+      />
+
       <div className="panel-body panel-body--wide" style={{
         position: 'relative',
         zIndex: 1,

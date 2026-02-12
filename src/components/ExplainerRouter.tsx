@@ -11,6 +11,8 @@ import {
 } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { ExplainerMetadata } from '../types/metadata'
+import AudioStateProvider from './AudioState'
+import FloatingToolbar from './FloatingToolbar'
 
 // Dev mode layer — lazily loaded. Available in production via ?dev=true
 const DevModeLayer = lazy(() => import('../dev/DevModeLayer'))
@@ -351,39 +353,42 @@ export default function ExplainerRouter({
     .flatMap(([, d]) => d.preloadSrcs!)
 
   return (
-    <ExplainerContext.Provider
-      value={{ current, jumpTo, jumpBack, stack, transitioning, explainers }}
-    >
-      {prefetchUrls.map((url) => (
-        <link key={url} rel="prefetch" href={url} />
-      ))}
-      {/* Dark backdrop — stays fixed behind the sliding wrapper so the
-          body's pale-mint background never peeks through during transitions */}
-      <div
-        style={{
-          backgroundColor: 'var(--color-deep-forest)',
-          position: 'relative',
-        }}
+    <AudioStateProvider>
+      <ExplainerContext.Provider
+        value={{ current, jumpTo, jumpBack, stack, transitioning, explainers }}
       >
+        {prefetchUrls.map((url) => (
+          <link key={url} rel="prefetch" href={url} />
+        ))}
+        {/* Dark backdrop — stays fixed behind the sliding wrapper so the
+            body's pale-mint background never peeks through during transitions */}
         <div
-          ref={wrapperRef}
-          className={`explainer-wrapper ${animClass}`}
-          style={{ minHeight: '100dvh' }}
+          style={{
+            backgroundColor: 'var(--color-deep-forest)',
+            position: 'relative',
+          }}
         >
-          {def.content}
+          <div
+            ref={wrapperRef}
+            className={`explainer-wrapper ${animClass}`}
+            style={{ minHeight: '100dvh' }}
+          >
+            {def.content}
+          </div>
         </div>
-      </div>
-      {children}
-      {/* Dev mode overlay — available in dev or via ?dev=true */}
-      {isDevMode() && (
-        <Suspense fallback={null}>
-          <DevModeLayer
-            wrapperRef={wrapperRef}
-            panels={def.metadata?.panels ?? []}
-            explainerId={current}
-          />
-        </Suspense>
-      )}
-    </ExplainerContext.Provider>
+        {children}
+        <FloatingToolbar hasBreadcrumbs={stack.length > 0} />
+        {/* Dev mode overlay — available in dev or via ?dev=true */}
+        {isDevMode() && (
+          <Suspense fallback={null}>
+            <DevModeLayer
+              wrapperRef={wrapperRef}
+              panels={def.metadata?.panels ?? []}
+              explainerId={current}
+            />
+          </Suspense>
+        )}
+      </ExplainerContext.Provider>
+    </AudioStateProvider>
   )
 }

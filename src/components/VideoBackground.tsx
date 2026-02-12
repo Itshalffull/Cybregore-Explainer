@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { lerpMulti } from '../utils/animation'
+import { useAudioState } from './AudioState'
 
 interface VideoBackgroundProps {
   videoSrc?: string
@@ -45,17 +46,23 @@ export default function VideoBackground({
   fadeInEnd = 0.1,
   fadeOutStart = 0.8,
 }: VideoBackgroundProps) {
+  const { muted, volume: globalVolume } = useAudioState()
   const [videoReady, setVideoReady] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hasInteractedRef = useRef(false)
+  const targetVolumeRef = useRef(0)
+  const currentVolumeRef = useRef(0)
+  const rafRef = useRef<number | null>(null)
 
   // Native audio enabled when progress prop is provided
   const hasNativeAudio = progress !== undefined
 
-  // Calculate volume from scroll progress (same curve as AudioBackground)
-  const volume = hasNativeAudio
+  // Calculate target volume from scroll progress, scaled by global volume
+  const scrollVolume = hasNativeAudio
     ? lerpMulti(progress, [0, fadeInEnd, fadeOutStart, 1], [0, maxVolume, maxVolume, 0])
     : 0
+  const targetVolume = muted ? 0 : scrollVolume * globalVolume
+  targetVolumeRef.current = targetVolume
 
   // If no video source, try image fallback, otherwise return null
   if (!videoSrc && !imageFallback) return null
@@ -65,32 +72,67 @@ export default function VideoBackground({
     setVideoReady(false)
   }, [videoSrc])
 
-  // Handle native audio volume from video element
+  // Un-mute and start audio on first scroll
   useEffect(() => {
     const video = videoRef.current
     if (!video || !hasNativeAudio) return
 
-    video.volume = Math.max(0, Math.min(1, volume))
-
-    // Un-mute and start playing audio on first scroll
-    if (volume > 0 && !hasInteractedRef.current) {
+    if (targetVolume > 0 && !hasInteractedRef.current) {
       hasInteractedRef.current = true
       video.muted = false
-      // Need to re-trigger play after un-muting
       video.play().catch(() => {
         // Autoplay without muted blocked — fall back to muted
         video.muted = true
         hasInteractedRef.current = false
       })
     }
+  }, [targetVolume, hasNativeAudio])
 
-    // Re-mute when fully silent to avoid browser resource usage
-    if (volume <= 0 && hasInteractedRef.current) {
+  // RAF loop: smoothly ramp actual volume toward target
+  const animate = useCallback(() => {
+    const video = videoRef.current
+    if (!video || !hasInteractedRef.current) {
+      rafRef.current = requestAnimationFrame(animate)
+      return
+    }
+
+    const target = targetVolumeRef.current
+    const current = currentVolumeRef.current
+
+    // Ramp speed: ~0.1 per second at 60fps = ~0.0017 per frame
+    const step = 0.0017
+    let next = current
+
+    if (Math.abs(target - current) < step) {
+      next = target
+    } else if (target > current) {
+      next = current + step
+    } else {
+      next = current - step
+    }
+
+    currentVolumeRef.current = next
+    video.volume = Math.max(0, Math.min(1, next))
+
+    // Mute when fully silent, un-mute when volume returns
+    if (next <= 0 && !video.muted) {
       video.muted = true
-    } else if (volume > 0 && video.muted && hasInteractedRef.current) {
+    } else if (target > 0 && video.muted && hasInteractedRef.current) {
       video.muted = false
     }
-  }, [volume, hasNativeAudio])
+
+    rafRef.current = requestAnimationFrame(animate)
+  }, [])
+
+  // Start/stop RAF loop
+  useEffect(() => {
+    if (hasNativeAudio) {
+      rafRef.current = requestAnimationFrame(animate)
+    }
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    }
+  }, [hasNativeAudio, animate])
 
   const handleCanPlay = () => {
     // Video is loaded and ready to play - fade it in
