@@ -13,7 +13,9 @@
       "Bash(craving)",
       "Bash(liberation \")",
       "Skill(create-panel-background)",
-      "Skill(create-panel-background:*)"
+      "Skill(create-panel-background:*)",
+      "Bash(where:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

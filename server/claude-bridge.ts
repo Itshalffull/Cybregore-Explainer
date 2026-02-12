@@ -185,14 +185,21 @@ export default function claudeBridge(): Plugin {
             `Commit your changes to this branch when done. Do not switch branches.\n`
 
           // 4. Spawn Claude CLI ───────────────────────────────────────
+          // Pipe prompt via stdin to avoid shell escaping issues
+          // (prompt contains backticks, newlines, and special chars
+          //  that break when passed as a CLI argument through shell)
           sse(res, 'status', { phase: 'spawn', message: 'Starting Claude Code...' })
 
           const claude = spawn(
             'claude',
-            ['-p', finalPrompt, '--output-format', 'stream-json', '--verbose'],
-            { cwd: root, env: { ...process.env } },
+            ['-p', '--output-format', 'stream-json', '--verbose'],
+            { cwd: root, env: { ...process.env }, shell: true },
           )
           activeProcess = claude
+
+          // Write the prompt to stdin and close it so Claude reads it
+          claude.stdin.write(finalPrompt)
+          claude.stdin.end()
 
           // Buffer partial lines from stdout
           let stdoutBuf = ''
