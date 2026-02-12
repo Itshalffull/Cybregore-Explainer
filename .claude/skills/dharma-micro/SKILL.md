@@ -104,6 +104,9 @@ Each PanelMeta entry must have:
                                // (cliffhanger, question, escalation)
   tags?: string[],             // 2-5 panel-specific tags
   keyPhrases?: string[],       // 1-4 memorable lines that should appear in this panel
+  voiceover?: string,          // Optional narration for short-form video generation
+                               // Written as spoken word — second person, dramatic
+                               // If omitted, auto-generated from message + keyPhrases
 }
 ```
 

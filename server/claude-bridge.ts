@@ -8,6 +8,9 @@
  *   POST /api/claude/submit   — start a Claude session (SSE stream)
  *   POST /api/claude/cancel   — kill the running session
  *   GET  /api/claude/status   — { running: boolean }
+ *   POST /api/video/generate  — start video generation (SSE stream)
+ *   POST /api/video/cancel    — kill video generation
+ *   GET  /api/video/status    — { running: boolean }
  */
 
 import type { Plugin, ViteDevServer } from 'vite'
@@ -297,6 +300,160 @@ export default function claudeBridge(): Plugin {
             branch: activeBranch,
           }),
         )
+      })
+
+      // ── Video Generation Endpoints ──────────────────────────────────
+
+      let videoProcess: ChildProcess | null = null
+
+      // POST /api/video/generate — start video generation (SSE stream)
+      server.middlewares.use('/api/video/generate', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('Method Not Allowed')
+          return
+        }
+
+        if (videoProcess) {
+          res.statusCode = 409
+          res.end(JSON.stringify({ error: 'Video generation already in progress.' }))
+          return
+        }
+
+        let body: {
+          slug: string
+          format?: string
+          dual?: boolean
+          musicPrompt?: string
+          voiceId?: string
+          panels?: string
+          musicVolume?: number
+          sfxVolume?: number
+          scrollSpeed?: number
+          pausePad?: number
+          skipVoiceover?: boolean
+          skipMusic?: boolean
+          reuseVoiceover?: boolean
+          reuseMusic?: boolean
+        }
+
+        try {
+          body = JSON.parse(await readBody(req))
+        } catch {
+          res.statusCode = 400
+          res.end(JSON.stringify({ error: 'Invalid JSON body' }))
+          return
+        }
+
+        // Start SSE stream
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+          'X-Accel-Buffering': 'no',
+        })
+        res.flushHeaders()
+
+        const scriptPath = join(
+          root,
+          '.claude',
+          'skills',
+          'short-form-video',
+          'create-short-video.js',
+        )
+        const scriptArgs = [body.slug]
+
+        if (body.dual) scriptArgs.push('--dual')
+        else if (body.format) scriptArgs.push('--format', body.format)
+        if (body.musicPrompt) scriptArgs.push('--music-prompt', body.musicPrompt)
+        if (body.voiceId) scriptArgs.push('--voice', body.voiceId)
+        if (body.panels) scriptArgs.push('--panels', body.panels)
+        if (body.musicVolume !== undefined)
+          scriptArgs.push('--music-volume', String(body.musicVolume))
+        if (body.sfxVolume !== undefined)
+          scriptArgs.push('--sfx-volume', String(body.sfxVolume))
+        if (body.scrollSpeed !== undefined)
+          scriptArgs.push('--scroll-speed', String(body.scrollSpeed))
+        if (body.pausePad !== undefined)
+          scriptArgs.push('--pause-pad', String(body.pausePad))
+        if (body.skipVoiceover) scriptArgs.push('--skip-voiceover')
+        if (body.skipMusic) scriptArgs.push('--skip-music')
+        if (body.reuseVoiceover) scriptArgs.push('--reuse-voiceover')
+        if (body.reuseMusic) scriptArgs.push('--reuse-music')
+
+        sse(res, 'status', {
+          phase: 'starting',
+          message: 'Starting video generation...',
+        })
+
+        const child = spawn('node', [scriptPath, ...scriptArgs], {
+          cwd: root,
+          env: process.env,
+        })
+        videoProcess = child
+
+        child.stdout.on('data', (chunk: Buffer) => {
+          const text = chunk.toString().trim()
+          if (text) {
+            for (const line of text.split('\n')) {
+              sse(res, 'log', { text: line })
+            }
+          }
+        })
+
+        child.stderr.on('data', (chunk: Buffer) => {
+          const text = chunk.toString().trim()
+          if (text) sse(res, 'error', { text })
+        })
+
+        child.on('close', (code) => {
+          videoProcess = null
+          sse(res, 'done', { code })
+          res.end()
+        })
+
+        child.on('error', (err) => {
+          videoProcess = null
+          sse(res, 'error', { message: err.message })
+          res.end()
+        })
+
+        req.on('close', () => {
+          if (videoProcess === child) {
+            child.kill('SIGTERM')
+            videoProcess = null
+          }
+        })
+      })
+
+      // POST /api/video/cancel — kill running video generation
+      server.middlewares.use('/api/video/cancel', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('Method Not Allowed')
+          return
+        }
+        res.setHeader('Content-Type', 'application/json')
+        if (videoProcess) {
+          videoProcess.kill('SIGTERM')
+          videoProcess = null
+          res.end(JSON.stringify({ cancelled: true }))
+        } else {
+          res.end(
+            JSON.stringify({ cancelled: false, reason: 'No active generation' }),
+          )
+        }
+      })
+
+      // GET /api/video/status
+      server.middlewares.use('/api/video/status', (req, res) => {
+        if (req.method !== 'GET') {
+          res.statusCode = 405
+          res.end('Method Not Allowed')
+          return
+        }
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify({ running: !!videoProcess }))
       })
     },
   }

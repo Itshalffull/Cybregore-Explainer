@@ -1069,6 +1069,58 @@
   color: var(--dev-accent-bright);
 }
 
+/* ─── Video Button & Config ──────────────────────────────────────────────── */
+
+.dev-toolbar-btn--video {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.25);
+  font-weight: 600;
+}
+
+.dev-toolbar-btn--video:hover:not(:disabled) {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: rgba(168, 85, 247, 0.45);
+  color: #d8b4fe;
+}
+
+.dev-toolbar-video-indicator {
+  background: none;
+  border: none;
+  color: #c084fc;
+  font-family: var(--dev-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: 4px;
+  animation: dev-claude-pulse 1.5s ease-in-out infinite;
+}
+
+.dev-video-config {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid var(--dev-border);
+}
+
+.dev-video-config-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dev-video-label {
+  font-family: var(--dev-font);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dev-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* Mobile responsive for Claude panel */
 @media (max-width: 640px) {
   .dev-claude-panel {

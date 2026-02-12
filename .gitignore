@@ -23,6 +23,15 @@ Thumbs.db
 # Temporary files
 nul
 .dev-screenshots/
+.tmp-frames/
+.tmp-audio/
+
+# Video output
+output/
+
+# Generated audio (voiceover, music)
+public/assets/audio/voiceover/
+public/assets/audio/music/
 
 # Scripts with API keys (but keep the media generation script)
 scripts/*

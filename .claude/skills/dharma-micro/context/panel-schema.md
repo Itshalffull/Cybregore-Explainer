@@ -17,6 +17,7 @@ interface PanelMeta {
   transitionOut: string             // How it sets up the next panel
   tags?: string[]                   // Panel-specific tags
   keyPhrases?: string[]             // Important quotes/phrases
+  voiceover?: string                // Narration text for short-form video
 }
 ```
 
@@ -76,6 +77,14 @@ interface PanelMeta {
 - Should match the campaign tone (bold, provocative, true)
 - Good: `["Language is an evil spirit", "You cannot escape it"]`
 - Bad: `["Language is interesting", "Think about language"]`
+
+### voiceover?: string
+- Optional narration text for short-form video generation
+- Written as spoken word — second person, conversational, dramatic
+- If omitted, voiceover is auto-generated from `message` + `keyPhrases`
+- Include this when the auto-generated version would be too dry or when you want precise control over pacing
+- Good: `"What if I told you that you are already part of something inhuman? Not metaphorically. Literally. Right now, as you scroll."`
+- Bad: `"This panel discusses the concept of the cybregore."`
 
 ## PanelNarrativeRole Distribution Guidelines
 

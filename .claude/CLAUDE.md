@@ -247,4 +247,5 @@ When you have rich source material (e.g., a long talk or multiple articles):
 | Build a multi-type panel | `/dharma-panel-hybrid` |
 | Generate a video/image background or SFX | `/create-panel-background` |
 | Test an explainer in the browser | `/dharma-test-browser` |
+| Generate a short-form video from an explainer | `/short-form-video` |
 | Fix a specific panel after testing | The panel skill matching that panel's type |
