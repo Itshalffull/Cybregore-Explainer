@@ -1,5 +1,6 @@
 import { lerp } from '../../utils/animation'
 import VideoBackground from '../VideoBackground'
+import AudioBackground from '../AudioBackground'
 
 interface PanelCyborgProps {
   progress: number
@@ -32,6 +33,11 @@ export default function PanelCyborg({ progress }: PanelCyborgProps) {
         videoSrc="/assets/videos/cyborg-loop.mp4"
         imageFallback="/assets/images/cyborg.png"
         opacity={0.35}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/cyborg-ambience.mp3"
+        progress={progress}
+        maxVolume={0.3}
       />
       <div className="panel-body panel-body--over-video" style={{
         maxHeight: '92dvh',

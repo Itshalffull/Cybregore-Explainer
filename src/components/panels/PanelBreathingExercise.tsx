@@ -1,4 +1,5 @@
 import { lerp } from '../../utils/animation'
+import AudioBackground from '../AudioBackground'
 import JumpLink from '../JumpLink'
 
 interface PanelBreathingExerciseProps {
@@ -24,6 +25,13 @@ export default function PanelBreathingExercise({ progress }: PanelBreathingExerc
 
   return (
     <section className="panel panel--dark">
+      <AudioBackground
+        audioSrc="/assets/audio/breathing-exercise-ambience.mp3"
+        progress={progress}
+        maxVolume={0.3}
+        fadeInEnd={0.1}
+        fadeOutStart={0.8}
+      />
       <div className="panel-body">
         <p
           className="text-body text-sage mb-xl"
