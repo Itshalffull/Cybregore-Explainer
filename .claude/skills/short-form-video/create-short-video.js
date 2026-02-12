@@ -360,6 +360,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
     } catch {
       // puppeteer-core doesn't bundle Chrome, find system install
       const possiblePaths = [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         '/usr/bin/google-chrome',
         '/usr/bin/chromium-browser',
         '/usr/bin/chromium',
