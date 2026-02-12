@@ -22,6 +22,7 @@ Thumbs.db
 
 # Temporary files
 nul
+.dev-screenshots/
 
 # Scripts with API keys (but keep the media generation script)
 scripts/*

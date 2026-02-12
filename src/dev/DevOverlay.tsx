@@ -13,6 +13,8 @@ interface PanelDOMEntry {
   insertContainer: HTMLDivElement | null
   /** Whether this panel has an existing video/image background */
   hasBackground: boolean
+  /** Whether this panel has existing background audio */
+  hasAudio: boolean
 }
 
 interface DevOverlayProps {
@@ -51,6 +53,13 @@ function detectBackground(panelEl: HTMLElement): boolean {
     return true
   }
   return false
+}
+
+/**
+ * Detect whether a panel section contains an AudioBackground component.
+ */
+function detectAudio(panelEl: HTMLElement): boolean {
+  return !!panelEl.querySelector('audio')
 }
 
 /**
@@ -147,8 +156,9 @@ export default function DevOverlay({
         panelSections.forEach((section, index) => {
           const panelEl = section as HTMLElement
 
-          // Detect background
+          // Detect background and audio
           const hasBackground = detectBackground(panelEl)
+          const hasAudio = detectAudio(panelEl)
 
           // Create portal container for panel controls — placed inside
           // the panel section itself so it scrolls/pins with it
@@ -180,6 +190,7 @@ export default function DevOverlay({
             portalContainer: portalDiv,
             insertContainer: insertDiv,
             hasBackground,
+            hasAudio,
           })
         })
 
@@ -213,11 +224,12 @@ export default function DevOverlay({
     }
   }, [dev?.active, containerRef]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Sync background detection into DevModeContext
+  // Sync background and audio detection into DevModeContext
   useEffect(() => {
     if (!dev?.active) return
     for (const entry of entries) {
       dev.setHasExistingBackground(entry.index, entry.hasBackground)
+      dev.setHasExistingSfx(entry.index, entry.hasAudio)
     }
   }, [entries]) // eslint-disable-line react-hooks/exhaustive-deps
 

@@ -5,7 +5,14 @@ import {
   useCallback,
   ReactNode,
 } from 'react'
-import type { DevPanelNote, DevInsert, PanelActions } from './types'
+import type {
+  DevPanelNote,
+  DevInsert,
+  PanelActions,
+  ClaudeSessionState,
+  ClaudeSessionPhase,
+  ClaudeSessionEvent,
+} from './types'
 
 interface DevModeContextValue {
   /** Whether dev mode UI is visible */
@@ -23,6 +30,8 @@ interface DevModeContextValue {
   ) => void
   setBackgroundPrompt: (index: number, panelId: string, prompt: string) => void
   setHasExistingBackground: (index: number, value: boolean) => void
+  setSfxPrompt: (index: number, panelId: string, prompt: string) => void
+  setHasExistingSfx: (index: number, value: boolean) => void
 
   /** Insert requests (new panels between existing ones) */
   inserts: DevInsert[]
@@ -35,6 +44,14 @@ interface DevModeContextValue {
 
   /** Count of pending changes */
   pendingCount: number
+
+  /** Claude Code session state */
+  claudeSession: ClaudeSessionState
+  setClaudePhase: (phase: ClaudeSessionPhase, message?: string) => void
+  setClaudeBranch: (branch: string) => void
+  appendClaudeLog: (event: ClaudeSessionEvent) => void
+  setClaudeExitCode: (code: number) => void
+  resetClaudeSession: () => void
 }
 
 const DevModeContext = createContext<DevModeContextValue | null>(null)
@@ -61,7 +78,7 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(() => setActive((a) => !a), [])
 
-  const defaultActions: PanelActions = { delete: false, background: false }
+  const defaultActions: PanelActions = { delete: false, background: false, sfx: false }
 
   const getOrCreate = (
     map: Map<number, DevPanelNote>,
@@ -75,6 +92,8 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
       actions: { ...defaultActions },
       hasExistingBackground: false,
       backgroundPrompt: '',
+      hasExistingSfx: false,
+      sfxPrompt: '',
     }
 
   const setPanelNote = useCallback(
@@ -136,6 +155,32 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
     [],
   )
 
+  const setSfxPrompt = useCallback(
+    (index: number, panelId: string, prompt: string) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = getOrCreate(prev, index, panelId)
+        next.set(index, { ...existing, panelId, sfxPrompt: prompt })
+        return next
+      })
+    },
+    [],
+  )
+
+  const setHasExistingSfx = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, hasExistingSfx: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
   const addInsert = useCallback((insert: DevInsert) => {
     setInserts((prev) => {
       // Replace existing insert at same position
@@ -162,13 +207,56 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
     setInserts([])
   }, [])
 
+  // ── Claude session state ─────────────────────────────────────────────
+  const initialClaudeSession: ClaudeSessionState = {
+    phase: 'idle',
+    statusMessage: '',
+    branch: null,
+    log: [],
+    exitCode: null,
+  }
+
+  const [claudeSession, setClaudeSession] =
+    useState<ClaudeSessionState>(initialClaudeSession)
+
+  const setClaudePhase = useCallback(
+    (phase: ClaudeSessionPhase, message?: string) => {
+      setClaudeSession((prev) => ({
+        ...prev,
+        phase,
+        statusMessage: message ?? prev.statusMessage,
+      }))
+    },
+    [],
+  )
+
+  const setClaudeBranch = useCallback((branch: string) => {
+    setClaudeSession((prev) => ({ ...prev, branch }))
+  }, [])
+
+  const appendClaudeLog = useCallback((event: ClaudeSessionEvent) => {
+    setClaudeSession((prev) => ({
+      ...prev,
+      log: [...prev.log, event],
+    }))
+  }, [])
+
+  const setClaudeExitCode = useCallback((code: number) => {
+    setClaudeSession((prev) => ({ ...prev, exitCode: code }))
+  }, [])
+
+  const resetClaudeSession = useCallback(() => {
+    setClaudeSession(initialClaudeSession)
+  }, [])
+
   // Count notes with content or actions set, plus inserts
   const pendingCount =
     Array.from(panelNotes.values()).filter(
       (n) =>
         n.note.trim() ||
         n.actions.delete ||
-        n.actions.background,
+        n.actions.background ||
+        n.actions.sfx,
     ).length + inserts.filter((i) => i.note.trim()).length
 
   return (
@@ -181,12 +269,20 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         setPanelAction,
         setBackgroundPrompt,
         setHasExistingBackground,
+        setSfxPrompt,
+        setHasExistingSfx,
         inserts,
         addInsert,
         updateInsert,
         removeInsert,
         clearAll,
         pendingCount,
+        claudeSession,
+        setClaudePhase,
+        setClaudeBranch,
+        appendClaudeLog,
+        setClaudeExitCode,
+        resetClaudeSession,
       }}
     >
       {children}

@@ -2,6 +2,7 @@
 export interface PanelActions {
   delete: boolean
   background: boolean
+  sfx: boolean
 }
 
 /** A dev note attached to an existing panel */
@@ -14,6 +15,10 @@ export interface DevPanelNote {
   hasExistingBackground: boolean
   /** Description/prompt for the background (prepopulated if existing) */
   backgroundPrompt: string
+  /** Whether this panel already has background audio (detected from DOM) */
+  hasExistingSfx: boolean
+  /** Description/prompt for the SFX */
+  sfxPrompt: string
 }
 
 /** A request to insert a new panel at a specific position */
@@ -31,6 +36,8 @@ export interface OrchestratorTask {
     | 'delete'
     | 'add-background'
     | 'regenerate-background'
+    | 'add-sfx'
+    | 'regenerate-sfx'
     | 'create'
     | 'edit-notes'
   notes: string
@@ -40,6 +47,8 @@ export interface OrchestratorTask {
   panelIndex?: number
   /** Background prompt/description for background tasks */
   backgroundPrompt?: string
+  /** SFX prompt/description for audio tasks */
+  sfxPrompt?: string
 }
 
 /** The full manifest exported for the orchestrator */
@@ -48,4 +57,35 @@ export interface TaskManifest {
   explainerSlug: string
   timestamp: string
   tasks: OrchestratorTask[]
+}
+
+// ── Claude Code session types ───────────────────────────────────────────
+
+/** A single SSE event from the Claude bridge. */
+export interface ClaudeSessionEvent {
+  type: string
+  data: Record<string, unknown>
+}
+
+/** Phases the Claude session moves through. */
+export type ClaudeSessionPhase =
+  | 'idle'
+  | 'capturing'
+  | 'submitting'
+  | 'running'
+  | 'done'
+  | 'error'
+  | 'cancelled'
+
+/** Accumulated state for a running (or completed) Claude session. */
+export interface ClaudeSessionState {
+  phase: ClaudeSessionPhase
+  /** Human-readable status line shown in the UI */
+  statusMessage: string
+  /** Git branch created for this session */
+  branch: string | null
+  /** Messages collected from the Claude stream */
+  log: ClaudeSessionEvent[]
+  /** Exit code from the Claude process (null while running) */
+  exitCode: number | null
 }
