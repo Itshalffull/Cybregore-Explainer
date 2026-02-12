@@ -49,3 +49,34 @@ export interface TaskManifest {
   timestamp: string
   tasks: OrchestratorTask[]
 }
+
+// ── Claude Code session types ───────────────────────────────────────────
+
+/** A single SSE event from the Claude bridge. */
+export interface ClaudeSessionEvent {
+  type: string
+  data: Record<string, unknown>
+}
+
+/** Phases the Claude session moves through. */
+export type ClaudeSessionPhase =
+  | 'idle'
+  | 'capturing'
+  | 'submitting'
+  | 'running'
+  | 'done'
+  | 'error'
+  | 'cancelled'
+
+/** Accumulated state for a running (or completed) Claude session. */
+export interface ClaudeSessionState {
+  phase: ClaudeSessionPhase
+  /** Human-readable status line shown in the UI */
+  statusMessage: string
+  /** Git branch created for this session */
+  branch: string | null
+  /** Messages collected from the Claude stream */
+  log: ClaudeSessionEvent[]
+  /** Exit code from the Claude process (null while running) */
+  exitCode: number | null
+}

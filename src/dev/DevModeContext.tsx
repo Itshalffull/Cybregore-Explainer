@@ -5,7 +5,14 @@ import {
   useCallback,
   ReactNode,
 } from 'react'
-import type { DevPanelNote, DevInsert, PanelActions } from './types'
+import type {
+  DevPanelNote,
+  DevInsert,
+  PanelActions,
+  ClaudeSessionState,
+  ClaudeSessionPhase,
+  ClaudeSessionEvent,
+} from './types'
 
 interface DevModeContextValue {
   /** Whether dev mode UI is visible */
@@ -35,6 +42,14 @@ interface DevModeContextValue {
 
   /** Count of pending changes */
   pendingCount: number
+
+  /** Claude Code session state */
+  claudeSession: ClaudeSessionState
+  setClaudePhase: (phase: ClaudeSessionPhase, message?: string) => void
+  setClaudeBranch: (branch: string) => void
+  appendClaudeLog: (event: ClaudeSessionEvent) => void
+  setClaudeExitCode: (code: number) => void
+  resetClaudeSession: () => void
 }
 
 const DevModeContext = createContext<DevModeContextValue | null>(null)
@@ -162,6 +177,48 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
     setInserts([])
   }, [])
 
+  // ── Claude session state ─────────────────────────────────────────────
+  const initialClaudeSession: ClaudeSessionState = {
+    phase: 'idle',
+    statusMessage: '',
+    branch: null,
+    log: [],
+    exitCode: null,
+  }
+
+  const [claudeSession, setClaudeSession] =
+    useState<ClaudeSessionState>(initialClaudeSession)
+
+  const setClaudePhase = useCallback(
+    (phase: ClaudeSessionPhase, message?: string) => {
+      setClaudeSession((prev) => ({
+        ...prev,
+        phase,
+        statusMessage: message ?? prev.statusMessage,
+      }))
+    },
+    [],
+  )
+
+  const setClaudeBranch = useCallback((branch: string) => {
+    setClaudeSession((prev) => ({ ...prev, branch }))
+  }, [])
+
+  const appendClaudeLog = useCallback((event: ClaudeSessionEvent) => {
+    setClaudeSession((prev) => ({
+      ...prev,
+      log: [...prev.log, event],
+    }))
+  }, [])
+
+  const setClaudeExitCode = useCallback((code: number) => {
+    setClaudeSession((prev) => ({ ...prev, exitCode: code }))
+  }, [])
+
+  const resetClaudeSession = useCallback(() => {
+    setClaudeSession(initialClaudeSession)
+  }, [])
+
   // Count notes with content or actions set, plus inserts
   const pendingCount =
     Array.from(panelNotes.values()).filter(
@@ -187,6 +244,12 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         removeInsert,
         clearAll,
         pendingCount,
+        claudeSession,
+        setClaudePhase,
+        setClaudeBranch,
+        appendClaudeLog,
+        setClaudeExitCode,
+        resetClaudeSession,
       }}
     >
       {children}
