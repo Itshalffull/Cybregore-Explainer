@@ -333,6 +333,8 @@ function findPanelSFX(panelId) {
 
 // ── Browser Recording ───────────────────────────────────────────────────────
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath) {
   console.log('\n=== Recording Explainer ===');
   console.log(`Viewport: ${viewport.width}x${viewport.height}`);
@@ -404,7 +406,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
   console.log(`Navigating to: ${url}`);
 
   await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
-  await page.waitForTimeout(2000); // Let animations settle
+  await sleep(2000); // Let animations settle
 
   // Build scroll timeline from voiceover durations
   const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport);
@@ -462,7 +464,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
       const scrollY = startScroll + (endScroll - startScroll) * eased;
 
       await page.evaluate((y) => window.scrollTo(0, y), scrollY);
-      await page.waitForTimeout(16);
+      await sleep(16);
     }
 
     // Pause at panel for voiceover duration
@@ -470,7 +472,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
       // Scroll to the "sweet spot" where content is fully visible (progress ~0.3-0.5)
       const sweetSpotScroll = startScroll + (endScroll - startScroll) * 0.4;
       await page.evaluate((y) => window.scrollTo(0, y), sweetSpotScroll);
-      await page.waitForTimeout(step.pauseDuration * 1000);
+      await sleep(step.pauseDuration * 1000);
     }
   }
 
