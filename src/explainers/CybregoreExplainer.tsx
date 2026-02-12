@@ -5,28 +5,28 @@ import ContinueScrollIndicator from '../components/ContinueScrollIndicator'
 import PanelAutoScaler from '../components/PanelAutoScaler'
 
 // Opening hook
-import Panel1Setup from '../components/panels/Panel1Setup'
+import Panel1Setup from './cybregore/panels/Panel1Setup'
 
 // Data explosion visualizations
-import PanelDataExplosion from '../components/panels/PanelDataExplosion'
-import PanelAppAdoption from '../components/panels/PanelAppAdoption'
+import PanelDataExplosion from './cybregore/panels/PanelDataExplosion'
+import PanelAppAdoption from './cybregore/panels/PanelAppAdoption'
 
 // Cybregore etymology - explaining the portmanteau
-import PanelSomethingEmerges from '../components/panels/PanelSomethingEmerges'
-import PanelCyborg from '../components/panels/PanelCyborg'
-import PanelEgregore from '../components/panels/PanelEgregore'
+import PanelSomethingEmerges from './cybregore/panels/PanelSomethingEmerges'
+import PanelCyborg from './cybregore/panels/PanelCyborg'
+import PanelEgregore from './cybregore/panels/PanelEgregore'
 
 // Cybregore deep dive
-import Panel13CybregoreIntro from '../components/panels/Panel13CybregoreIntro'
-import PanelCybregoreAnatomy from '../components/panels/PanelCybregoreAnatomy'
-import PanelCybregoreInseparable from '../components/panels/PanelCybregoreInseparable'
-import PanelCybregoreHunger from '../components/panels/PanelCybregoreHunger'
-import PanelBreathingExercise from '../components/panels/PanelBreathingExercise'
-import PanelHungryGhost from '../components/panels/PanelHungryGhost'
-import Panel15CybregoreReads from '../components/panels/Panel15CybregoreReads'
-import Panel16CybregoreWrites from '../components/panels/Panel16CybregoreWrites'
-import Panel17CybregoreCorrelates from '../components/panels/Panel17CybregoreCorrelates'
-import PanelWhatNow from '../components/panels/PanelWhatNow'
+import Panel13CybregoreIntro from './cybregore/panels/Panel13CybregoreIntro'
+import PanelCybregoreAnatomy from './cybregore/panels/PanelCybregoreAnatomy'
+import PanelCybregoreInseparable from './cybregore/panels/PanelCybregoreInseparable'
+import PanelCybregoreHunger from './cybregore/panels/PanelCybregoreHunger'
+import PanelBreathingExercise from './cybregore/panels/PanelBreathingExercise'
+import PanelHungryGhost from './cybregore/panels/PanelHungryGhost'
+import Panel15CybregoreReads from './cybregore/panels/Panel15CybregoreReads'
+import Panel16CybregoreWrites from './cybregore/panels/Panel16CybregoreWrites'
+import Panel17CybregoreCorrelates from './cybregore/panels/Panel17CybregoreCorrelates'
+import PanelWhatNow from './cybregore/panels/PanelWhatNow'
 
 
 export default function CybregoreExplainer() {
