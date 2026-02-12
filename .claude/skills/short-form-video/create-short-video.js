@@ -377,6 +377,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
 
   const launchOptions = {
     headless: 'new',
+    channel: 'stable',
     args: [
       `--window-size=${viewport.width},${viewport.height}`,
       '--no-sandbox',
