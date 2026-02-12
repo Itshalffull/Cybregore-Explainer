@@ -219,18 +219,16 @@ function loadMetadata() {
 
 function parseMetadataPanels(content) {
   const panels = [];
-  const panelsMatch = content.match(/panels\s*:\s*\[([\s\S]*?)\]\s*(?:,|\})/);
-  if (!panelsMatch) {
+  const panelsBlock = extractBracketBlock(content, 'panels');
+  if (!panelsBlock) {
     console.error('Error: No panels array found in metadata.');
     process.exit(1);
   }
 
-  const panelsBlock = panelsMatch[1];
-  const panelRegex = /\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/g;
-  let match;
+  // Extract each top-level { ... } object from the panels array
+  const panelStrings = extractTopLevelObjects(panelsBlock);
 
-  while ((match = panelRegex.exec(panelsBlock)) !== null) {
-    const s = match[0];
+  for (const s of panelStrings) {
     const id = extractMetaField(s, 'id');
     const title = extractMetaField(s, 'title');
     const message = extractMetaField(s, 'message');
@@ -241,6 +239,44 @@ function parseMetadataPanels(content) {
   }
 
   return panels;
+}
+
+/** Find `key: [...]` in source and return the content between the outer brackets, handling nesting. */
+function extractBracketBlock(source, key) {
+  const re = new RegExp(`${key}\\s*:\\s*\\[`);
+  const m = source.match(re);
+  if (!m) return null;
+
+  let depth = 1;
+  const startIdx = m.index + m[0].length;
+  for (let i = startIdx; i < source.length; i++) {
+    if (source[i] === '[') depth++;
+    else if (source[i] === ']') depth--;
+    if (depth === 0) return source.slice(startIdx, i);
+  }
+  return null;
+}
+
+/** Extract all top-level `{ ... }` objects from a string, handling nested braces. */
+function extractTopLevelObjects(str) {
+  const objects = [];
+  let i = 0;
+  while (i < str.length) {
+    if (str[i] === '{') {
+      let depth = 1;
+      const start = i;
+      i++;
+      while (i < str.length && depth > 0) {
+        if (str[i] === '{') depth++;
+        else if (str[i] === '}') depth--;
+        i++;
+      }
+      objects.push(str.slice(start, i));
+    } else {
+      i++;
+    }
+  }
+  return objects;
 }
 
 function extractMetaField(str, fieldName) {
