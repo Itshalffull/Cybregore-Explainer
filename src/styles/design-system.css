@@ -765,6 +765,128 @@ body {
 .panel-text-3xl { font-size: var(--text-title); line-height: 1.1; }
 .panel-text-hero { font-size: var(--text-display); line-height: 1.0; }
 
+/* --------------------------------------------------------------------------
+   13. FLOATING TOOLBAR (share, mute, volume)
+   -------------------------------------------------------------------------- */
+
+.floating-toolbar {
+  position: fixed;
+  bottom: var(--gap-lg);
+  right: var(--gap-lg);
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.floating-toolbar--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-toolbar__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(30, 35, 30, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(209, 231, 210, 0.12);
+  color: var(--color-cream);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  padding: 0;
+}
+
+.floating-toolbar__btn:hover {
+  background: rgba(30, 35, 30, 0.55);
+  border-color: rgba(209, 231, 210, 0.25);
+  transform: scale(1.1);
+}
+
+.floating-toolbar__btn:active {
+  transform: scale(0.95);
+}
+
+/* Volume slider track — vertical, slides up above the sound button */
+.floating-toolbar__volume-track {
+  background: rgba(30, 35, 30, 0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  padding: 8px 4px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease;
+}
+
+.floating-toolbar__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 4px;
+  height: 80px;
+  background: rgba(209, 231, 210, 0.2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.floating-toolbar__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-cream);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floating-toolbar__slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-cream);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Push toolbar up when breadcrumbs are visible */
+.floating-toolbar--with-breadcrumbs {
+  bottom: calc(var(--gap-lg) + 40px) !important;
+}
+
+/* Mobile: slightly smaller, tighter to edge */
+@media (max-width: 480px) {
+  .floating-toolbar {
+    right: var(--gap-sm);
+    bottom: var(--gap-md);
+  }
+
+  .floating-toolbar__btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .floating-toolbar__slider {
+    height: 60px;
+  }
+}
+
+
 /* Legacy panel content (deprecated - use .panel-body) */
 .panel-content {
   max-width: 700px;

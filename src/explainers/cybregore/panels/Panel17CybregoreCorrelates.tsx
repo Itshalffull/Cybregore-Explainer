@@ -1,5 +1,6 @@
 import { lerp } from '../../../utils/animation'
 import VideoBackground from '../../../components/VideoBackground'
+import AudioBackground from '../../../components/AudioBackground'
 
 interface Panel17CybregoreCorrelatesProps {
   progress: number
@@ -25,6 +26,10 @@ export default function Panel17CybregoreCorrelates({ progress }: Panel17Cybregor
         videoSrc="/assets/videos/cybregore-correlates-loop.mp4"
         imageFallback="/assets/images/cybregore-correlates.png"
         opacity={0.35}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/cybregore-correlates-ambience.mp3"
+        progress={progress}
       />
       <div className="panel-body panel-body--over-video">
         <h2

@@ -1,5 +1,6 @@
 import { lerp } from '../../../utils/animation'
 import VideoBackground from '../../../components/VideoBackground'
+import AudioBackground from '../../../components/AudioBackground'
 
 interface Panel13CybregoreIntroProps {
   progress: number
@@ -23,6 +24,11 @@ export default function Panel13CybregoreIntro({ progress }: Panel13CybregoreIntr
         videoSrc="/assets/videos/cybregore-loop.mp4"
         imageFallback="/assets/images/cybregore.png"
         opacity={0.35}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/cybregore-intro-ambience.mp3"
+        progress={progress}
+        maxVolume={0.3}
       />
       <div className="panel-body panel-body--over-video panel-body--wide text-center">
         <p

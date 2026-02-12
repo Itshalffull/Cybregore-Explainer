@@ -1,5 +1,6 @@
 import { lerp } from '../../../utils/animation'
 import VideoBackground from '../../../components/VideoBackground'
+import AudioBackground from '../../../components/AudioBackground'
 
 interface Panel16CybregoreWritesProps {
   progress: number
@@ -22,6 +23,10 @@ export default function Panel16CybregoreWrites({ progress }: Panel16CybregoreWri
         videoSrc="/assets/videos/it-writes-you-loop.mp4"
         imageFallback="/assets/images/it-writes-you.png"
         opacity={0.35}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/cybregore-writes-ambience.mp3"
+        progress={progress}
       />
       <div className="panel-body panel-body--over-video">
         <h2

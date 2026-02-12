@@ -1,5 +1,6 @@
 import { lerp } from '../../../utils/animation'
 import VideoBackground from '../../../components/VideoBackground'
+import AudioBackground from '../../../components/AudioBackground'
 
 interface Panel15CybregoreReadsProps {
   progress: number
@@ -22,6 +23,11 @@ export default function Panel15CybregoreReads({ progress }: Panel15CybregoreRead
         videoSrc="/assets/videos/it-reads-you-loop.mp4"
         imageFallback="/assets/images/it-reads-you.png"
         opacity={0.35}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/cybregore-reads-ambience.mp3"
+        progress={progress}
+        maxVolume={0.3}
       />
       <div className="panel-body panel-body--over-video">
         <h2

@@ -1,6 +1,7 @@
 import { lerp } from '../../../utils/animation'
 import AutoScaleContent from '../../../components/AutoScaleContent'
 import VideoBackground from '../../../components/VideoBackground'
+import AudioBackground from '../../../components/AudioBackground'
 
 interface PanelHungryGhostProps {
   progress: number
@@ -37,6 +38,10 @@ export default function PanelHungryGhost({ progress }: PanelHungryGhostProps) {
         videoSrc="/assets/videos/hungry-ghost-loop.mp4"
         imageFallback="/assets/images/hungry-ghost.png"
         opacity={bgOpacity}
+      />
+      <AudioBackground
+        audioSrc="/assets/audio/hungry-ghost-ambience.mp3"
+        progress={progress}
       />
       <AutoScaleContent maxWidth="650px" style={{ position: 'relative', zIndex: 1 }}>
         {/* Intro */}
