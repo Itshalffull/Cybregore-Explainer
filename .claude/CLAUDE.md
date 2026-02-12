@@ -20,7 +20,7 @@ Source Material (talks, articles, transcripts, URLs, pasted text)
   /dharma-panel-* ──── Build each panel as a React component (5 panel types)
         │
         ▼
-  /create-panel-background ── Generate video/image backgrounds (as needed)
+  /create-panel-background ── Generate video/image backgrounds + SFX (as needed)
         │
         ▼
   /dharma-test-browser ────── QA in the browser, triage fixes
@@ -112,15 +112,16 @@ Combines two or more panel types with scroll-driven mode transitions.
 
 **For each panel:** provide the panel ID from the metadata file and the explainer slug. The skill reads the metadata for context, designs content, gets user approval, then builds the component at `src/explainers/{slug}/panels/{PanelId}.tsx`.
 
-### 5. Generate Backgrounds — `/create-panel-background`
+### 5. Generate Backgrounds & SFX — `/create-panel-background`
 
-For mythology and immersive panels that need visual atmosphere.
+For mythology and immersive panels that need visual atmosphere and ambient audio.
 
-- **Step 1:** Generate a static image with `node create-image.js` (OpenAI GPT-Image, zen minimalist palette)
-- **Step 2:** Animate into a looping video with `node create-video.js` (Google Veo 2.0)
-- **Step 3:** Use `<VideoBackground>` component in the panel
+- **Step 1:** Generate a static image with `node create-image.js` (Nano Banana Pro, zen minimalist palette)
+- **Step 2:** Animate into a looping video with `node create-video.js` (Google Veo 3.1/2.0)
+- **Step 3:** Generate ambient SFX with `node create-sfx.js` (ElevenLabs Sound Effects V2)
+- **Step 4:** Use `<VideoBackground>` and `<AudioBackground>` components in the panel
 
-**Requires:** `OPENAI_API_KEY`, `VEO_API_KEY` environment variables, FFmpeg installed.
+**Requires:** `GEMINI_API_KEY` (or `VEO_API_KEY`), `ELEVENLABS_API_KEY` environment variables. `OPENAI_API_KEY` only if using `--openai` flag. FFmpeg only if using `--veo2` flag.
 
 ### 6. Test and Polish — `/dharma-test-browser`
 
@@ -244,6 +245,6 @@ When you have rich source material (e.g., a long talk or multiple articles):
 | Build a participatory panel | `/dharma-panel-interactive` |
 | Build an imagery+mythology panel | `/dharma-panel-mythology` |
 | Build a multi-type panel | `/dharma-panel-hybrid` |
-| Generate a video/image background | `/create-panel-background` |
+| Generate a video/image background or SFX | `/create-panel-background` |
 | Test an explainer in the browser | `/dharma-test-browser` |
 | Fix a specific panel after testing | The panel skill matching that panel's type |
