@@ -7,8 +7,9 @@
  * Pipeline:
  *   1. Read explainer metadata → extract panel info
  *   2. Generate voiceover per panel (ElevenLabs TTS)
- *   3. Generate background music (Suno or ElevenLabs)
- *   4. Launch Puppeteer, scroll through explainer, record video
+ *   3. Launch Puppeteer, scroll through explainer, record video
+ *      (scroll timing derived from voiceover durations + padding)
+ *   4. Generate background music to match actual video duration
  *   5. Mix audio layers: voiceover (100%), SFX (20%), music (~30%)
  *   6. Combine video + mixed audio → final output
  *
@@ -183,7 +184,7 @@ function ffmpeg(ffmpegArgs, description) {
 
 // ── Utility: get audio duration via ffprobe ─────────────────────────────────
 
-function getAudioDuration(filePath) {
+function getMediaDuration(filePath) {
   try {
     const result = execSync(
       `ffprobe -v error -show_entries format=duration -of csv=p=0 "${filePath}"`,
@@ -784,38 +785,12 @@ async function main() {
     }
   }
 
-  // Step 3: Generate background music
+  // Music path (generated once after first recording, shared across formats)
   const musicDir = path.join(projectRoot, 'public', 'assets', 'audio', 'music');
   const musicPath = path.join(musicDir, `bg-music-${slug}.mp3`);
+  let musicGenerated = false;
 
-  if (!skipMusic) {
-    if (reuseMusic && fs.existsSync(musicPath)) {
-      console.log('\n--- Step 3: Reusing Existing Music ---');
-    } else {
-      console.log('\n--- Step 3: Generate Background Music ---');
-      const musicScript = path.join(__dirname, 'create-music.js');
-
-      // Estimate total duration from voiceover manifest
-      let totalDuration = 120;
-      if (voiceoverManifest) {
-        const voDuration = voiceoverManifest.panels
-          .filter(p => p.durationSeconds)
-          .reduce((sum, p) => sum + p.durationSeconds, 0);
-        // Add scroll animation time (~1.5s per panel) + pause padding
-        totalDuration = Math.ceil(voDuration + panels.length * (1.5 + scrollPausePad) + 10);
-      }
-
-      await runScript(musicScript, [
-        musicPrompt,
-        '--output', musicPath,
-        '--duration', String(totalDuration),
-      ]);
-    }
-  } else {
-    console.log('\n--- Step 3: Skipping Music ---');
-  }
-
-  // Steps 4-6: Per-format recording and mixing
+  // Steps 3-6: Per-format recording, music generation, mixing, and combining
   for (const fmt of formats) {
     const viewport = VIEWPORTS[fmt];
     if (!viewport) {
@@ -827,19 +802,49 @@ async function main() {
     const rawVideoPath = path.join(projectRoot, '.tmp-audio', `raw-${slug}-${fmtLabel}.mp4`);
     const finalOutput = outputFile || path.join(projectRoot, 'output', `${slug}-${fmtLabel}.mp4`);
 
-    // Step 4: Record browser
+    // Step 3: Record browser (scroll timing derived from voiceover durations)
     if (!skipRecord) {
-      console.log(`\n--- Step 4: Record (${fmt}) ---`);
-      const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport);
+      console.log(`\n--- Step 3: Record (${fmt}) ---`);
       await recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath);
+    }
+
+    // Step 4: Generate background music (using actual video duration)
+    if (!skipMusic) {
+      if (reuseMusic && fs.existsSync(musicPath)) {
+        console.log('\n--- Step 4: Reusing Existing Music ---');
+      } else if (!musicGenerated) {
+        console.log('\n--- Step 4: Generate Background Music ---');
+        const musicScript = path.join(__dirname, 'create-music.js');
+
+        // Use actual video duration if available, otherwise estimate from timeline
+        let totalDuration;
+        if (fs.existsSync(rawVideoPath)) {
+          const videoDuration = getMediaDuration(rawVideoPath);
+          totalDuration = Math.ceil(videoDuration + 2);
+          console.log(`  Video duration: ${videoDuration.toFixed(1)}s → music target: ${totalDuration}s`);
+        } else {
+          // Fallback: estimate from voiceover-based scroll timeline
+          const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport);
+          totalDuration = Math.ceil(timeline.totalDuration + 5);
+          console.log(`  Estimated duration from timeline: ${totalDuration}s`);
+        }
+
+        await runScript(musicScript, [
+          musicPrompt,
+          '--output', musicPath,
+          '--duration', String(totalDuration),
+        ]);
+        musicGenerated = true;
+      }
+    } else {
+      console.log('\n--- Step 4: Skipping Music ---');
     }
 
     // Step 5: Mix audio
     let mixedAudioPath = null;
     if (!skipMix) {
       console.log(`\n--- Step 5: Mix Audio (${fmt}) ---`);
-      const viewport2 = VIEWPORTS[fmt];
-      const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport2);
+      const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport);
       const existingMusicPath = fs.existsSync(musicPath) ? musicPath : null;
       mixedAudioPath = await mixAudio(panels, voiceoverManifest, existingMusicPath, timeline, null);
     }

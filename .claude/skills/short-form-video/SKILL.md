@@ -12,8 +12,8 @@ Creates short-form videos from Dharma campaign explainers by recording the scrol
 
 1. Reads explainer metadata to extract panel info and voiceover text
 2. Generates voiceover narration per panel via ElevenLabs TTS
-3. Generates background music via Suno AI (falls back to ElevenLabs Music)
-4. Records the explainer scrolling in a headless browser (Puppeteer)
+3. Records the explainer scrolling in a headless browser (Puppeteer), with scroll timing derived from voiceover durations
+4. Generates background music to match the actual recorded video duration (Suno AI, falls back to ElevenLabs Music)
 5. Mixes audio layers: voiceover (100%), panel SFX (20%), music (~30%)
 6. Outputs final video in 9:16 (vertical) and/or 16:9 (horizontal) format
 
