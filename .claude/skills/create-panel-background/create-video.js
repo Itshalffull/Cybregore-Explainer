@@ -28,6 +28,9 @@ import https from 'https';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import os from 'os';
+import { loadEnv } from '../../../load-env.js';
+
+loadEnv();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
