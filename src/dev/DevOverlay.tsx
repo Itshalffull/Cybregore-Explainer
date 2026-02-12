@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useDevMode } from './DevModeContext'
 import DevPanelControls from './DevPanelControls'
 import DevInsertSlot from './DevInsertSlot'
@@ -10,6 +11,8 @@ interface PanelDOMEntry {
   element: HTMLElement
   portalContainer: HTMLDivElement
   insertContainer: HTMLDivElement | null
+  /** Whether this panel has an existing video/image background */
+  hasBackground: boolean
 }
 
 interface DevOverlayProps {
@@ -17,6 +20,43 @@ interface DevOverlayProps {
   containerRef: React.RefObject<HTMLElement | null>
   /** Panel metadata for labeling */
   panels: PanelMeta[]
+}
+
+/**
+ * Detect whether a panel section contains a VideoBackground component
+ * or an IntroSection-style fixed video background.
+ */
+function detectBackground(panelEl: HTMLElement): boolean {
+  // VideoBackground: renders <video> inside the section
+  if (panelEl.querySelector('video')) return true
+  // panel-body--over-video class indicates a panel designed for a background
+  if (panelEl.querySelector('.panel-body--over-video')) return true
+  // IntroSection: fixed video is a sibling — check if the ScrollSection's
+  // ancestor contains a fixed video
+  const scrollSection = panelEl.parentElement?.parentElement
+  const wrapper = scrollSection?.parentElement
+  if (wrapper && wrapper.querySelector(':scope > div[style*="position: fixed"] video')) {
+    return true
+  }
+  return false
+}
+
+/**
+ * Walk up from a section.panel to find the top-level element that
+ * should have insert slots placed between it and its siblings.
+ * Handles both direct ScrollSection children of .app and
+ * ScrollSections nested inside IntroSection wrappers.
+ */
+function findTopLevelContainer(
+  panelEl: HTMLElement,
+  appRoot: HTMLElement,
+): HTMLElement | null {
+  // Walk up from the panel to find which direct child of appRoot contains it
+  let node: HTMLElement | null = panelEl
+  while (node && node.parentElement !== appRoot) {
+    node = node.parentElement
+  }
+  return node
 }
 
 /**
@@ -31,18 +71,22 @@ export default function DevOverlay({
 }: DevOverlayProps) {
   const dev = useDevMode()
   const [entries, setEntries] = useState<PanelDOMEntry[]>([])
-  const observerRef = useRef<MutationObserver | null>(null)
-  const scannedRef = useRef(false)
+  const entriesRef = useRef<PanelDOMEntry[]>([])
+  const isScanningRef = useRef(false)
 
   useEffect(() => {
     if (!dev?.active) {
-      // Clean up portal containers when deactivated
-      entries.forEach((entry) => {
+      // Clean up portal containers and separator lines when deactivated
+      entriesRef.current.forEach((entry) => {
         entry.portalContainer.remove()
         entry.insertContainer?.remove()
       })
+      // Remove any separator lines we injected
+      document.querySelectorAll('.dev-panel-separator').forEach((el) => el.remove())
+      entriesRef.current = []
       setEntries([])
-      scannedRef.current = false
+      // Refresh GSAP after removing dev DOM nodes
+      requestAnimationFrame(() => ScrollTrigger.refresh())
       return
     }
 
@@ -50,80 +94,105 @@ export default function DevOverlay({
     if (!container) return
 
     const scan = () => {
-      // Find all section.panel elements within the container
-      const panelSections = container.querySelectorAll('section.panel')
-      if (panelSections.length === 0) return
+      // Guard against re-entrant calls from MutationObserver
+      if (isScanningRef.current) return
+      isScanningRef.current = true
 
-      // Avoid re-scanning if panel count hasn't changed
-      if (scannedRef.current && entries.length === panelSections.length) return
-      scannedRef.current = true
+      try {
+        // Find all section.panel elements within the container
+        const panelSections = container.querySelectorAll('section.panel')
+        if (panelSections.length === 0) return
 
-      // Clean up old containers
-      entries.forEach((entry) => {
-        entry.portalContainer.remove()
-        entry.insertContainer?.remove()
-      })
+        // Avoid re-scanning if panel count hasn't changed
+        if (entriesRef.current.length === panelSections.length) return
 
-      const newEntries: PanelDOMEntry[] = []
-
-      panelSections.forEach((section, index) => {
-        const panelEl = section as HTMLElement
-
-        // Find the ScrollSection container (the outermost wrapper)
-        // Structure: ScrollSection > pinned-div > section.panel
-        const scrollSectionContainer =
-          panelEl.closest('[style*="position: relative"]') ??
-          panelEl.parentElement?.parentElement
-
-        if (!scrollSectionContainer) return
-
-        // Create portal container for panel controls — placed inside
-        // the panel section itself so it scrolls/pins with it
-        const portalDiv = document.createElement('div')
-        portalDiv.className = 'dev-portal-anchor'
-        portalDiv.dataset.devPanelIndex = String(index)
-        panelEl.appendChild(portalDiv)
-
-        // Create insert slot container — placed AFTER the ScrollSection
-        // in the document flow (between panels)
-        let insertDiv: HTMLDivElement | null = null
-        if (index < panelSections.length - 1) {
-          insertDiv = document.createElement('div')
-          insertDiv.className = 'dev-insert-anchor'
-          insertDiv.dataset.devInsertAfter = String(index)
-          // Insert after the ScrollSection container
-          scrollSectionContainer.parentElement?.insertBefore(
-            insertDiv,
-            scrollSectionContainer.nextSibling,
-          )
-        }
-
-        newEntries.push({
-          index,
-          element: panelEl,
-          portalContainer: portalDiv,
-          insertContainer: insertDiv,
+        // Clean up old containers and separators
+        entriesRef.current.forEach((entry) => {
+          entry.portalContainer.remove()
+          entry.insertContainer?.remove()
         })
-      })
+        document.querySelectorAll('.dev-panel-separator').forEach((el) => el.remove())
 
-      setEntries(newEntries)
+        // Find the .app root (first child of the wrapper that has class "app"
+        // or just the first element child)
+        const appRoot =
+          (container.querySelector('.app') as HTMLElement) ?? container
+
+        const newEntries: PanelDOMEntry[] = []
+
+        panelSections.forEach((section, index) => {
+          const panelEl = section as HTMLElement
+
+          // Detect background
+          const hasBackground = detectBackground(panelEl)
+
+          // Create portal container for panel controls — placed inside
+          // the panel section itself so it scrolls/pins with it
+          const portalDiv = document.createElement('div')
+          portalDiv.className = 'dev-portal-anchor'
+          portalDiv.dataset.devPanelIndex = String(index)
+          panelEl.appendChild(portalDiv)
+
+          // Find the top-level container in the .app for insert placement
+          const topContainer = findTopLevelContainer(panelEl, appRoot)
+
+          // Create insert slot + separator line AFTER every panel
+          // (placed after the top-level container in .app's direct children)
+          let insertDiv: HTMLDivElement | null = null
+          if (topContainer && index < panelSections.length - 1) {
+            // Create a wrapper that holds the separator line + insert button
+            insertDiv = document.createElement('div')
+            insertDiv.className = 'dev-panel-separator'
+            insertDiv.dataset.devInsertAfter = String(index)
+            topContainer.parentElement?.insertBefore(
+              insertDiv,
+              topContainer.nextSibling,
+            )
+          }
+
+          newEntries.push({
+            index,
+            element: panelEl,
+            portalContainer: portalDiv,
+            insertContainer: insertDiv,
+            hasBackground,
+          })
+        })
+
+        entriesRef.current = newEntries
+        setEntries(newEntries)
+
+        // Refresh GSAP after injecting dev DOM nodes
+        requestAnimationFrame(() => ScrollTrigger.refresh())
+      } finally {
+        isScanningRef.current = false
+      }
     }
 
     // Initial scan after a brief delay to let GSAP set up
     const timer = setTimeout(scan, 300)
 
     // Watch for DOM changes (panels being added/removed during transitions)
-    observerRef.current = new MutationObserver(() => {
-      scannedRef.current = false
+    // Only observe direct children of the container, not subtree —
+    // subtree would trigger on our own portal injections causing loops
+    const observer = new MutationObserver(() => {
       scan()
     })
-    observerRef.current.observe(container, { childList: true, subtree: true })
+    observer.observe(container, { childList: true })
 
     return () => {
       clearTimeout(timer)
-      observerRef.current?.disconnect()
+      observer.disconnect()
     }
   }, [dev?.active, containerRef]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Sync background detection into DevModeContext
+  useEffect(() => {
+    if (!dev?.active) return
+    for (const entry of entries) {
+      dev.setHasExistingBackground(entry.index, entry.hasBackground)
+    }
+  }, [entries]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!dev?.active) return null
 
@@ -147,7 +216,7 @@ export default function DevOverlay({
       ),
     )
 
-    // Insert slot portal (between panels)
+    // Insert slot portal (between panels, inside separator)
     if (entry.insertContainer) {
       portals.push(
         createPortal(

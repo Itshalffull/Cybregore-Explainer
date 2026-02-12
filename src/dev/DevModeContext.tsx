@@ -21,6 +21,8 @@ interface DevModeContextValue {
     action: keyof PanelActions,
     value: boolean,
   ) => void
+  setBackgroundPrompt: (index: number, panelId: string, prompt: string) => void
+  setHasExistingBackground: (index: number, value: boolean) => void
 
   /** Insert requests (new panels between existing ones) */
   inserts: DevInsert[]
@@ -59,21 +61,28 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(() => setActive((a) => !a), [])
 
+  const defaultActions: PanelActions = { delete: false, background: false }
+
+  const getOrCreate = (
+    map: Map<number, DevPanelNote>,
+    index: number,
+    panelId: string,
+  ): DevPanelNote =>
+    map.get(index) ?? {
+      panelId,
+      panelIndex: index,
+      note: '',
+      actions: { ...defaultActions },
+      hasExistingBackground: false,
+      backgroundPrompt: '',
+    }
+
   const setPanelNote = useCallback(
     (index: number, panelId: string, note: string) => {
       setPanelNotes((prev) => {
         const next = new Map(prev)
-        const existing = next.get(index)
-        next.set(index, {
-          panelId,
-          panelIndex: index,
-          note,
-          actions: existing?.actions ?? {
-            delete: false,
-            regenerate: false,
-            addBackground: false,
-          },
-        })
+        const existing = getOrCreate(prev, index, panelId)
+        next.set(index, { ...existing, panelId, note })
         return next
       })
     },
@@ -89,19 +98,38 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
     ) => {
       setPanelNotes((prev) => {
         const next = new Map(prev)
-        const existing = next.get(index)
+        const existing = getOrCreate(prev, index, panelId)
         next.set(index, {
+          ...existing,
           panelId,
-          panelIndex: index,
-          note: existing?.note ?? '',
-          actions: {
-            delete: false,
-            regenerate: false,
-            addBackground: false,
-            ...existing?.actions,
-            [action]: value,
-          },
+          actions: { ...existing.actions, [action]: value },
         })
+        return next
+      })
+    },
+    [],
+  )
+
+  const setBackgroundPrompt = useCallback(
+    (index: number, panelId: string, prompt: string) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = getOrCreate(prev, index, panelId)
+        next.set(index, { ...existing, panelId, backgroundPrompt: prompt })
+        return next
+      })
+    },
+    [],
+  )
+
+  const setHasExistingBackground = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, hasExistingBackground: value })
+        }
         return next
       })
     },
@@ -140,8 +168,7 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
       (n) =>
         n.note.trim() ||
         n.actions.delete ||
-        n.actions.regenerate ||
-        n.actions.addBackground,
+        n.actions.background,
     ).length + inserts.filter((i) => i.note.trim()).length
 
   return (
@@ -152,6 +179,8 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         panelNotes,
         setPanelNote,
         setPanelAction,
+        setBackgroundPrompt,
+        setHasExistingBackground,
         inserts,
         addInsert,
         updateInsert,

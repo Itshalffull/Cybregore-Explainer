@@ -42,41 +42,32 @@ export function buildTaskManifest(
       continue
     }
 
-    if (note.actions.regenerate) {
-      tasks.push({
-        skill: 'dharma-panel-text', // Will be refined by orchestrator based on panel type
-        panelId: note.panelId,
-        action: 'regenerate',
-        notes:
-          note.note || `Regenerate panel ${note.panelId} with improvements`,
-        panelIndex: note.panelIndex,
-      })
-    }
-
-    if (note.actions.addBackground) {
-      tasks.push({
-        skill: 'create-panel-background',
-        panelId: note.panelId,
-        action: 'add-background',
-        notes:
-          note.note ||
-          `Generate an animated video background for panel ${note.panelId}`,
-        panelIndex: note.panelIndex,
-      })
-    }
-
-    // If only notes (no checkboxes), create an edit task
-    if (
-      hasNote &&
-      !note.actions.delete &&
-      !note.actions.regenerate &&
-      !note.actions.addBackground
-    ) {
+    // Edit task from notes (always emitted when there are notes,
+    // even if background is also checked — they're separate skills)
+    if (hasNote) {
       tasks.push({
         skill: 'dharma-panel-text', // Will be refined by orchestrator
         panelId: note.panelId,
         action: 'edit-notes',
         notes: note.note,
+        panelIndex: note.panelIndex,
+      })
+    }
+
+    // Background task (add or regenerate depending on whether one exists)
+    if (note.actions.background) {
+      const bgAction = note.hasExistingBackground
+        ? 'regenerate-background'
+        : 'add-background'
+      const defaultNotes = note.hasExistingBackground
+        ? `Regenerate the animated video background for panel ${note.panelId}`
+        : `Generate an animated video background for panel ${note.panelId}`
+      tasks.push({
+        skill: 'create-panel-background',
+        panelId: note.panelId,
+        action: bgAction,
+        notes: note.backgroundPrompt.trim() || defaultNotes,
+        backgroundPrompt: note.backgroundPrompt.trim() || undefined,
         panelIndex: note.panelIndex,
       })
     }
@@ -153,6 +144,8 @@ export function buildOrchestratorPrompt(
         `- **Position:** Insert after panel index ${task.position.afterIndex}`,
       )
     lines.push(`- **Notes:** ${task.notes}`)
+    if (task.backgroundPrompt)
+      lines.push(`- **Background prompt:** ${task.backgroundPrompt}`)
 
     // Find screenshot for this task's panel index
     if (screenshotFiles) {

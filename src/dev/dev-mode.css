@@ -1,8 +1,38 @@
 /* ─── Dev Mode Styles ─────────────────────────────────────────────────────────
- * Only loaded when dev mode is active (gated on import.meta.env.DEV).
- * Uses a distinct visual language (blue/purple accent) to clearly
- * differentiate dev UI from content UI.
+ * Polished developer overlay for annotating and managing explainer panels.
+ * Visual language: translucent dark glass with indigo accents,
+ * clean typography, smooth micro-interactions.
  * ──────────────────────────────────────────────────────────────────────────── */
+
+/* ─── Shared tokens ─────────────────────────────────────────────────────── */
+:root {
+  --dev-bg: rgba(15, 15, 22, 0.82);
+  --dev-bg-solid: rgba(15, 15, 22, 0.94);
+  --dev-bg-hover: rgba(99, 102, 241, 0.10);
+  --dev-border: rgba(99, 102, 241, 0.18);
+  --dev-border-hover: rgba(99, 102, 241, 0.40);
+  --dev-border-active: rgba(99, 102, 241, 0.55);
+  --dev-accent: #818cf8;
+  --dev-accent-bright: #a5b4fc;
+  --dev-accent-solid: #6366f1;
+  --dev-text: #c8cad3;
+  --dev-text-dim: #6b7280;
+  --dev-text-bright: #e5e7eb;
+  --dev-yellow: #fbbf24;
+  --dev-yellow-border: rgba(251, 191, 36, 0.40);
+  --dev-yellow-bg: rgba(251, 191, 36, 0.07);
+  --dev-red: #f87171;
+  --dev-red-border: rgba(248, 113, 113, 0.35);
+  --dev-radius: 8px;
+  --dev-radius-sm: 5px;
+  --dev-radius-lg: 12px;
+  --dev-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --dev-font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  --dev-shadow: 0 4px 24px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.25);
+  --dev-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.50), 0 2px 8px rgba(0, 0, 0, 0.30);
+  --dev-blur: blur(16px);
+  --dev-transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* ─── Toolbar ────────────────────────────────────────────────────────────── */
 
@@ -13,69 +43,90 @@
   z-index: 99999;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--dev-radius-lg);
+  font-family: var(--dev-font);
   font-size: 12px;
+  transition: background var(--dev-transition), box-shadow var(--dev-transition);
+}
+
+.dev-toolbar--active {
+  background: var(--dev-bg);
+  border: 1px solid var(--dev-border);
+  backdrop-filter: var(--dev-blur);
+  -webkit-backdrop-filter: var(--dev-blur);
+  box-shadow: var(--dev-shadow);
 }
 
 .dev-toolbar-toggle {
-  background: rgba(99, 102, 241, 0.85);
+  background: var(--dev-accent-solid);
   color: #fff;
-  border: 1px solid rgba(99, 102, 241, 0.6);
-  border-radius: 6px;
-  padding: 6px 10px;
-  min-height: 36px;
-  min-width: 44px;
+  border: none;
+  border-radius: var(--dev-radius);
+  padding: 7px 12px;
+  min-height: 32px;
+  min-width: 42px;
   cursor: pointer;
-  font-family: inherit;
-  font-size: 11px;
+  font-family: var(--dev-font);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  backdrop-filter: blur(8px);
-  transition: background 0.15s;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background var(--dev-transition), transform 0.1s;
 }
 
 .dev-toolbar--active .dev-toolbar-toggle {
-  background: rgba(99, 102, 241, 1);
-  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+  background: var(--dev-accent-solid);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.30);
 }
 
 .dev-toolbar-toggle:hover {
-  background: rgba(79, 70, 229, 1);
+  background: #4f46e5;
+}
+
+.dev-toolbar-toggle:active {
+  transform: scale(0.96);
 }
 
 .dev-toolbar-count {
-  background: #ef4444;
+  background: var(--dev-red);
   color: #fff;
   border-radius: 10px;
-  padding: 2px 7px;
-  font-size: 11px;
+  padding: 1px 7px;
+  font-size: 10px;
   font-weight: 700;
-  min-width: 20px;
+  min-width: 18px;
   text-align: center;
+  line-height: 1.5;
+  font-family: var(--dev-font);
 }
 
 /* Desktop: inline row of action buttons */
 .dev-toolbar-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
 }
 
 /* Mobile: hamburger button (hidden on desktop) */
 .dev-toolbar-menu-btn {
   display: none;
-  background: rgba(30, 30, 40, 0.85);
-  color: #e0e0e8;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 6px;
+  background: transparent;
+  color: var(--dev-text);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius);
   padding: 6px 10px;
-  min-height: 36px;
-  min-width: 44px;
+  min-height: 32px;
+  min-width: 38px;
   cursor: pointer;
-  font-family: inherit;
-  font-size: 16px;
-  backdrop-filter: blur(8px);
+  font-family: var(--dev-font);
+  font-size: 14px;
+  transition: background var(--dev-transition);
+}
+
+.dev-toolbar-menu-btn:hover {
+  background: var(--dev-bg-hover);
 }
 
 /* Mobile dropdown panel (hidden on desktop) */
@@ -84,78 +135,89 @@
 }
 
 .dev-toolbar-btn {
-  background: rgba(30, 30, 40, 0.85);
-  color: #e0e0e8;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 6px;
+  background: transparent;
+  color: var(--dev-text-dim);
+  border: 1px solid transparent;
+  border-radius: var(--dev-radius-sm);
   padding: 6px 10px;
-  min-height: 36px;
+  min-height: 32px;
   cursor: pointer;
-  font-family: inherit;
+  font-family: var(--dev-font);
   font-size: 11px;
-  backdrop-filter: blur(8px);
-  transition: background 0.15s, border-color 0.15s;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all var(--dev-transition);
 }
 
 .dev-toolbar-btn:hover:not(:disabled) {
-  background: rgba(99, 102, 241, 0.25);
-  border-color: rgba(99, 102, 241, 0.6);
+  background: var(--dev-bg-hover);
+  color: var(--dev-text-bright);
+  border-color: var(--dev-border);
+}
+
+.dev-toolbar-btn:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .dev-toolbar-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
 .dev-toolbar-btn--primary {
-  background: rgba(99, 102, 241, 0.85);
-  color: #fff;
-  border-color: rgba(99, 102, 241, 0.6);
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--dev-accent-bright);
+  border-color: var(--dev-border);
+  font-weight: 600;
 }
 
 .dev-toolbar-btn--primary:hover:not(:disabled) {
-  background: rgba(79, 70, 229, 1);
+  background: rgba(99, 102, 241, 0.25);
+  border-color: var(--dev-border-active);
 }
 
 .dev-toolbar-btn--danger {
-  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--dev-text-dim);
 }
 
 .dev-toolbar-btn--danger:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(248, 113, 113, 0.10);
+  color: var(--dev-red);
+  border-color: var(--dev-red-border);
 }
 
 /* ─── Panel Controls ─────────────────────────────────────────────────────── */
 
 .dev-portal-anchor {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
+  top: 10px;
+  left: 10px;
+  right: 10px;
   z-index: 9999;
   pointer-events: none;
 }
 
 .dev-panel-controls {
   pointer-events: auto;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--dev-font);
   font-size: 12px;
-  max-width: 420px;
+  max-width: 380px;
 }
 
 .dev-panel-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(30, 30, 40, 0.75);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 6px;
-  padding: 6px 10px;
+  background: var(--dev-bg);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius);
+  padding: 8px 12px;
   cursor: pointer;
-  color: #c4c4d0;
-  backdrop-filter: blur(8px);
-  transition: background 0.15s, border-color 0.15s;
+  color: var(--dev-text);
+  backdrop-filter: var(--dev-blur);
+  -webkit-backdrop-filter: var(--dev-blur);
+  box-shadow: var(--dev-shadow);
+  transition: all var(--dev-transition);
   width: 100%;
   text-align: left;
   font-family: inherit;
@@ -163,28 +225,40 @@
 }
 
 .dev-panel-header:hover {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.5);
+  border-color: var(--dev-border-hover);
+  background: rgba(15, 15, 22, 0.88);
 }
 
 .dev-panel-header--has-content {
-  border-color: rgba(250, 204, 21, 0.5);
-  background: rgba(250, 204, 21, 0.08);
+  border-color: var(--dev-yellow-border);
+  background: var(--dev-yellow-bg);
+  backdrop-filter: var(--dev-blur);
+}
+
+.dev-panel-header--has-content:hover {
+  border-color: var(--dev-yellow);
 }
 
 .dev-panel-index {
-  color: rgba(99, 102, 241, 0.8);
+  color: var(--dev-accent);
   font-weight: 700;
+  font-size: 11px;
+  font-family: var(--dev-font-mono);
   flex-shrink: 0;
+  opacity: 0.8;
 }
 
 .dev-panel-id {
-  color: #a5b4fc;
+  color: var(--dev-accent-bright);
+  font-family: var(--dev-font-mono);
+  font-size: 11px;
   flex-shrink: 0;
+  opacity: 0.7;
 }
 
 .dev-panel-title {
-  color: #94a3b8;
+  color: var(--dev-text-dim);
+  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -192,56 +266,69 @@
 }
 
 .dev-panel-badge {
-  color: #facc15;
-  font-weight: 700;
-  font-size: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dev-yellow);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.50);
 }
 
 .dev-panel-chevron {
-  color: #64748b;
-  font-size: 10px;
+  color: var(--dev-text-dim);
+  font-size: 8px;
   flex-shrink: 0;
+  transition: transform var(--dev-transition);
+}
+
+.dev-panel-controls--expanded .dev-panel-chevron {
+  transform: rotate(180deg);
 }
 
 .dev-panel-body {
-  background: rgba(15, 15, 25, 0.9);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: var(--dev-bg-solid);
+  border: 1px solid var(--dev-border);
   border-top: none;
-  border-radius: 0 0 6px 6px;
-  padding: 10px;
-  backdrop-filter: blur(12px);
+  border-radius: 0 0 var(--dev-radius) var(--dev-radius);
+  padding: 12px;
+  backdrop-filter: var(--dev-blur);
+  -webkit-backdrop-filter: var(--dev-blur);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.30);
 }
 
 .dev-panel-controls--expanded .dev-panel-header {
-  border-radius: 6px 6px 0 0;
-  border-color: rgba(99, 102, 241, 0.5);
-  background: rgba(99, 102, 241, 0.12);
+  border-radius: var(--dev-radius) var(--dev-radius) 0 0;
+  border-color: var(--dev-border-active);
+  border-bottom-color: transparent;
+  background: var(--dev-bg-solid);
 }
 
 /* ─── Note Input ─────────────────────────────────────────────────────────── */
 
 .dev-note-input {
   width: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 4px;
-  color: #e0e0e8;
-  padding: 8px;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius-sm);
+  color: var(--dev-text-bright);
+  padding: 10px 12px;
+  font-family: var(--dev-font);
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.6;
   resize: vertical;
   box-sizing: border-box;
+  transition: border-color var(--dev-transition), box-shadow var(--dev-transition);
 }
 
 .dev-note-input::placeholder {
-  color: #64748b;
+  color: var(--dev-text-dim);
+  font-style: italic;
 }
 
 .dev-note-input:focus {
   outline: none;
-  border-color: rgba(99, 102, 241, 0.6);
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+  border-color: var(--dev-border-active);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.10);
 }
 
 /* ─── Action Checkboxes ──────────────────────────────────────────────────── */
@@ -249,81 +336,176 @@
 .dev-actions {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 2px;
+  margin-top: 10px;
 }
 
 .dev-checkbox {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: #94a3b8;
+  gap: 8px;
+  color: var(--dev-text-dim);
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 4px;
-  transition: background 0.1s;
+  padding: 6px 8px;
+  border-radius: var(--dev-radius-sm);
+  border: 1px solid transparent;
+  transition: all var(--dev-transition);
+  font-size: 12px;
 }
 
 .dev-checkbox:hover {
-  background: rgba(99, 102, 241, 0.08);
+  background: var(--dev-bg-hover);
+  color: var(--dev-text);
+  border-color: var(--dev-border);
 }
 
 .dev-checkbox--checked {
-  color: #e0e0e8;
+  color: var(--dev-text-bright);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: var(--dev-border);
 }
 
 .dev-checkbox input[type='checkbox'] {
-  accent-color: #6366f1;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--dev-border-hover);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  transition: all var(--dev-transition);
+  position: relative;
+  flex-shrink: 0;
 }
 
-/* ─── Insert Slot ────────────────────────────────────────────────────────── */
+.dev-checkbox input[type='checkbox']:checked {
+  background: var(--dev-accent-solid);
+  border-color: var(--dev-accent-solid);
+}
 
-.dev-insert-anchor {
+.dev-checkbox input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 4.5px;
+  top: 1.5px;
+  width: 4px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.dev-checkbox input[type='checkbox']:hover {
+  border-color: var(--dev-accent);
+}
+
+/* Disabled state (when delete is checked) */
+.dev-checkbox--disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Danger variant for delete checkbox */
+.dev-checkbox--danger {
+  color: var(--dev-red) !important;
+  background: rgba(248, 113, 113, 0.08);
+  border-color: var(--dev-red-border);
+}
+
+.dev-checkbox--danger input[type='checkbox']:checked {
+  background: var(--dev-red);
+  border-color: var(--dev-red);
+}
+
+/* Disabled note input */
+.dev-note-input--disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ─── Background Prompt ─────────────────────────────────────────────────── */
+
+.dev-bg-prompt {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--dev-border);
+}
+
+.dev-bg-prompt .dev-note-input {
+  font-size: 11px;
+}
+
+/* ─── Panel Separator ────────────────────────────────────────────────────── */
+
+.dev-panel-separator {
   position: relative;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 0;
   overflow: visible;
 }
 
+/* Dotted line spanning the full width */
+.dev-panel-separator::before {
+  content: '';
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 0;
+  border-top: 1px dashed rgba(99, 102, 241, 0.25);
+}
+
+/* ─── Insert Slot ────────────────────────────────────────────────────────── */
+
 .dev-insert-slot {
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--dev-font);
   font-size: 12px;
   display: flex;
   justify-content: center;
-  padding: 4px 0;
+  position: relative;
+  z-index: 1;
 }
 
 .dev-insert-button {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(30, 30, 40, 0.6);
-  border: 1px dashed rgba(99, 102, 241, 0.3);
+  background: var(--dev-bg);
+  border: 1px dashed var(--dev-border);
   border-radius: 20px;
-  padding: 4px 14px;
-  color: #64748b;
+  padding: 5px 16px;
+  color: var(--dev-text-dim);
   cursor: pointer;
   font-family: inherit;
-  font-size: inherit;
-  transition: all 0.15s;
+  font-size: 11px;
+  font-weight: 500;
+  backdrop-filter: var(--dev-blur);
+  -webkit-backdrop-filter: var(--dev-blur);
+  transition: all var(--dev-transition);
 }
 
 .dev-insert-button:hover {
-  background: rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.5);
-  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.08);
+  border-color: var(--dev-border-hover);
+  color: var(--dev-accent-bright);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
 }
 
 .dev-insert-slot--active .dev-insert-button {
-  border-color: rgba(250, 204, 21, 0.5);
-  color: #facc15;
+  border-color: var(--dev-yellow-border);
+  color: var(--dev-yellow);
+  border-style: solid;
 }
 
 .dev-insert-icon {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1;
+  opacity: 0.7;
 }
 
 .dev-insert-label {
@@ -331,86 +513,93 @@
 }
 
 .dev-insert-form {
-  background: rgba(15, 15, 25, 0.92);
-  border: 1px solid rgba(99, 102, 241, 0.4);
-  border-radius: 8px;
-  padding: 12px;
-  max-width: 420px;
+  background: var(--dev-bg-solid);
+  border: 1px solid var(--dev-border-active);
+  border-radius: var(--dev-radius-lg);
+  padding: 14px;
+  max-width: 380px;
   width: 100%;
   margin: 4px auto;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--dev-blur);
+  -webkit-backdrop-filter: var(--dev-blur);
+  box-shadow: var(--dev-shadow-lg);
 }
 
 .dev-insert-form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #a5b4fc;
+  color: var(--dev-accent-bright);
   font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 12px;
+  margin-bottom: 12px;
 }
 
 .dev-insert-close {
-  background: rgba(99, 102, 241, 0.2);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 4px;
-  color: #a5b4fc;
-  padding: 3px 10px;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius-sm);
+  color: var(--dev-accent-bright);
+  padding: 4px 12px;
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
+  font-weight: 500;
+  transition: all var(--dev-transition);
 }
 
 .dev-insert-close:hover {
-  background: rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.22);
+  border-color: var(--dev-border-hover);
 }
 
 .dev-insert-type-row {
   display: flex;
   gap: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
 .dev-type-button {
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 4px;
-  color: #94a3b8;
-  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.20);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius-sm);
+  color: var(--dev-text-dim);
+  padding: 5px 12px;
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
-  transition: all 0.1s;
+  font-weight: 500;
+  transition: all var(--dev-transition);
 }
 
 .dev-type-button:hover {
-  border-color: rgba(99, 102, 241, 0.5);
-  color: #c4c4d0;
+  border-color: var(--dev-border-hover);
+  color: var(--dev-text);
+  background: var(--dev-bg-hover);
 }
 
 .dev-type-button--active {
-  background: rgba(99, 102, 241, 0.25);
-  border-color: rgba(99, 102, 241, 0.6);
-  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.18);
+  border-color: var(--dev-border-active);
+  color: var(--dev-accent-bright);
   font-weight: 600;
 }
 
 .dev-insert-remove {
-  margin-top: 8px;
+  margin-top: 10px;
   background: none;
   border: none;
-  color: #ef4444;
+  color: var(--dev-text-dim);
   cursor: pointer;
   font-family: inherit;
   font-size: 11px;
   padding: 4px 0;
-  opacity: 0.7;
+  transition: color var(--dev-transition);
 }
 
 .dev-insert-remove:hover {
-  opacity: 1;
-  text-decoration: underline;
+  color: var(--dev-red);
 }
 
 /* ─── Preview Panel ──────────────────────────────────────────────────────── */
@@ -419,34 +608,36 @@
   position: fixed;
   inset: 0;
   z-index: 100000;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  animation: dev-fade-in 0.15s ease-out;
 }
 
 .dev-preview-panel {
-  background: #0f0f19;
-  border: 1px solid rgba(99, 102, 241, 0.4);
-  border-radius: 12px;
+  background: var(--dev-bg-solid);
+  border: 1px solid var(--dev-border-active);
+  border-radius: var(--dev-radius-lg);
   width: 90%;
-  max-width: 700px;
+  max-width: 680px;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--dev-shadow-lg);
+  animation: dev-scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dev-preview-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-  color: #a5b4fc;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--dev-border);
+  color: var(--dev-accent-bright);
+  font-family: var(--dev-font);
   font-size: 13px;
   font-weight: 600;
 }
@@ -454,24 +645,27 @@
 .dev-preview-header button {
   background: none;
   border: none;
-  color: #64748b;
+  color: var(--dev-text-dim);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
-  padding: 0 4px;
+  padding: 4px 6px;
+  border-radius: var(--dev-radius-sm);
+  transition: all var(--dev-transition);
 }
 
 .dev-preview-header button:hover {
-  color: #e0e0e8;
+  color: var(--dev-text-bright);
+  background: var(--dev-bg-hover);
 }
 
 .dev-preview-content {
-  padding: 16px;
+  padding: 18px;
   overflow-y: auto;
-  color: #c4c4d0;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: var(--dev-text);
+  font-family: var(--dev-font-mono);
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.7;
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
@@ -483,30 +677,49 @@
   position: fixed;
   inset: 0;
   z-index: 100001;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  animation: dev-fade-in 0.15s ease-out;
 }
 
 .dev-capture-status {
-  background: rgba(15, 15, 25, 0.95);
-  border: 1px solid rgba(99, 102, 241, 0.5);
-  border-radius: 10px;
-  padding: 20px 32px;
-  color: #a5b4fc;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: var(--dev-bg-solid);
+  border: 1px solid var(--dev-border-active);
+  border-radius: var(--dev-radius-lg);
+  padding: 24px 36px;
+  color: var(--dev-accent-bright);
+  font-family: var(--dev-font);
   font-size: 14px;
   font-weight: 600;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  animation: dev-capture-pulse 1.5s ease-in-out infinite;
+  box-shadow: var(--dev-shadow-lg);
+  animation: dev-capture-pulse 2s ease-in-out infinite;
 }
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
 
 @keyframes dev-capture-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.75; }
+}
+
+@keyframes dev-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dev-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* ─── Mobile Responsive ──────────────────────────────────────────────────── */
@@ -527,7 +740,7 @@
   .dev-toolbar-dropdown {
     display: block;
     position: fixed;
-    top: 54px;
+    top: 56px;
     right: 12px;
     z-index: 99998;
   }
@@ -535,13 +748,15 @@
   .dev-toolbar-dropdown-inner {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    background: rgba(15, 15, 25, 0.95);
-    border: 1px solid rgba(99, 102, 241, 0.4);
-    border-radius: 8px;
-    padding: 8px;
-    backdrop-filter: blur(12px);
+    gap: 4px;
+    background: var(--dev-bg-solid);
+    border: 1px solid var(--dev-border-active);
+    border-radius: var(--dev-radius-lg);
+    padding: 6px;
+    backdrop-filter: var(--dev-blur);
+    -webkit-backdrop-filter: var(--dev-blur);
     min-width: 160px;
+    box-shadow: var(--dev-shadow-lg);
   }
 
   .dev-toolbar-dropdown-inner .dev-toolbar-btn {
@@ -574,9 +789,9 @@
 
   /* Larger touch targets for checkboxes */
   .dev-checkbox {
-    padding: 8px 6px;
+    padding: 8px;
     min-height: 44px;
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .dev-checkbox input[type='checkbox'] {
@@ -584,10 +799,17 @@
     height: 20px;
   }
 
+  .dev-checkbox input[type='checkbox']:checked::after {
+    left: 5.5px;
+    top: 2px;
+    width: 5px;
+    height: 9px;
+  }
+
   /* Textarea: larger on mobile */
   .dev-note-input {
     font-size: 14px;
-    padding: 10px;
+    padding: 12px;
     min-height: 80px;
   }
 
@@ -613,7 +835,7 @@
   .dev-preview-panel {
     width: 96%;
     max-height: 85vh;
-    border-radius: 8px;
+    border-radius: var(--dev-radius);
   }
 
   .dev-preview-content {
@@ -627,7 +849,7 @@
   }
 
   .dev-preview-header button {
-    font-size: 24px;
+    font-size: 22px;
     min-width: 44px;
     min-height: 44px;
     display: flex;
@@ -640,11 +862,11 @@
 
 @media (min-width: 641px) and (max-width: 900px) {
   .dev-panel-controls {
-    max-width: 360px;
+    max-width: 340px;
   }
 
   .dev-panel-id {
-    max-width: 120px;
+    max-width: 110px;
     overflow: hidden;
     text-overflow: ellipsis;
   }

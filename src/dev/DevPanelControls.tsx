@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useDevMode } from './DevModeContext'
-import type { PanelActions } from './types'
 
 interface DevPanelControlsProps {
   panelIndex: number
@@ -19,57 +18,98 @@ export default function DevPanelControls({
 
   const existing = dev.panelNotes.get(panelIndex)
   const note = existing?.note ?? ''
-  const actions = existing?.actions ?? {
-    delete: false,
-    regenerate: false,
-    addBackground: false,
-  }
+  const actions = existing?.actions ?? { delete: false, background: false }
+  const hasExistingBackground = existing?.hasExistingBackground ?? false
+  const backgroundPrompt = existing?.backgroundPrompt ?? ''
 
-  const hasContent =
-    note.trim() || actions.delete || actions.regenerate || actions.addBackground
+  const isDeleting = actions.delete
+  const hasContent = note.trim() || isDeleting || actions.background
+
+  const backgroundLabel = hasExistingBackground
+    ? 'Regenerate background'
+    : 'Add animated background'
 
   return (
-    <div className={`dev-panel-controls ${expanded ? 'dev-panel-controls--expanded' : ''}`}>
+    <div
+      className={`dev-panel-controls ${expanded ? 'dev-panel-controls--expanded' : ''}`}
+    >
       <button
         className={`dev-panel-header ${hasContent ? 'dev-panel-header--has-content' : ''}`}
         onClick={() => setExpanded(!expanded)}
       >
         <span className="dev-panel-index">#{panelIndex + 1}</span>
-        <span className="dev-panel-id" aria-label={panelId}>{panelId}</span>
+        <span className="dev-panel-id" aria-label={panelId}>
+          {panelId}
+        </span>
         <span className="dev-panel-title">{panelTitle}</span>
-        {hasContent && <span className="dev-panel-badge">*</span>}
-        <span className="dev-panel-chevron">{expanded ? '\u25B2' : '\u25BC'}</span>
+        {hasContent && <span className="dev-panel-badge" />}
+        <span className="dev-panel-chevron">{'\u25BC'}</span>
       </button>
 
       {expanded && (
         <div className="dev-panel-body">
           <textarea
-            className="dev-note-input"
+            className={`dev-note-input ${isDeleting ? 'dev-note-input--disabled' : ''}`}
             placeholder="Notes for changes to this panel..."
             value={note}
-            onChange={(e) => dev.setPanelNote(panelIndex, panelId, e.target.value)}
+            onChange={(e) =>
+              dev.setPanelNote(panelIndex, panelId, e.target.value)
+            }
             rows={3}
+            disabled={isDeleting}
           />
           <div className="dev-actions">
-            {(
-              [
-                ['delete', 'Delete this panel'],
-                ['regenerate', 'Regenerate panel'],
-                ['addBackground', 'Add animated background'],
-              ] as [keyof PanelActions, string][]
-            ).map(([key, label]) => (
-              <label key={key} className={`dev-checkbox ${actions[key] ? 'dev-checkbox--checked' : ''}`}>
-                <input
-                  type="checkbox"
-                  checked={actions[key]}
-                  onChange={(e) =>
-                    dev.setPanelAction(panelIndex, panelId, key, e.target.checked)
-                  }
-                />
-                {label}
-              </label>
-            ))}
+            <label
+              className={`dev-checkbox ${isDeleting ? 'dev-checkbox--checked dev-checkbox--danger' : ''}`}
+            >
+              <input
+                type="checkbox"
+                checked={isDeleting}
+                onChange={(e) =>
+                  dev.setPanelAction(
+                    panelIndex,
+                    panelId,
+                    'delete',
+                    e.target.checked,
+                  )
+                }
+              />
+              Delete this panel
+            </label>
+
+            <label
+              className={`dev-checkbox ${actions.background ? 'dev-checkbox--checked' : ''} ${isDeleting ? 'dev-checkbox--disabled' : ''}`}
+            >
+              <input
+                type="checkbox"
+                checked={actions.background}
+                disabled={isDeleting}
+                onChange={(e) =>
+                  dev.setPanelAction(
+                    panelIndex,
+                    panelId,
+                    'background',
+                    e.target.checked,
+                  )
+                }
+              />
+              {backgroundLabel}
+            </label>
           </div>
+
+          {actions.background && !isDeleting && (
+            <div className="dev-bg-prompt">
+              <textarea
+                className="dev-note-input"
+                placeholder="Describe the background (mood, imagery, colors)..."
+                value={backgroundPrompt}
+                onChange={(e) =>
+                  dev.setBackgroundPrompt(panelIndex, panelId, e.target.value)
+                }
+                rows={2}
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
