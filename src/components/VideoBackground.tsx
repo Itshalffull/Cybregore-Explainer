@@ -1,9 +1,19 @@
 import { useState, useRef, useEffect } from 'react'
+import { lerpMulti } from '../utils/animation'
 
 interface VideoBackgroundProps {
   videoSrc?: string
   imageFallback?: string
   opacity?: number
+  /** When provided, enables native audio from the video with scroll-driven volume.
+   *  Without this, video stays muted (backwards compatible). */
+  progress?: number
+  /** Peak volume for native video audio (0-1, default 0.3) */
+  maxVolume?: number
+  /** Progress value where audio fade-in completes (default 0.1) */
+  fadeInEnd?: number
+  /** Progress value where audio fade-out begins (default 0.8) */
+  fadeOutStart?: number
 }
 
 /**
@@ -29,10 +39,23 @@ function getMobileVideoSrc(src: string): string | undefined {
 export default function VideoBackground({
   videoSrc,
   imageFallback,
-  opacity = 0.3
+  opacity = 0.3,
+  progress,
+  maxVolume = 0.3,
+  fadeInEnd = 0.1,
+  fadeOutStart = 0.8,
 }: VideoBackgroundProps) {
   const [videoReady, setVideoReady] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const hasInteractedRef = useRef(false)
+
+  // Native audio enabled when progress prop is provided
+  const hasNativeAudio = progress !== undefined
+
+  // Calculate volume from scroll progress (same curve as AudioBackground)
+  const volume = hasNativeAudio
+    ? lerpMulti(progress, [0, fadeInEnd, fadeOutStart, 1], [0, maxVolume, maxVolume, 0])
+    : 0
 
   // If no video source, try image fallback, otherwise return null
   if (!videoSrc && !imageFallback) return null
@@ -41,6 +64,33 @@ export default function VideoBackground({
   useEffect(() => {
     setVideoReady(false)
   }, [videoSrc])
+
+  // Handle native audio volume from video element
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video || !hasNativeAudio) return
+
+    video.volume = Math.max(0, Math.min(1, volume))
+
+    // Un-mute and start playing audio on first scroll
+    if (volume > 0 && !hasInteractedRef.current) {
+      hasInteractedRef.current = true
+      video.muted = false
+      // Need to re-trigger play after un-muting
+      video.play().catch(() => {
+        // Autoplay without muted blocked — fall back to muted
+        video.muted = true
+        hasInteractedRef.current = false
+      })
+    }
+
+    // Re-mute when fully silent to avoid browser resource usage
+    if (volume <= 0 && hasInteractedRef.current) {
+      video.muted = true
+    } else if (volume > 0 && video.muted && hasInteractedRef.current) {
+      video.muted = false
+    }
+  }, [volume, hasNativeAudio])
 
   const handleCanPlay = () => {
     // Video is loaded and ready to play - fade it in

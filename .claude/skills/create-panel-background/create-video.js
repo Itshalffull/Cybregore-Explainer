@@ -20,6 +20,8 @@
  *   --duration <seconds>  Video duration (default: 5, max: 8)
  *   --veo2                Use Veo 2.0 instead of Veo 3.1 (no native loop support)
  *   --no-style            Don't apply the animation style prefix (use raw prompt)
+ *   --no-audio            Don't include ambient sound cues in the prompt (Veo 3.1 only)
+ *   --audio-description   Custom audio description (overrides auto-generated ambient cues)
  */
 
 import fs from 'fs';
@@ -70,6 +72,22 @@ if (noStyleIndex !== -1) {
   args.splice(noStyleIndex, 1);
 }
 
+// Check for --no-audio flag (Veo 3.1 generates native audio by default)
+let includeAudio = true;
+const noAudioIndex = args.indexOf('--no-audio');
+if (noAudioIndex !== -1) {
+  includeAudio = false;
+  args.splice(noAudioIndex, 1);
+}
+
+// Check for --audio-description flag (custom audio cues)
+let customAudioDescription = null;
+const audioDescIndex = args.indexOf('--audio-description');
+if (audioDescIndex !== -1 && args[audioDescIndex + 1]) {
+  customAudioDescription = args[audioDescIndex + 1];
+  args.splice(audioDescIndex, 2);
+}
+
 // Check for --output-dir flag
 let outputDir = null;
 const outputDirIndex = args.indexOf('--output-dir');
@@ -93,10 +111,12 @@ Arguments:
   animation-description Description of the animation/motion to apply
 
 Options:
-  --duration <seconds>  Video duration in seconds (default: 5, max: 8)
-  --veo2                Use Veo 2.0 instead of Veo 3.1 (uses FFmpeg for seamless loop)
-  --no-style            Don't apply animation style prefix (use raw prompt)
-  --output-dir <path>   Directory to save video (default: public/assets/videos/)
+  --duration <seconds>        Video duration in seconds (default: 5, max: 8)
+  --veo2                      Use Veo 2.0 instead of Veo 3.1 (uses FFmpeg for seamless loop)
+  --no-style                  Don't apply animation style prefix (use raw prompt)
+  --no-audio                  Don't include ambient sound cues (Veo 3.1 only, audio is on by default)
+  --audio-description "<desc>" Custom audio description (overrides auto-generated ambient cues)
+  --output-dir <path>         Directory to save video (default: public/assets/videos/)
 
 Environment Variables:
   VEO_API_KEY  Your Google AI API key (required)
@@ -105,6 +125,8 @@ Examples:
   node scripts/create-video.js forest.png forest-loop.mp4 "Gentle wind, leaves falling"
   node scripts/create-video.js portrait.png portrait-loop.mp4 "Subtle breathing" --duration 8
   node scripts/create-video.js test.png test.mp4 "Simple motion" --veo2
+  node scripts/create-video.js forest.png forest-loop.mp4 "Wind through trees" --audio-description "Soft wind with distant bird calls"
+  node scripts/create-video.js data.png data-loop.mp4 "Particles flowing" --no-audio
 `);
   process.exit(1);
 }
@@ -119,6 +141,9 @@ if (!VEO_API_KEY) {
 
 // Animation style prefix - applied by default
 const ANIMATION_STYLE = `Subtle gentle movement, slow meditative pace, seamless loop, soft organic motion`;
+
+// Ambient audio style prefix - appended to Veo 3.1 prompts by default
+const AMBIENT_AUDIO_STYLE = `Subtle ambient background sound, quiet atmospheric texture, gentle and non-intrusive, meditative undertone, soft continuous drone`;
 
 // Resolve source image path
 function resolveImagePath(imagePath) {
@@ -264,16 +289,26 @@ async function pollOperation(operationName, outputPath) {
   return { success: false, error: 'Timeout waiting for video generation' };
 }
 
-async function generateVideoVeo31(imagePath, outputFilename, prompt, videoDuration, useStyle) {
+async function generateVideoVeo31(imagePath, outputFilename, prompt, videoDuration, useStyle, withAudio, audioDesc) {
   // Apply animation style prefix if enabled
-  const finalPrompt = useStyle ? `${ANIMATION_STYLE}. ${prompt}` : prompt;
+  let finalPrompt = useStyle ? `${ANIMATION_STYLE}. ${prompt}` : prompt;
+
+  // Append ambient audio cues for Veo 3.1 native audio generation
+  if (withAudio) {
+    if (audioDesc) {
+      finalPrompt += `. Sound: ${audioDesc}`;
+    } else {
+      finalPrompt += `. Sound: ${AMBIENT_AUDIO_STYLE}`;
+    }
+  }
 
   console.log(`\n=== Veo 3.1 (Native Seamless Loop) ===`);
   console.log(`Source: ${imagePath}`);
   console.log(`Output: ${outputFilename}`);
   console.log(`Duration: ${videoDuration}s`);
   console.log(`Style: ${useStyle ? 'Meditative (default)' : 'None (raw prompt)'}`);
-  console.log(`Animation: ${finalPrompt.substring(0, 100)}...`);
+  console.log(`Audio: ${withAudio ? (audioDesc ? 'Custom' : 'Ambient (default)') : 'Disabled'}`);
+  console.log(`Animation: ${finalPrompt.substring(0, 150)}...`);
   console.log(`Using same image for first AND last frame for seamless loop`);
 
   // Check if source image exists
@@ -288,6 +323,7 @@ async function generateVideoVeo31(imagePath, outputFilename, prompt, videoDurati
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/veo-3.1-generate-preview:predictLongRunning?key=${VEO_API_KEY}`;
 
   // Request body with image as BOTH first frame and last frame for seamless loop
+  // Uses inlineData format per Veo 3.1 REST API docs
   const requestBody = {
     instances: [{
       prompt: finalPrompt,
@@ -300,10 +336,12 @@ async function generateVideoVeo31(imagePath, outputFilename, prompt, videoDurati
       aspectRatio: "16:9",
       sampleCount: 1,
       durationSeconds: videoDuration,
-      // Use same image as last frame for native seamless loop
+      // Use same image as last frame for native seamless loop (Veo 3.1 interpolation)
       lastFrame: {
-        bytesBase64Encoded: imageBase64,
-        mimeType: mimeType
+        inlineData: {
+          mimeType: mimeType,
+          data: imageBase64
+        }
       }
     }
   };
@@ -430,14 +468,22 @@ async function main() {
 
     if (useVeo2) {
       // Veo 2.0: generate video, then use FFmpeg for seamless loop
+      // Note: Veo 2.0 does not support native audio generation
+      if (includeAudio) {
+        console.log(`Note: Veo 2.0 does not support native audio. Use Veo 3.1 (default) or create-sfx.js for audio.`);
+      }
       outputPath = await generateVideoVeo2(imagePath, outputFilename, animationDescription, duration, applyStyle);
       console.log(`\nSaved: ${outputPath}`);
       makeVideoSeamlessLoop(outputPath);
     } else {
       // Veo 3.1: native seamless loop using same image for first and last frame
-      outputPath = await generateVideoVeo31(imagePath, outputFilename, animationDescription, duration, applyStyle);
+      // Also generates native audio when audio cues are included in the prompt
+      outputPath = await generateVideoVeo31(imagePath, outputFilename, animationDescription, duration, applyStyle, includeAudio, customAudioDescription);
       console.log(`\nSaved: ${outputPath}`);
       console.log(`(Native seamless loop - no FFmpeg needed)`);
+      if (includeAudio) {
+        console.log(`(Includes native audio from Veo 3.1)`);
+      }
     }
 
     console.log('\nDone!');

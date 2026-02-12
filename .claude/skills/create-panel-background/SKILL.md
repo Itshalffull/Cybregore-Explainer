@@ -65,7 +65,9 @@ Animate the image with the `create-video.js` script (included in this skill):
 node .claude/skills/create-panel-background/create-video.js <image-path> <video>.mp4 "<animation-description>" --output-dir public/assets/videos
 ```
 
-Uses Google Veo 2.0 with FFmpeg for seamless loops. Animation style prefix applied automatically.
+Uses Google Veo 3.1 with native seamless loops (same image for first and last frame). Animation style prefix applied automatically.
+
+**Veo 3.1 generates native audio by default.** Ambient sound cues are appended to the prompt so the video comes with synchronized background audio built in. This often eliminates the need for a separate SFX generation step.
 
 Focus your animation description on:
 - Type of motion (breathing, floating, pulsing, drifting, flickering)
@@ -77,13 +79,25 @@ Focus your animation description on:
 node .claude/skills/create-panel-background/create-video.js meditation.png meditation-loop.mp4 "Gentle breathing movement of the figure, soft light pulsing slowly, particles floating upward"
 ```
 
+**With custom audio:**
+```bash
+node .claude/skills/create-panel-background/create-video.js temple.png temple-loop.mp4 "Candle flames flickering gently" --audio-description "Distant temple bells with soft wind through stone corridors"
+```
+
 **Options:**
 - `--duration 8` - Longer video (default: 5s, max: 8s)
-- `--veo2` - Use Veo 2.0 (recommended, Veo 3.1 lastFrame not yet supported)
+- `--veo2` - Use Veo 2.0 instead (FFmpeg for seamless loop, no native audio)
 - `--no-style` - Skip animation style prefix
+- `--no-audio` - Don't include ambient sound cues in the prompt
+- `--audio-description "<desc>"` - Custom audio description (overrides default ambient cues)
 - `--output-dir <path>` - Directory to save video (required)
 
-## Step 3: Generate Background SFX (Optional)
+## Step 3: Generate Background SFX (Optional — often unnecessary with Veo 3.1)
+
+Since Veo 3.1 now generates native audio with video, you may not need this step. Use `create-sfx.js` when you need:
+- More control over the audio independently from the video
+- Audio for panels that don't have video backgrounds
+- A different audio aesthetic than what Veo 3.1 produces
 
 Use the `create-sfx.js` script (included in this skill) to generate subtle ambient sound effects via ElevenLabs:
 
@@ -120,14 +134,47 @@ This ensures all generated SFX are suitable as scroll-driven background atmosphe
 
 ## Step 4: Add to Panel Component
 
-Import VideoBackground and optionally AudioBackground, then add to the panel:
+### Option A: Video with native audio (Veo 3.1 — recommended)
+
+When the video was generated with Veo 3.1 native audio, just pass `progress` to `VideoBackground`. No separate AudioBackground needed.
+
+```tsx
+import VideoBackground from '../../components/VideoBackground'
+
+export default function PanelExample({ progress }: PanelExampleProps) {
+  const bgOpacity = lerp(progress, 0, 0.1, 0, 0.4)
+
+  return (
+    <section className="panel" style={{
+      position: 'relative',
+      minHeight: '100dvh',
+      background: 'var(--deep-forest)',
+      overflow: 'hidden',
+    }}>
+      <VideoBackground
+        videoSrc="/assets/videos/your-video-loop.mp4"
+        imageFallback="/assets/images/your-image.png"
+        opacity={bgOpacity}
+        progress={progress}
+      />
+
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {/* Panel content */}
+      </div>
+    </section>
+  )
+}
+```
+
+### Option B: Separate audio file (ElevenLabs or silent video)
+
+When using a separate SFX file or a video generated with `--no-audio`:
 
 ```tsx
 import VideoBackground from '../../components/VideoBackground'
 import AudioBackground from '../../components/AudioBackground'
 
 export default function PanelExample({ progress }: PanelExampleProps) {
-  // Control opacity based on scroll progress (optional)
   const bgOpacity = lerp(progress, 0, 0.1, 0, 0.4)
 
   return (
@@ -148,7 +195,6 @@ export default function PanelExample({ progress }: PanelExampleProps) {
         progress={progress}
       />
 
-      {/* Content must have position: relative and zIndex: 1 */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Panel content */}
       </div>
@@ -164,6 +210,10 @@ export default function PanelExample({ progress }: PanelExampleProps) {
 | `videoSrc` | string | - | Path to video file |
 | `imageFallback` | string | - | Path to fallback image (shown while video loads) |
 | `opacity` | number | 0.3 | Background opacity (0-1) |
+| `progress` | number | - | Scroll progress (0-1). **Enables native audio** from the video with scroll-driven volume fade. Without this, video stays muted. |
+| `maxVolume` | number | 0.3 | Peak volume for native video audio (0-1) |
+| `fadeInEnd` | number | 0.1 | Progress value where audio fade-in completes |
+| `fadeOutStart` | number | 0.8 | Progress value where audio fade-out begins |
 
 ### AudioBackground Props
 
@@ -175,7 +225,7 @@ export default function PanelExample({ progress }: PanelExampleProps) {
 | `fadeInEnd` | number | 0.1 | Progress value where fade-in completes |
 | `fadeOutStart` | number | 0.8 | Progress value where fade-out begins |
 
-**Audio volume curve:** Silent at progress 0 → fades in to `maxVolume` by `fadeInEnd` → holds at `maxVolume` → fades out starting at `fadeOutStart` → silent at progress 1. Audio pauses when silent to save resources.
+**Audio volume curve (both components):** Silent at progress 0 → fades in to `maxVolume` by `fadeInEnd` → holds at `maxVolume` → fades out starting at `fadeOutStart` → silent at progress 1. Audio mutes/pauses when silent to save resources.
 
 ### Tips
 
@@ -185,6 +235,7 @@ export default function PanelExample({ progress }: PanelExampleProps) {
 4. **Content needs zIndex: 1** - Ensures content appears above background
 5. **Keep maxVolume low (0.2-0.4)** - SFX should be felt more than heard
 6. **Audio requires user interaction** - Browser autoplay policies mean audio starts on first scroll, not on page load
+7. **Don't combine both audio sources** - Use either `progress` on VideoBackground (native audio) OR a separate AudioBackground, not both
 
 ## Environment Variables Required
 
@@ -203,13 +254,13 @@ Creating a background with ambient audio for a "digital overwhelm" panel:
 # 1. Generate the image (Nano Banana Pro)
 node .claude/skills/create-panel-background/create-image.js overwhelm.png "Abstract representation of information overload, streams of data fragments overwhelming a small human figure, chaotic but beautiful" --output-dir public/assets/images
 
-# 2. Generate the seamless video
-node .claude/skills/create-panel-background/create-video.js public/assets/images/overwhelm.png overwhelm-loop.mp4 "Data streams flowing rapidly, figure remains still while chaos swirls, particles multiplying and dissolving" --output-dir public/assets/videos --veo2
+# 2. Generate the seamless video WITH native audio (Veo 3.1 default)
+node .claude/skills/create-panel-background/create-video.js public/assets/images/overwhelm.png overwhelm-loop.mp4 "Data streams flowing rapidly, figure remains still while chaos swirls, particles multiplying and dissolving" --audio-description "Low digital static with faint notification chirps and electronic drone" --output-dir public/assets/videos
 
-# 3. Generate background SFX
+# 3. (Optional) Generate separate SFX if you need more audio control
 node .claude/skills/create-panel-background/create-sfx.js overwhelm-ambience.mp3 "Low digital static with faint notification chirps layered beneath a deep electronic drone" --output-dir public/assets/audio
 
-# 4. Add VideoBackground + AudioBackground to your panel component (see Step 4)
+# 4. Add VideoBackground (+ optional AudioBackground) to your panel component (see Step 4)
 ```
 
 ## Using with Arguments
