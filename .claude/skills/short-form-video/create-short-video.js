@@ -415,100 +415,62 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
     console.log(`  ${step.panelId}: scroll ${step.scrollDuration.toFixed(1)}s + pause ${step.pauseDuration.toFixed(1)}s`);
   }
 
-  // Start CDP screencast recording
-  const client = await page.createCDPSession();
+  // Build continuous scroll curve — one smooth motion from top to bottom
+  const TARGET_FPS = 30;
+  const curve = buildContinuousScrollCurve(timeline, TARGET_FPS);
+  console.log(`\nContinuous scroll: ${curve.totalFrames} frames at ${TARGET_FPS} fps (${curve.totalDuration.toFixed(1)}s)`);
 
-  // Use Page.startScreencast for frame-by-frame capture
-  const frames = [];
-  let frameCount = 0;
+  // Prepare frames directory
+  const framesDir = path.join(projectRoot, '.tmp-frames');
+  if (fs.existsSync(framesDir)) fs.rmSync(framesDir, { recursive: true, force: true });
+  fs.mkdirSync(framesDir, { recursive: true });
 
-  await client.send('Page.startScreencast', {
-    format: 'jpeg',
-    quality: 90,
-    maxWidth: viewport.width,
-    maxHeight: viewport.height,
-    everyNthFrame: 1,
-  });
-
-  client.on('Page.screencastFrame', async (event) => {
-    frames.push({
-      data: event.data,
-      timestamp: event.metadata.timestamp,
-    });
-    frameCount++;
-
-    // Acknowledge frame to get next one
-    await client.send('Page.screencastFrameAck', {
-      sessionId: event.sessionId,
-    });
-  });
-
-  // Execute scroll timeline
-  console.log('\nStarting scroll recording...');
+  // Record: scroll continuously and take screenshots at fixed intervals
+  // Using page.screenshot() instead of CDP screencast for reliable frame capture
+  // that correctly renders video backgrounds, CSS animations, and all effects
+  console.log('\nStarting continuous scroll recording...');
   const recordingStartTime = Date.now();
 
-  for (const step of timeline.steps) {
-    // Smooth scroll to panel position
-    const scrollDurationMs = step.scrollDuration * 1000;
-    const startScroll = step.scrollStart;
-    const endScroll = step.scrollEnd;
+  const frameInterval = 1000 / TARGET_FPS; // ms between frames
 
-    // Animate scroll over scrollDuration
-    const scrollFrames = Math.max(1, Math.floor(scrollDurationMs / 16)); // ~60fps
-    for (let i = 0; i <= scrollFrames; i++) {
-      const t = i / scrollFrames;
-      // Ease in-out cubic
-      const eased = t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      const scrollY = startScroll + (endScroll - startScroll) * eased;
+  for (let frame = 0; frame <= curve.totalFrames; frame++) {
+    const scrollY = curve.scrollPositions[frame];
 
-      await page.evaluate((y) => window.scrollTo(0, y), scrollY);
-      await sleep(16);
-    }
+    // Scroll to position — the page renders all effects at this scroll point
+    await page.evaluate((y) => window.scrollTo(0, y), scrollY);
 
-    // Pause at panel for voiceover duration
-    if (step.pauseDuration > 0) {
-      // Scroll to the "sweet spot" where content is fully visible (progress ~0.3-0.5)
-      const sweetSpotScroll = startScroll + (endScroll - startScroll) * 0.4;
-      await page.evaluate((y) => window.scrollTo(0, y), sweetSpotScroll);
-      await sleep(step.pauseDuration * 1000);
+    // Brief wait to let the browser render the frame (paint + composite)
+    // This is shorter than the old 16ms because we screenshot synchronously
+    await sleep(5);
+
+    // Capture the frame — this is a synchronous full-page render capture
+    // It correctly captures video elements, CSS animations, canvas, etc.
+    const framePath = path.join(framesDir, `frame-${String(frame).padStart(6, '0')}.jpg`);
+    await page.screenshot({
+      path: framePath,
+      type: 'jpeg',
+      quality: 92,
+    });
+
+    // Progress logging every 2 seconds worth of frames
+    if (frame % (TARGET_FPS * 2) === 0) {
+      const pct = ((frame / curve.totalFrames) * 100).toFixed(0);
+      const elapsed = ((Date.now() - recordingStartTime) / 1000).toFixed(1);
+      console.log(`  Frame ${frame}/${curve.totalFrames} (${pct}%) — scrollY: ${scrollY.toFixed(0)} — ${elapsed}s elapsed`);
     }
   }
 
   const recordingDuration = (Date.now() - recordingStartTime) / 1000;
-  console.log(`\nRecording complete: ${frameCount} frames in ${recordingDuration.toFixed(1)}s`);
+  console.log(`\nRecording complete: ${curve.totalFrames + 1} frames in ${recordingDuration.toFixed(1)}s`);
 
-  // Stop screencast
-  await client.send('Page.stopScreencast');
-
-  // Write frames to a temporary directory and use ffmpeg to assemble
-  const framesDir = path.join(projectRoot, '.tmp-frames');
-  if (!fs.existsSync(framesDir)) fs.mkdirSync(framesDir, { recursive: true });
-
-  console.log('Writing frames...');
-  for (let i = 0; i < frames.length; i++) {
-    const framePath = path.join(framesDir, `frame-${String(i).padStart(6, '0')}.jpg`);
-    fs.writeFileSync(framePath, Buffer.from(frames[i].data, 'base64'));
-  }
-
-  // Calculate actual framerate from timestamps
-  let fps = 30; // default
-  if (frames.length > 1) {
-    const totalTime = frames[frames.length - 1].timestamp - frames[0].timestamp;
-    if (totalTime > 0) {
-      fps = Math.min(60, Math.max(15, (frames.length - 1) / totalTime));
-    }
-  }
-
-  // Assemble frames into video
-  console.log(`Assembling video at ${fps.toFixed(1)} fps...`);
+  // Assemble frames into video at the exact target FPS
+  console.log(`Assembling video at ${TARGET_FPS} fps...`);
   const outputDir = path.dirname(rawVideoPath);
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
   await ffmpeg([
     '-y',
-    '-framerate', fps.toFixed(2),
+    '-framerate', String(TARGET_FPS),
     '-i', path.join(framesDir, 'frame-%06d.jpg'),
     '-c:v', 'libx264',
     '-pix_fmt', 'yuv420p',
@@ -523,7 +485,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
   await browser.close();
 
   console.log(`Raw video: ${rawVideoPath}`);
-  return { fps, duration: recordingDuration, frameCount };
+  return { fps: TARGET_FPS, duration: curve.totalDuration, frameCount: curve.totalFrames + 1 };
 }
 
 // ── Build scroll timeline ───────────────────────────────────────────────────
@@ -573,6 +535,74 @@ function buildScrollTimeline(panels, voiceoverManifest, viewport) {
   );
 
   return { steps, totalDuration };
+}
+
+// ── Build continuous scroll curve ────────────────────────────────────────────
+// Instead of discrete scroll-then-pause steps, build a single continuous
+// mapping from time → scrollY. The scroll *never stops*, it just slows way
+// down during voiceover pauses and speeds up between panels.
+
+function buildContinuousScrollCurve(timeline, fps) {
+  const { steps, totalDuration } = timeline;
+  const totalFrames = Math.ceil(totalDuration * fps);
+  const scrollPositions = new Float64Array(totalFrames + 1);
+
+  // Build time → scrollY keyframes from the step timeline
+  // Each step has: scrollDuration (moving fast) + pauseDuration (moving slow)
+  // During "pause", we still creep forward slightly so backgrounds keep rendering
+  const keyframes = []; // { time, scrollY }
+  let t = 0;
+
+  for (const step of steps) {
+    // Start of scroll into this panel
+    keyframes.push({ time: t, scrollY: step.scrollStart });
+
+    // End of fast scroll — reach ~40% into the panel (the "sweet spot")
+    const sweetSpotY = step.scrollStart + (step.scrollEnd - step.scrollStart) * 0.35;
+    t += step.scrollDuration;
+    keyframes.push({ time: t, scrollY: sweetSpotY });
+
+    // During the "pause", creep from 35% to 65% through the panel
+    // This keeps the scroll moving so animations/videos stay alive
+    const creepEndY = step.scrollStart + (step.scrollEnd - step.scrollStart) * 0.65;
+    t += step.pauseDuration;
+    keyframes.push({ time: t, scrollY: creepEndY });
+  }
+
+  // Add final keyframe at the last panel's end
+  if (steps.length > 0) {
+    const lastStep = steps[steps.length - 1];
+    keyframes.push({ time: t + 0.5, scrollY: lastStep.scrollEnd });
+  }
+
+  // Now interpolate the keyframes into per-frame scroll positions using
+  // smooth hermite interpolation for buttery motion
+  for (let frame = 0; frame <= totalFrames; frame++) {
+    const frameTime = (frame / totalFrames) * totalDuration;
+
+    // Find surrounding keyframes
+    let k0 = 0;
+    for (let k = 0; k < keyframes.length - 1; k++) {
+      if (keyframes[k + 1].time >= frameTime) {
+        k0 = k;
+        break;
+      }
+      k0 = k;
+    }
+    const k1 = Math.min(k0 + 1, keyframes.length - 1);
+
+    if (k0 === k1 || keyframes[k1].time === keyframes[k0].time) {
+      scrollPositions[frame] = keyframes[k0].scrollY;
+    } else {
+      // Normalized time within this segment
+      const segT = (frameTime - keyframes[k0].time) / (keyframes[k1].time - keyframes[k0].time);
+      // Smoothstep for buttery easing
+      const eased = segT * segT * (3 - 2 * segT);
+      scrollPositions[frame] = keyframes[k0].scrollY + (keyframes[k1].scrollY - keyframes[k0].scrollY) * eased;
+    }
+  }
+
+  return { scrollPositions, totalFrames, totalDuration };
 }
 
 // ── Audio Mixing with FFmpeg ────────────────────────────────────────────────
