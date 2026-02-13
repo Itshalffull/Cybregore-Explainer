@@ -34,6 +34,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { execSync, spawn } from 'child_process';
 import { loadEnv } from '../../../load-env.js';
+import { loadMetadataPanels } from './parse-metadata.js';
 
 loadEnv();
 
@@ -198,99 +199,10 @@ function getMediaDuration(filePath) {
   }
 }
 
-// ── Load metadata ───────────────────────────────────────────────────────────
+// ── Load metadata (shared parser) ───────────────────────────────────────────
 
 function loadMetadata() {
-  const patterns = [
-    path.join(projectRoot, 'src', 'explainers', `${slug}-metadata.ts`),
-    path.join(projectRoot, 'src', 'explainers', slug, 'metadata.ts'),
-  ];
-
-  for (const metaPath of patterns) {
-    if (fs.existsSync(metaPath)) {
-      console.log(`Metadata: ${metaPath}`);
-      const content = fs.readFileSync(metaPath, 'utf8');
-      return parseMetadataPanels(content);
-    }
-  }
-
-  console.error(`Error: Could not find metadata for "${slug}".`);
-  process.exit(1);
-}
-
-function parseMetadataPanels(content) {
-  const panels = [];
-  const panelsBlock = extractBracketBlock(content, 'panels');
-  if (!panelsBlock) {
-    console.error('Error: No panels array found in metadata.');
-    process.exit(1);
-  }
-
-  // Extract each top-level { ... } object from the panels array
-  const panelStrings = extractTopLevelObjects(panelsBlock);
-
-  for (const s of panelStrings) {
-    const id = extractMetaField(s, 'id');
-    const title = extractMetaField(s, 'title');
-    const message = extractMetaField(s, 'message');
-    const voiceover = extractMetaField(s, 'voiceover');
-    const keyPhrases = extractMetaArrayField(s, 'keyPhrases');
-
-    if (id) panels.push({ id, title, message, voiceover, keyPhrases });
-  }
-
-  return panels;
-}
-
-/** Find `key: [...]` in source and return the content between the outer brackets, handling nesting. */
-function extractBracketBlock(source, key) {
-  const re = new RegExp(`${key}\\s*:\\s*\\[`);
-  const m = source.match(re);
-  if (!m) return null;
-
-  let depth = 1;
-  const startIdx = m.index + m[0].length;
-  for (let i = startIdx; i < source.length; i++) {
-    if (source[i] === '[') depth++;
-    else if (source[i] === ']') depth--;
-    if (depth === 0) return source.slice(startIdx, i);
-  }
-  return null;
-}
-
-/** Extract all top-level `{ ... }` objects from a string, handling nested braces. */
-function extractTopLevelObjects(str) {
-  const objects = [];
-  let i = 0;
-  while (i < str.length) {
-    if (str[i] === '{') {
-      let depth = 1;
-      const start = i;
-      i++;
-      while (i < str.length && depth > 0) {
-        if (str[i] === '{') depth++;
-        else if (str[i] === '}') depth--;
-        i++;
-      }
-      objects.push(str.slice(start, i));
-    } else {
-      i++;
-    }
-  }
-  return objects;
-}
-
-function extractMetaField(str, fieldName) {
-  const re = new RegExp(`${fieldName}\\s*:\\s*['"\`]([\\s\\S]*?)['"\`]\\s*(?:,|\\})`);
-  const m = str.match(re);
-  return m ? m[1].replace(/\\n/g, '\n').replace(/\\'/g, "'") : null;
-}
-
-function extractMetaArrayField(str, fieldName) {
-  const re = new RegExp(`${fieldName}\\s*:\\s*\\[([^\\]]*?)\\]`);
-  const m = str.match(re);
-  if (!m) return [];
-  return m[1].split(',').map(s => s.trim().replace(/^['"`]|['"`]$/g, '')).filter(Boolean);
+  return loadMetadataPanels(slug, projectRoot);
 }
 
 // ── Find panel SFX files ────────────────────────────────────────────────────

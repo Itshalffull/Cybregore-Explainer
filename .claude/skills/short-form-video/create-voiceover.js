@@ -36,6 +36,7 @@ import path from 'path';
 import https from 'https';
 import { fileURLToPath } from 'url';
 import { loadEnv } from '../../../load-env.js';
+import { loadMetadataPanels } from './parse-metadata.js';
 
 loadEnv();
 
@@ -101,81 +102,11 @@ if (!ELEVENLABS_API_KEY) {
   process.exit(1);
 }
 
-// ── Load metadata ───────────────────────────────────────────────────────────
+// ── Load metadata (shared parser) ───────────────────────────────────────────
 
 async function loadMetadata() {
-  // Try common metadata file patterns
   const projectRoot = path.resolve(__dirname, '..', '..', '..');
-  const patterns = [
-    path.join(projectRoot, 'src', 'explainers', `${slug}-metadata.ts`),
-    path.join(projectRoot, 'src', 'explainers', `${slug}`, `metadata.ts`),
-  ];
-
-  for (const metaPath of patterns) {
-    if (fs.existsSync(metaPath)) {
-      console.log(`Reading metadata: ${metaPath}`);
-      const content = fs.readFileSync(metaPath, 'utf8');
-      return parseMetadata(content, metaPath);
-    }
-  }
-
-  console.error(`Error: Could not find metadata file for slug "${slug}".`);
-  console.error('Searched:', patterns.join('\n  '));
-  process.exit(1);
-}
-
-/**
- * Parse TypeScript metadata file to extract panels array.
- * This is a lightweight parser — not a full TS compiler.
- */
-function parseMetadata(content) {
-  const panels = [];
-
-  // Match panel objects in the panels array
-  // Look for patterns like { id: 'panel-xxx', ... message: '...', ... keyPhrases: [...] }
-  const panelsMatch = content.match(/panels\s*:\s*\[([\s\S]*?)\]\s*(?:,|\})/);
-  if (!panelsMatch) {
-    console.error('Error: Could not find panels array in metadata file.');
-    process.exit(1);
-  }
-
-  const panelsBlock = panelsMatch[1];
-
-  // Split into individual panel objects
-  const panelRegex = /\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/g;
-  let match;
-  while ((match = panelRegex.exec(panelsBlock)) !== null) {
-    const panelStr = match[0];
-
-    const id = extractField(panelStr, 'id');
-    const title = extractField(panelStr, 'title');
-    const message = extractField(panelStr, 'message');
-    const voiceover = extractField(panelStr, 'voiceover');
-    const keyPhrases = extractArrayField(panelStr, 'keyPhrases');
-
-    if (id) {
-      panels.push({ id, title, message, voiceover, keyPhrases });
-    }
-  }
-
-  return panels;
-}
-
-function extractField(str, fieldName) {
-  // Match field: 'value' or field: "value" (handles multi-line with template literals)
-  const re = new RegExp(`${fieldName}\\s*:\\s*['"\`]([\\s\\S]*?)['"\`]\\s*(?:,|\\})`);
-  const m = str.match(re);
-  return m ? m[1].replace(/\\n/g, '\n').replace(/\\'/g, "'").replace(/\\"/g, '"') : null;
-}
-
-function extractArrayField(str, fieldName) {
-  const re = new RegExp(`${fieldName}\\s*:\\s*\\[([^\\]]*?)\\]`);
-  const m = str.match(re);
-  if (!m) return [];
-  return m[1]
-    .split(',')
-    .map(s => s.trim().replace(/^['"`]|['"`]$/g, ''))
-    .filter(Boolean);
+  return loadMetadataPanels(slug, projectRoot);
 }
 
 // ── Extract visible text from panel TSX component ───────────────────────────
@@ -491,4 +422,4 @@ main().catch(err => {
   process.exit(1);
 });
 
-export { generateVoiceoverText, loadMetadata };
+export { generateVoiceoverText };
