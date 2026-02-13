@@ -189,7 +189,7 @@ The dev mode toolbar includes a "Video" button that triggers this pipeline from 
 Each panel's dev controls include a voiceover section (visible when expanded):
 
 - **Textarea** — shows current voiceover text, lazy-loaded from metadata on first expand
-- **Generate** — runs voiceover refinement via `claude -p` (Claude Code CLI), no separate API key needed
+- **Generate** — invokes the `/refine-voiceover` skill via Claude Code CLI, no separate API key needed
 - **Save** — writes the voiceover text back to the metadata `.ts` file
 - **Play** — plays the existing TTS audio file (shown only if `voiceover-{panelId}.mp3` exists)
 

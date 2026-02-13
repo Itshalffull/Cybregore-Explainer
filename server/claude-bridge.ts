@@ -390,7 +390,7 @@ export default function claudeBridge(): Plugin {
         res.end('Not Found')
       })
 
-      // POST /api/voiceover/generate — run LLM refinement via Claude Code CLI
+      // POST /api/voiceover/generate — run /refine-voiceover skill via Claude Code CLI
       server.middlewares.use('/api/voiceover/generate', async (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405
@@ -402,20 +402,6 @@ export default function claudeBridge(): Plugin {
           const body = JSON.parse(await readBody(req)) as {
             slug: string
             panelId: string
-          }
-
-          const skillsDir = join(root, '.claude', 'skills', 'short-form-video')
-
-          const { loadPanelById, loadExplainerMessage } = await import(
-            /* @vite-ignore */ 'file:///' + join(skillsDir, 'parse-metadata.js').replace(/\\/g, '/')
-          )
-
-          const panel = loadPanelById(body.slug, root, body.panelId)
-          if (!panel) {
-            res.statusCode = 404
-            res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify({ error: `Panel "${body.panelId}" not found` }))
-            return
           }
 
           // Check CLI availability
@@ -431,53 +417,14 @@ export default function claudeBridge(): Plugin {
             return
           }
 
-          const explainerMessage = loadExplainerMessage(body.slug, root) || ''
+          // Use the /refine-voiceover skill via claude -p
+          const prompt =
+            `/refine-voiceover\n\n` +
+            `Explainer slug: ${body.slug}\n` +
+            `Panel ID: ${body.panelId}\n\n` +
+            `Read the panel metadata, read the panel component if it exists, ` +
+            `and return ONLY the voiceover narration text — nothing else.`
 
-          // Build raw text from metadata
-          let rawText = panel.message || ''
-          if (panel.keyPhrases?.length > 0) {
-            rawText += ' ' + panel.keyPhrases.join('. ') + '.'
-          }
-
-          // Build the prompt for Claude Code
-          const contextParts: string[] = []
-          if (explainerMessage) {
-            contextParts.push(`Explainer thesis: ${explainerMessage}`)
-          }
-          contextParts.push(`Panel: "${panel.title || panel.id}"`)
-          if (panel.narrativeRole) {
-            contextParts.push(`Role in narrative: ${panel.narrativeRole}`)
-          }
-          if (panel.message) {
-            contextParts.push(`Panel message: ${panel.message}`)
-          }
-          if (panel.keyPhrases?.length > 0) {
-            contextParts.push(`Key phrases to preserve: ${panel.keyPhrases.join(', ')}`)
-          }
-          contextParts.push(
-            `\nRaw text from the panel (may contain visual-only content, code, or formatting artifacts):\n---\n${rawText}\n---`,
-          )
-          contextParts.push(`\nWrite the voiceover narration for this panel:`)
-
-          const systemPrompt =
-            `You are a voiceover narration writer for the Dharma Media Campaign — a project that uses scroll-driven web explainers to wake people up to how technology is reshaping consciousness.\n\n` +
-            `Your job: rewrite raw panel text into natural spoken narration that a voice actor would read while the viewer scrolls through the panel.\n\n` +
-            `Rules:\n` +
-            `- Write as if speaking directly to one person ("you", never "one" or "people")\n` +
-            `- Keep it concise: 1-4 sentences. Match the amount of content the viewer sees on screen. Don't over-explain.\n` +
-            `- Remove things that don't make sense spoken aloud: arrows, bullet point markers, icon labels, chart axis labels, CSS class names, code fragments\n` +
-            `- For visual elements the viewer would see (animated charts, counters, images), add a brief spoken description like "Watch the numbers climb" or "See the network spread"\n` +
-            `- Preserve key phrases and campaign vocabulary (demons, cybregore, Moloch, hungry ghost, egregore, the sacred)\n` +
-            `- Demons are literal beings, not metaphors — never say "like a demon" or "metaphorical demon"\n` +
-            `- Bold and provocative — never academic, never hedging, never apologetic\n` +
-            `- Second person, present tense: "You scroll through feeds. You think you're choosing."\n` +
-            `- The tone should match the panel's narrative role (a "hook" is punchy; "mythology" is reverent; "evidence" is stark)\n` +
-            `- If the raw text seems garbled or contains code fragments, use the panel's message and key phrases to write the narration instead\n` +
-            `- Return ONLY the voiceover text — no labels, no quotes, no explanation`
-
-          const fullPrompt = systemPrompt + '\n\n' + contextParts.join('\n')
-
-          // Spawn claude -p and pipe the prompt via stdin
           const voiceover = await new Promise<string>((resolve, reject) => {
             const claude = spawn(
               'claude',
@@ -510,7 +457,7 @@ export default function claudeBridge(): Plugin {
 
             claude.on('error', reject)
 
-            claude.stdin.write(fullPrompt)
+            claude.stdin.write(prompt)
             claude.stdin.end()
           })
 
