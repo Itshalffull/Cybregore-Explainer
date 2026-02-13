@@ -1132,3 +1132,118 @@
     font-size: 10px;
   }
 }
+
+/* ─── Voiceover Editor ──────────────────────────────────────────────────── */
+
+.dev-voiceover-section {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--dev-border);
+}
+
+.dev-voiceover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.dev-voiceover-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dev-accent-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dev-voiceover-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.dev-voiceover-btn {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid var(--dev-border);
+  border-radius: var(--dev-radius-sm);
+  color: var(--dev-text-dim);
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: var(--dev-font);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all var(--dev-transition);
+}
+
+.dev-voiceover-btn:hover:not(:disabled) {
+  background: rgba(99, 102, 241, 0.22);
+  color: var(--dev-accent-bright);
+  border-color: var(--dev-border-hover);
+}
+
+.dev-voiceover-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.dev-voiceover-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dev-voiceover-btn--save {
+  color: var(--dev-accent);
+}
+
+.dev-voiceover-btn--save:hover:not(:disabled) {
+  color: var(--dev-accent-bright);
+}
+
+.dev-voiceover-btn--play {
+  background: rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.25);
+  color: #34d399;
+}
+
+.dev-voiceover-btn--play:hover:not(:disabled) {
+  background: rgba(52, 211, 153, 0.22);
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #6ee7b7;
+}
+
+.dev-voiceover-textarea {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.dev-voiceover-textarea:disabled {
+  opacity: 0.5;
+}
+
+.dev-voiceover-unsaved {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dev-yellow);
+  letter-spacing: 0.03em;
+}
+
+/* Mobile responsive for voiceover section */
+@media (max-width: 640px) {
+  .dev-voiceover-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .dev-voiceover-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .dev-voiceover-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+}

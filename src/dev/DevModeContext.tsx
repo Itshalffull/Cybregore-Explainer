@@ -33,6 +33,13 @@ interface DevModeContextValue {
   setSfxPrompt: (index: number, panelId: string, prompt: string) => void
   setHasExistingSfx: (index: number, value: boolean) => void
 
+  /** Voiceover management */
+  setVoiceoverText: (index: number, panelId: string, text: string) => void
+  setVoiceoverLoaded: (index: number, value: boolean) => void
+  setVoiceoverGenerating: (index: number, value: boolean) => void
+  setVoiceoverDirty: (index: number, value: boolean) => void
+  setVoiceoverAudioExists: (index: number, value: boolean) => void
+
   /** Insert requests (new panels between existing ones) */
   inserts: DevInsert[]
   addInsert: (insert: DevInsert) => void
@@ -94,6 +101,11 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
       backgroundPrompt: '',
       hasExistingSfx: false,
       sfxPrompt: '',
+      voiceoverText: '',
+      voiceoverLoaded: false,
+      voiceoverGenerating: false,
+      voiceoverDirty: false,
+      voiceoverAudioExists: false,
     }
 
   const setPanelNote = useCallback(
@@ -174,6 +186,74 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         const existing = next.get(index)
         if (existing) {
           next.set(index, { ...existing, hasExistingSfx: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
+  const setVoiceoverText = useCallback(
+    (index: number, panelId: string, text: string) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = getOrCreate(prev, index, panelId)
+        next.set(index, { ...existing, panelId, voiceoverText: text })
+        return next
+      })
+    },
+    [],
+  )
+
+  const setVoiceoverLoaded = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, voiceoverLoaded: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
+  const setVoiceoverGenerating = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, voiceoverGenerating: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
+  const setVoiceoverDirty = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, voiceoverDirty: value })
+        }
+        return next
+      })
+    },
+    [],
+  )
+
+  const setVoiceoverAudioExists = useCallback(
+    (index: number, value: boolean) => {
+      setPanelNotes((prev) => {
+        const next = new Map(prev)
+        const existing = next.get(index)
+        if (existing) {
+          next.set(index, { ...existing, voiceoverAudioExists: value })
         }
         return next
       })
@@ -271,6 +351,11 @@ export default function DevModeProvider({ children }: { children: ReactNode }) {
         setHasExistingBackground,
         setSfxPrompt,
         setHasExistingSfx,
+        setVoiceoverText,
+        setVoiceoverLoaded,
+        setVoiceoverGenerating,
+        setVoiceoverDirty,
+        setVoiceoverAudioExists,
         inserts,
         addInsert,
         updateInsert,

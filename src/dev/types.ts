@@ -19,6 +19,16 @@ export interface DevPanelNote {
   hasExistingSfx: boolean
   /** Description/prompt for the SFX */
   sfxPrompt: string
+  /** Current voiceover text (from metadata or edited by user) */
+  voiceoverText: string
+  /** Whether voiceover has been fetched from the metadata API */
+  voiceoverLoaded: boolean
+  /** Whether LLM generation is in progress */
+  voiceoverGenerating: boolean
+  /** Whether the text has been edited but not saved */
+  voiceoverDirty: boolean
+  /** Whether a voiceover audio file exists for playback */
+  voiceoverAudioExists: boolean
 }
 
 /** A request to insert a new panel at a specific position */

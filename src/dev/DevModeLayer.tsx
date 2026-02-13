@@ -26,6 +26,7 @@ export default function DevModeLayer({
       <DevOverlay
         containerRef={wrapperRef}
         panels={panels}
+        explainerId={explainerId}
       />
       <DevToolbar explainerId={explainerId} />
     </DevModeProvider>

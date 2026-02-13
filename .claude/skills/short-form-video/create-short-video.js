@@ -324,7 +324,7 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
   const timeline = buildScrollTimeline(panels, voiceoverManifest, viewport);
   console.log(`\nScroll timeline: ${timeline.totalDuration.toFixed(1)}s total`);
   for (const step of timeline.steps) {
-    console.log(`  ${step.panelId}: scroll ${step.scrollDuration.toFixed(1)}s + pause ${step.pauseDuration.toFixed(1)}s`);
+    console.log(`  ${step.panelId}: transition ${step.transitionDuration.toFixed(1)}s + content ${step.contentDuration.toFixed(1)}s`);
   }
 
   // Build continuous scroll curve — one smooth motion from top to bottom
@@ -401,15 +401,20 @@ async function recordExplainer(panels, voiceoverManifest, viewport, rawVideoPath
 }
 
 // ── Build scroll timeline ───────────────────────────────────────────────────
+// Key insight: transitions between panels should be FAST (no voiceover playing),
+// while scrolling through panel content should be SLOW (synced to voiceover).
+// Content in panels typically appears between progress 0.05 and 0.85 via lerp().
+
+const CONTENT_START = 0.05;  // First lerp() usually starts around 0.0-0.1
+const CONTENT_END = 0.85;    // Last lerp() usually ends by 0.8-0.9
+const TRANSITION_DURATION_BASE = 0.6; // seconds for fast gap between panels
 
 function buildScrollTimeline(panels, voiceoverManifest, viewport) {
   const steps = [];
   let currentScrollY = 0;
 
-  // Each ScrollSection in the app has a scrollLength (default 2).
-  // Total scroll height per panel ≈ (scrollLength - 1) * viewportHeight
-  // We estimate scrollLength=2 for each panel (1 viewport of scroll travel)
-  const panelScrollHeight = viewport.height; // (scrollLength - 1) * 100vh ≈ 1 viewport
+  // Each ScrollSection has scrollLength=2 → 1 viewport of scroll travel
+  const panelScrollHeight = viewport.height;
 
   for (let i = 0; i < panels.length; i++) {
     const panel = panels[i];
@@ -423,19 +428,23 @@ function buildScrollTimeline(panels, voiceoverManifest, viewport) {
       }
     }
 
-    // Scroll animation duration (how long to animate scrolling into this panel)
-    const scrollDuration = (1.5 / scrollSpeed); // 1.5s per panel at 1x speed
+    // FAST transition into this panel (gap between panels — no content)
+    const transitionDuration = (i === 0 ? 0.3 : TRANSITION_DURATION_BASE) / scrollSpeed;
 
-    // Pause duration = voiceover length + padding
-    const pauseDuration = voDuration > 0 ? voDuration + scrollPausePad : 1.0;
+    // SLOW scroll through content (synced to voiceover duration)
+    const contentDuration = voDuration > 0
+      ? voDuration + scrollPausePad
+      : 2.0; // default if no voiceover
 
     steps.push({
       panelId: panel.id,
       panelIndex: i,
       scrollStart: currentScrollY,
       scrollEnd: currentScrollY + panelScrollHeight,
-      scrollDuration,
-      pauseDuration,
+      transitionDuration,
+      contentDuration,
+      contentStartProgress: CONTENT_START,
+      contentEndProgress: CONTENT_END,
       voiceoverDuration: voDuration,
     });
 
@@ -443,52 +452,53 @@ function buildScrollTimeline(panels, voiceoverManifest, viewport) {
   }
 
   const totalDuration = steps.reduce(
-    (sum, s) => sum + s.scrollDuration + s.pauseDuration, 0
+    (sum, s) => sum + s.transitionDuration + s.contentDuration, 0
   );
 
   return { steps, totalDuration };
 }
 
 // ── Build continuous scroll curve ────────────────────────────────────────────
-// Instead of discrete scroll-then-pause steps, build a single continuous
-// mapping from time → scrollY. The scroll *never stops*, it just slows way
-// down during voiceover pauses and speeds up between panels.
+// Inverted speed profile: FAST between panels, SLOW through content.
+// The scroll never stops — it just varies speed dramatically.
 
 function buildContinuousScrollCurve(timeline, fps) {
   const { steps, totalDuration } = timeline;
   const totalFrames = Math.ceil(totalDuration * fps);
   const scrollPositions = new Float64Array(totalFrames + 1);
 
-  // Build time → scrollY keyframes from the step timeline
-  // Each step has: scrollDuration (moving fast) + pauseDuration (moving slow)
-  // During "pause", we still creep forward slightly so backgrounds keep rendering
   const keyframes = []; // { time, scrollY }
   let t = 0;
 
-  for (const step of steps) {
-    // Start of scroll into this panel
-    keyframes.push({ time: t, scrollY: step.scrollStart });
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i];
+    const range = step.scrollEnd - step.scrollStart;
 
-    // End of fast scroll — reach ~40% into the panel (the "sweet spot")
-    const sweetSpotY = step.scrollStart + (step.scrollEnd - step.scrollStart) * 0.35;
-    t += step.scrollDuration;
-    keyframes.push({ time: t, scrollY: sweetSpotY });
+    // Keyframe: start of fast transition into this panel
+    if (i === 0) {
+      // First panel: start at the very beginning
+      keyframes.push({ time: t, scrollY: step.scrollStart });
+    }
+    // (For subsequent panels, the previous content-end keyframe is already placed)
 
-    // During the "pause", creep from 35% to 65% through the panel
-    // This keeps the scroll moving so animations/videos stay alive
-    const creepEndY = step.scrollStart + (step.scrollEnd - step.scrollStart) * 0.65;
-    t += step.pauseDuration;
-    keyframes.push({ time: t, scrollY: creepEndY });
+    // Keyframe: end of fast transition = start of content zone
+    const contentStartY = step.scrollStart + range * step.contentStartProgress;
+    t += step.transitionDuration;
+    keyframes.push({ time: t, scrollY: contentStartY });
+
+    // Keyframe: end of slow content scroll = end of content zone
+    const contentEndY = step.scrollStart + range * step.contentEndProgress;
+    t += step.contentDuration;
+    keyframes.push({ time: t, scrollY: contentEndY });
   }
 
-  // Add final keyframe at the last panel's end
+  // Final keyframe: scroll to the very end
   if (steps.length > 0) {
     const lastStep = steps[steps.length - 1];
-    keyframes.push({ time: t + 0.5, scrollY: lastStep.scrollEnd });
+    keyframes.push({ time: t + 0.3, scrollY: lastStep.scrollEnd });
   }
 
-  // Now interpolate the keyframes into per-frame scroll positions using
-  // smooth hermite interpolation for buttery motion
+  // Interpolate keyframes into per-frame scroll positions with smoothstep
   for (let frame = 0; frame <= totalFrames; frame++) {
     const frameTime = (frame / totalFrames) * totalDuration;
 
@@ -506,7 +516,6 @@ function buildContinuousScrollCurve(timeline, fps) {
     if (k0 === k1 || keyframes[k1].time === keyframes[k0].time) {
       scrollPositions[frame] = keyframes[k0].scrollY;
     } else {
-      // Normalized time within this segment
       const segT = (frameTime - keyframes[k0].time) / (keyframes[k1].time - keyframes[k0].time);
       // Smoothstep for buttery easing
       const eased = segT * segT * (3 - 2 * segT);
@@ -536,13 +545,13 @@ async function mixAudio(panels, voiceoverManifest, musicPath, timeline, outputPa
     inputIdx++;
   }
 
-  // 2. Voiceover clips — timed to panel pauses
+  // 2. Voiceover clips — timed to content phase (after fast transition)
   const voClips = [];
   let timeOffset = 0;
 
   for (const step of timeline.steps) {
-    // Time when voiceover should start = after scroll animation for this panel
-    const voStart = timeOffset + step.scrollDuration;
+    // Voiceover starts when the content phase begins (after the fast transition)
+    const voStart = timeOffset + step.transitionDuration;
 
     const voPanel = voiceoverManifest?.panels?.find(p => p.panelId === step.panelId);
     if (voPanel?.file) {
@@ -559,10 +568,10 @@ async function mixAudio(panels, voiceoverManifest, musicPath, timeline, outputPa
       }
     }
 
-    timeOffset += step.scrollDuration + step.pauseDuration;
+    timeOffset += step.transitionDuration + step.contentDuration;
   }
 
-  // 3. Panel SFX — timed to panel visibility
+  // 3. Panel SFX — timed to panel visibility (transition + content)
   const sfxClips = [];
   timeOffset = 0;
 
@@ -572,14 +581,14 @@ async function mixAudio(panels, voiceoverManifest, musicPath, timeline, outputPa
       sfxClips.push({
         path: sfxPath,
         startTime: timeOffset,
-        duration: step.scrollDuration + step.pauseDuration,
+        duration: step.transitionDuration + step.contentDuration,
         inputIdx,
       });
       inputs.push('-i', sfxPath);
       inputIdx++;
     }
 
-    timeOffset += step.scrollDuration + step.pauseDuration;
+    timeOffset += step.transitionDuration + step.contentDuration;
   }
 
   if (inputIdx === 0) {

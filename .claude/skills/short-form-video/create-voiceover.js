@@ -36,7 +36,8 @@ import path from 'path';
 import https from 'https';
 import { fileURLToPath } from 'url';
 import { loadEnv } from '../../../load-env.js';
-import { loadMetadataPanels } from './parse-metadata.js';
+import { loadMetadataPanels, findMetadataPath, updatePanelField, loadExplainerMessage } from './parse-metadata.js';
+import { refineVoiceover } from './refine-voiceover.js';
 
 loadEnv();
 
@@ -172,28 +173,14 @@ function extractPanelText(panelId) {
 
 // ── Generate voiceover text from panel metadata ─────────────────────────────
 
-function generateVoiceoverText(panel) {
-  // Priority 1: Use explicit voiceover field if present
-  if (panel.voiceover) {
-    return panel.voiceover;
-  }
-
-  // Priority 2: Extract visible text from the panel component
-  const panelText = extractPanelText(panel.id);
-  if (panelText) {
-    console.log(`  (using panel component text)`);
-    return panelText;
-  }
-
-  // Priority 3: Auto-generate from message + keyPhrases
-  let text = '';
-
-  if (panel.message) {
-    text = panel.message;
-  }
+/**
+ * Build raw text from metadata fields (message + keyPhrases).
+ * Used as fallback when no component text or LLM is available.
+ */
+function buildRawFromMetadata(panel) {
+  let text = panel.message || '';
 
   if (panel.keyPhrases && panel.keyPhrases.length > 0) {
-    // If message exists and keyPhrases add new information, append them
     const phrasesNotInMessage = panel.keyPhrases.filter(
       p => !panel.message?.toLowerCase().includes(p.toLowerCase())
     );
@@ -202,7 +189,57 @@ function generateVoiceoverText(panel) {
     }
   }
 
-  return text || `${panel.title || 'Untitled panel'}.`;
+  return text || null;
+}
+
+/**
+ * Generate voiceover text for a panel with LLM refinement.
+ * Priority chain:
+ *   1. Explicit panel.voiceover field (already authored/written back)
+ *   2. LLM refinement of raw text (if ANTHROPIC_API_KEY available)
+ *   3. Raw panel component text (fallback)
+ *   4. message + keyPhrases concatenation (last resort)
+ */
+async function generateVoiceoverText(panel, explainerMessage) {
+  // Priority 1: Use explicit voiceover field if present
+  if (panel.voiceover) {
+    return panel.voiceover;
+  }
+
+  // Gather raw text from both sources
+  const rawFromComponent = extractPanelText(panel.id);
+  const rawFromMetadata = buildRawFromMetadata(panel);
+  const rawText = rawFromComponent || rawFromMetadata;
+
+  // Priority 2: LLM refinement (if API key available and we have raw text)
+  if (rawText && process.env.ANTHROPIC_API_KEY) {
+    try {
+      const refined = await refineVoiceover({
+        rawText,
+        panelId: panel.id,
+        panelTitle: panel.title || '',
+        panelMessage: panel.message || '',
+        narrativeRole: panel.narrativeRole || '',
+        explainerMessage: explainerMessage || '',
+        keyPhrases: panel.keyPhrases || [],
+      });
+      if (refined && refined.trim()) {
+        console.log(`  (LLM-refined voiceover)`);
+        return refined;
+      }
+    } catch (err) {
+      console.warn(`  LLM refinement failed: ${err.message}, falling back`);
+    }
+  }
+
+  // Priority 3: Raw component text
+  if (rawFromComponent) {
+    console.log(`  (using raw panel component text)`);
+    return rawFromComponent;
+  }
+
+  // Priority 4: Metadata concatenation
+  return rawFromMetadata || `${panel.title || 'Untitled panel'}.`;
 }
 
 // ── ElevenLabs TTS API ──────────────────────────────────────────────────────
@@ -329,8 +366,17 @@ async function getDuration(filePath) {
 async function main() {
   console.log('=== Voiceover Generation (ElevenLabs TTS) ===\n');
 
+  const projectRoot = path.resolve(__dirname, '..', '..', '..');
   const panels = await loadMetadata();
   console.log(`Found ${panels.length} panels in metadata.\n`);
+
+  // Load explainer-level context for LLM refinement
+  const explainerMessage = loadExplainerMessage(slug, projectRoot) || '';
+  if (process.env.ANTHROPIC_API_KEY) {
+    console.log('LLM voiceover refinement: enabled (ANTHROPIC_API_KEY found)\n');
+  } else {
+    console.log('LLM voiceover refinement: disabled (no ANTHROPIC_API_KEY)\n');
+  }
 
   // Filter panels if requested
   let targetPanels = panels;
@@ -344,7 +390,6 @@ async function main() {
     console.log(`Filtering to ${targetPanels.length} panels: ${filterIds.join(', ')}\n`);
   }
 
-  const projectRoot = path.resolve(__dirname, '..', '..', '..');
   const outDir = outputDir || path.join(projectRoot, 'public', 'assets', 'audio', 'voiceover');
 
   if (!fs.existsSync(outDir)) {
@@ -361,7 +406,8 @@ async function main() {
 
   for (let i = 0; i < targetPanels.length; i++) {
     const panel = targetPanels[i];
-    const voiceoverText = generateVoiceoverText(panel);
+    const hadExplicitVoiceover = !!panel.voiceover;
+    const voiceoverText = await generateVoiceoverText(panel, explainerMessage);
 
     if (!voiceoverText.trim()) {
       console.log(`[${i + 1}/${targetPanels.length}] ${panel.id} — skipped (no text)`);
@@ -379,6 +425,21 @@ async function main() {
       const duration = await getDuration(outputPath);
 
       console.log(`  Saved: ${outputFile} (${result.sizeKB} KB, ~${duration.toFixed(1)}s)`);
+
+      // Write voiceover text back to metadata file for future runs
+      if (!hadExplicitVoiceover) {
+        try {
+          const metaPath = findMetadataPath(slug, projectRoot);
+          if (metaPath) {
+            const written = updatePanelField(metaPath, panel.id, 'voiceover', voiceoverText);
+            if (written) {
+              console.log(`  Wrote voiceover to metadata`);
+            }
+          }
+        } catch (err) {
+          console.warn(`  Failed to write voiceover to metadata: ${err.message}`);
+        }
+      }
 
       manifest.panels.push({
         panelId: panel.id,

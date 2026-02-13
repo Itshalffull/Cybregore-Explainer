@@ -22,6 +22,8 @@ interface DevOverlayProps {
   containerRef: React.RefObject<HTMLElement | null>
   /** Panel metadata for labeling */
   panels: PanelMeta[]
+  /** Explainer slug for API calls */
+  explainerId: string
 }
 
 /**
@@ -89,6 +91,7 @@ function findTopLevelContainer(
 export default function DevOverlay({
   containerRef,
   panels,
+  explainerId,
 }: DevOverlayProps) {
   const dev = useDevMode()
   const [entries, setEntries] = useState<PanelDOMEntry[]>([])
@@ -250,6 +253,7 @@ export default function DevOverlay({
           panelIndex={entry.index}
           panelId={panelId}
           panelTitle={panelTitle}
+          explainerId={explainerId}
         />,
         entry.portalContainer,
       ),

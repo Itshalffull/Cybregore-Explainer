@@ -302,6 +302,156 @@ export default function claudeBridge(): Plugin {
         )
       })
 
+      // ── Metadata & Voiceover Endpoints ────────────────────────────────
+
+      // GET /api/metadata/{slug}/panel/{panelId} — load panel metadata
+      // PATCH /api/metadata/{slug}/panel/{panelId}/voiceover — save voiceover text
+      server.middlewares.use('/api/metadata/', async (req, res) => {
+        const url = req.url || ''
+
+        // Match: /{slug}/panel/{panelId}/voiceover
+        const voiceoverMatch = url.match(
+          /^\/?([a-z0-9-]+)\/panel\/([a-z0-9-]+)\/voiceover$/,
+        )
+        if (voiceoverMatch && req.method === 'PATCH') {
+          const [, slug, panelId] = voiceoverMatch
+          try {
+            const body = JSON.parse(await readBody(req))
+            const { voiceover } = body as { voiceover: string }
+            if (!voiceover && voiceover !== '') {
+              res.statusCode = 400
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Missing voiceover field' }))
+              return
+            }
+
+            const skillsDir = join(root, '.claude', 'skills', 'short-form-video')
+            const { findMetadataPath, updatePanelField } = await import(
+              /* @vite-ignore */ 'file:///' + join(skillsDir, 'parse-metadata.js').replace(/\\/g, '/')
+            )
+
+            const metaPath = findMetadataPath(slug, root)
+            if (!metaPath) {
+              res.statusCode = 404
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: `Metadata not found for "${slug}"` }))
+              return
+            }
+
+            const success = updatePanelField(metaPath, panelId, 'voiceover', voiceover)
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ success, voiceover }))
+          } catch (err) {
+            res.statusCode = 500
+            res.setHeader('Content-Type', 'application/json')
+            res.end(
+              JSON.stringify({
+                error: err instanceof Error ? err.message : String(err),
+              }),
+            )
+          }
+          return
+        }
+
+        // Match: /{slug}/panel/{panelId}
+        const panelMatch = url.match(/^\/?([a-z0-9-]+)\/panel\/([a-z0-9-]+)$/)
+        if (panelMatch && req.method === 'GET') {
+          const [, slug, panelId] = panelMatch
+          try {
+            const skillsDir = join(root, '.claude', 'skills', 'short-form-video')
+            const { loadPanelById } = await import(
+              /* @vite-ignore */ 'file:///' + join(skillsDir, 'parse-metadata.js').replace(/\\/g, '/')
+            )
+
+            const panel = loadPanelById(slug, root, panelId)
+            if (!panel) {
+              res.statusCode = 404
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: `Panel "${panelId}" not found` }))
+              return
+            }
+
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify(panel))
+          } catch (err) {
+            res.statusCode = 500
+            res.setHeader('Content-Type', 'application/json')
+            res.end(
+              JSON.stringify({
+                error: err instanceof Error ? err.message : String(err),
+              }),
+            )
+          }
+          return
+        }
+
+        // No match — pass through
+        res.statusCode = 404
+        res.end('Not Found')
+      })
+
+      // POST /api/voiceover/generate — run LLM refinement for a single panel
+      server.middlewares.use('/api/voiceover/generate', async (req, res) => {
+        if (req.method !== 'POST') {
+          res.statusCode = 405
+          res.end('Method Not Allowed')
+          return
+        }
+
+        try {
+          const body = JSON.parse(await readBody(req)) as {
+            slug: string
+            panelId: string
+          }
+
+          const skillsDir = join(root, '.claude', 'skills', 'short-form-video')
+
+          const { loadPanelById, loadExplainerMessage } = await import(
+            /* @vite-ignore */ 'file:///' + join(skillsDir, 'parse-metadata.js').replace(/\\/g, '/')
+          )
+          const { refineVoiceover } = await import(
+            /* @vite-ignore */ 'file:///' + join(skillsDir, 'refine-voiceover.js').replace(/\\/g, '/')
+          )
+
+          const panel = loadPanelById(body.slug, root, body.panelId)
+          if (!panel) {
+            res.statusCode = 404
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: `Panel "${body.panelId}" not found` }))
+            return
+          }
+
+          const explainerMessage = loadExplainerMessage(body.slug, root) || ''
+
+          // Build raw text from metadata
+          let rawText = panel.message || ''
+          if (panel.keyPhrases?.length > 0) {
+            rawText += ' ' + panel.keyPhrases.join('. ') + '.'
+          }
+
+          const voiceover = await refineVoiceover({
+            rawText,
+            panelId: panel.id,
+            panelTitle: panel.title || '',
+            panelMessage: panel.message || '',
+            narrativeRole: panel.narrativeRole || '',
+            explainerMessage,
+            keyPhrases: panel.keyPhrases || [],
+          })
+
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ voiceover }))
+        } catch (err) {
+          res.statusCode = 500
+          res.setHeader('Content-Type', 'application/json')
+          res.end(
+            JSON.stringify({
+              error: err instanceof Error ? err.message : String(err),
+            }),
+          )
+        }
+      })
+
       // ── Video Generation Endpoints ──────────────────────────────────
 
       let videoProcess: ChildProcess | null = null
