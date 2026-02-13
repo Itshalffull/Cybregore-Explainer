@@ -61,8 +61,12 @@ node .claude/skills/short-form-video/create-music.js "Ethereal choir drones" --p
 
 The voiceover script for each panel is sourced in this priority order:
 
-1. **`panel.voiceover`** field in metadata — explicit narration text, authored per-panel
-2. **Auto-generated** from `panel.message` + `panel.keyPhrases` — when no voiceover field exists
+1. **`panel.voiceover`** field in metadata — explicit narration text, authored or previously refined
+2. **LLM refinement** via Anthropic Claude API (haiku) — takes raw extracted text and rewrites it as natural spoken narration, preserving campaign voice. Requires `ANTHROPIC_API_KEY`
+3. **Raw panel component text** — extracted from the React component source via regex
+4. **Metadata concatenation** — `panel.message` + `panel.keyPhrases` as last resort
+
+After TTS generation, refined voiceover text is **written back** to the metadata file's `voiceover` field so subsequent runs reuse it (Priority 1).
 
 To add explicit voiceover text, include the `voiceover` field in your PanelMeta:
 
@@ -141,12 +145,12 @@ Options:
 ## How the Recording Works
 
 1. **Puppeteer** opens the explainer in a headless Chrome at the target viewport size
-2. For each panel, the script:
-   - **Scrolls** smoothly into the panel (ease-in-out cubic, ~1.5s)
-   - **Pauses** at the "sweet spot" (progress ~0.4) for the voiceover duration + padding
-   - **Continues** to the next panel
-3. **CDP Page.startScreencast** captures JPEG frames throughout
-4. **FFmpeg** assembles frames into a raw video at the captured framerate
+2. A **continuous scroll curve** is built from voiceover durations:
+   - **Transitions** between panels are fast (~0.6s) — quick scroll through the gap
+   - **Content phases** within panels are slow (matched to voiceover duration) — smooth scroll from progress 0.05 to 0.85, synced to narration
+   - Hermite/smoothstep interpolation ensures smooth speed changes
+3. **`page.screenshot()`** captures PNG frames at a fixed 30fps throughout the scroll
+4. **FFmpeg** assembles frames into a raw video at 30fps
 5. Audio tracks are mixed with FFmpeg's `amix` filter and combined with the video
 
 ## Audio Mix Levels
@@ -168,7 +172,9 @@ Adjust with `--sfx-volume` and `--music-volume` flags.
 
 Output files are saved to `output/{slug}-{format}.mp4` by default.
 
-## Workflow with the Dev Mode Button
+## Dev Mode Integration
+
+### Video Generation Button
 
 The dev mode toolbar includes a "Video" button that triggers this pipeline from the browser:
 
@@ -178,10 +184,26 @@ The dev mode toolbar includes a "Video" button that triggers this pipeline from 
 4. Progress is streamed to the dev panel
 5. Final video appears in `output/`
 
+### Per-Panel Voiceover Editor
+
+Each panel's dev controls include a voiceover section (visible when expanded):
+
+- **Textarea** — shows current voiceover text, lazy-loaded from metadata on first expand
+- **Generate** — calls the LLM refinement API to produce natural narration from the panel's raw text
+- **Save** — writes the voiceover text back to the metadata `.ts` file
+- **Play** — plays the existing TTS audio file (shown only if `voiceover-{panelId}.mp3` exists)
+
+API endpoints (served by the Vite dev server via `claude-bridge.ts`):
+- `GET /api/metadata/{slug}/panel/{panelId}` — load panel metadata
+- `PATCH /api/metadata/{slug}/panel/{panelId}/voiceover` — save voiceover text
+- `POST /api/voiceover/generate` — run LLM refinement for a panel
+
 ## Tips
 
 - **First run:** Generate voiceover and music separately to verify quality before recording
 - **Iterate on voiceover:** Use `--reuse-music --skip-record` to regenerate only voiceover
+- **LLM refinement:** Set `ANTHROPIC_API_KEY` to auto-refine raw text into natural narration. Refined text is written back to metadata for reuse
+- **Dev mode editing:** Use the per-panel voiceover editor in dev mode to Generate, edit, and Save narration text before running the video pipeline
 - **Custom narration:** Add `voiceover` fields to panel metadata for precise control
 - **Long explainers:** Use `--panels` to generate videos for specific sections
 - **Music style:** Match the music prompt to the explainer's tone metadata
@@ -190,7 +212,8 @@ The dev mode toolbar includes a "Video" button that triggers this pipeline from 
 ## Environment Variables
 
 ```bash
-ELEVENLABS_API_KEY=    # Required — voiceover + music fallback
+ELEVENLABS_API_KEY=    # Required — voiceover TTS + music fallback
+ANTHROPIC_API_KEY=     # Optional — LLM voiceover refinement (claude-3-5-haiku-latest)
 SUNO_API_BASE_URL=     # Optional — Suno API server URL (default: http://localhost:3000)
 SUNO_API_KEY=          # Optional — API key for Suno proxy services
 ```
